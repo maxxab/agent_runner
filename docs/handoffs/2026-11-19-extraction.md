@@ -91,7 +91,8 @@ consumed attempts and UNKNOWN. No universal no-thread-churn theorem is required.
 
 ## Next actions and authorization
 
-Finish migration verification/review/publication bookkeeping, stop clean, then use
+Migration verification and independent review are COMPLETE. Both normal pushes
+succeeded; final docs/changelog receipt follows. Stop clean, then use
 2026-11-19-next-chat-request.txt in ANOTHER NEW CHAT rooted at /home/faris/agent_runner.
 Do not resume feature implementation in the migration chat. No new chat has been
 created/dispatched. The successor invokes teamwork and the agent-runner skill, reads
@@ -108,3 +109,15 @@ If a restricted decision blocks only part, continue independent authorized work.
 Publication outcomes and final stopping evidence must be reconciled from the external
 checkpoint and actual remotes; network/authentication failure remains UNKNOWN until
 observed otherwise. No reset to stale remote and no consumed-grant replay.
+
+## Committed publication checkpoint
+
+Source main 1f00db36343f39a0666007a417f17fa49a274101 is normally pushed and remote-observed.
+Destination extraction commit ca7692b5dbfe01d1252cc67aaa6e74d483c4ee3a;
+first normally pushed destination HEAD 4f1f17e2dd566b8b7239603f20a7843183b262e9.
+Final checkpoint documentation/changelog commits follow this point. Exact final HEADs,
+clean-worktree evidence and observed remotes are in M/final-checkpoint.json; verify
+actual log/status rather than mistaking these prior source checkpoints for final HEAD.
+The available HTTPS token refused workflow-file scope, then existing SSH authentication
+completed the destination normal push without changing permissions/settings.
+CI definitions are committed, hosted CI execution remains unobserved.

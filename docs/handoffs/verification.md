@@ -32,3 +32,11 @@ External evidence root: /home/faris/.local/state/agent-runner/migration-20261119
 Prior source1536-test evidence is separate and not relabeled as relocated execution.
 Actual workload, complete native artifacts, integrated success/failure/recovery and
 production validation NEVER RUN. All five release gates remain OPEN.
+
+Publication checkpoint: shared source pushed over HTTPS and observed1f00db3;
+destination HTTPS token refused workflow scope, existing SSH normal push succeeded
+for4f1f17e. Final documentation HEADs and remote equality are in the external final
+checkpoint. No credentials, scopes, remotes or branch protections changed.
+Source standards check over explicit e0b02d5..HEAD and destination root-commit/message
+plus generated changelog checks passed. Final docs-only range is checked separately.
+Hosted CI execution is not yet observed; source definitions are present.

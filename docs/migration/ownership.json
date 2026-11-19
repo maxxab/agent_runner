@@ -26,5 +26,11 @@
     "baseline_review": "All five baseline findings independently resolved",
     "final_review": "Favorable; all corrections independently rechecked closed. No remaining migration blocker in reviewed scope."
   },
-  "stopping": "Pending final migration verification/review/commits/normal push; feature work remains paused"
+  "stopping": "Migration complete, Main stops after final documentation/changelog/normal push receipt; no runtime/feature operation pending. Successor must verify actual state before ownership transfer.",
+  "verified_checkpoint_commits": {
+    "source": "1f00db36343f39a0666007a417f17fa49a274101",
+    "destination_extraction": "ca7692b5dbfe01d1252cc67aaa6e74d483c4ee3a",
+    "destination_published_before_final_docs": "4f1f17e2dd566b8b7239603f20a7843183b262e9"
+  },
+  "publication": "Source normal HTTPS push succeeded and observed remote equals1f00db3. Destination first HTTPS push refused workflow scope; existing SSH normal push succeeded; final observed remote verification follows. No auth/remote settings changed."
 }
