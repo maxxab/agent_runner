@@ -5,3 +5,7 @@
 ### Refactoring
 
 - **runner:** extract standalone package and owner workflow ([ca7692b5dbfe](https://github.com/maxxab/agent_runner/commit/ca7692b5dbfe01d1252cc67aaa6e74d483c4ee3a))
+
+### Documentation
+
+- **runner:** save verified extraction continuation checkpoint ([ff61aaffbd99](https://github.com/maxxab/agent_runner/commit/ff61aaffbd9946003b1d8b89a8051ae88a4dc63b))
