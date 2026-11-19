@@ -1,0 +1,2830 @@
+{
+  "source_repository": "https://github.com/maxxab/development-standards.git",
+  "source_revision": "5de59c4f6c50a73b47048cd41b4a98df5866a041",
+  "destination_repository": "https://github.com/maxxab/agent_runner.git",
+  "method": "Scoped file import with full original path SHA256 map; unrelated source history not imported. Source commits remain in original repository.",
+  "entries": [
+    {
+      "old_path": ".github/workflows/standards-tests.yml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f80839d95acb617c0a3ff2b45e626555e92926d02719616c2278b23f8cd65755"
+    },
+    {
+      "old_path": ".gitignore",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "7ed321ca3f75d31d2a7c11092cfa110dc63f9dbf917302ab1d18ca53ce7b839b"
+    },
+    {
+      "old_path": ".lavish/shared-ai-development-workflow.html",
+      "new_path": ".lavish/shared-ai-development-workflow.html",
+      "disposition": "migrate",
+      "source_sha256": "1539dd43b2c80be132d0de2fba806058f51c5071954c6dabed9164683deb51b9",
+      "new_sha256": "ac9d3ccc212b72a81602212699bf3222b31229b2aaf62620bf61802754262691",
+      "transformation": "Update active compatibility notice command to dedicated checkout; canonical relative link preserved",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "CHANGELOG.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "cccec020dfd91d8f3d485f4917c1ef29acee4d6ad1e70444c2329db026aae292"
+    },
+    {
+      "old_path": "POLICY.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "5983db757d0e8ec22194a0c555970b6f4eab06a084e2992505efae6cdf74f679"
+    },
+    {
+      "old_path": "README.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "798e1379bd087e1e2ef027764087e5e9506d945c9f84f37ccd313d90e25299b6"
+    },
+    {
+      "old_path": "TROUBLESHOOTING.md",
+      "new_path": "TROUBLESHOOTING.md",
+      "disposition": "migrate",
+      "source_sha256": "c9346926f7aa964ef0ed9db8f764bbe0c66637ceffe7ed64549f8057486a43ad",
+      "new_sha256": "c9346926f7aa964ef0ed9db8f764bbe0c66637ceffe7ed64549f8057486a43ad",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "VERSION",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "64d23f858ef51b0f996e4966d4e27c0371b437e2d2787890b1f7ad22d4ec5663"
+    },
+    {
+      "old_path": "automation/__init__.py",
+      "new_path": "automation/__init__.py",
+      "disposition": "migrate",
+      "source_sha256": "bc2043572d7bddb7f024127a85773a37939fd64d10911a2477b219a35192879e",
+      "new_sha256": "bc2043572d7bddb7f024127a85773a37939fd64d10911a2477b219a35192879e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/accounting.py",
+      "new_path": "automation/accounting.py",
+      "disposition": "migrate",
+      "source_sha256": "9fce9ce9a384dc592b333eab7381eccca2bf8dfb192cbf10c980e3cb98965b6c",
+      "new_sha256": "9fce9ce9a384dc592b333eab7381eccca2bf8dfb192cbf10c980e3cb98965b6c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/callbacks.py",
+      "new_path": "automation/callbacks.py",
+      "disposition": "migrate",
+      "source_sha256": "213d7d18d6a796c41f2ad308045d98dcc528cdd896f8c7c34ff08ba5437692f3",
+      "new_sha256": "213d7d18d6a796c41f2ad308045d98dcc528cdd896f8c7c34ff08ba5437692f3",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/cli.py",
+      "new_path": "automation/cli.py",
+      "disposition": "migrate",
+      "source_sha256": "ae3e359eb98b9f35dd4b8ba5c877b651fb2c48b7505851c7c8e14f4a9f0fe83f",
+      "new_sha256": "90ff7c731b8ba8ad72a5ebc74bd2c36ed18e49e30bba24297de0aa11e09ccf43",
+      "transformation": "CLI/config path and corresponding tests/docs",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/config.py",
+      "new_path": "automation/config.py",
+      "disposition": "migrate",
+      "source_sha256": "8276a3570a6953d16ce16504efaa2f3b8c120bf5a5aec511d7cf879989667f06",
+      "new_sha256": "2f4e88e8226a802bb3746c28d5486e0b78004c426c0ecb18d959ce0db54f0ee6",
+      "transformation": "CLI/config path and corresponding tests/docs",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/contracts.py",
+      "new_path": "automation/contracts.py",
+      "disposition": "migrate",
+      "source_sha256": "329933c76db1b29ae61d687387ccfa97338b5c31a0eb4de1019fce7190db712e",
+      "new_sha256": "329933c76db1b29ae61d687387ccfa97338b5c31a0eb4de1019fce7190db712e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control.py",
+      "new_path": "automation/control.py",
+      "disposition": "migrate",
+      "source_sha256": "be9f90ff0956fcec028800f3ca8e0c76ad263cda86103a32a0757476aba9d544",
+      "new_sha256": "be9f90ff0956fcec028800f3ca8e0c76ad263cda86103a32a0757476aba9d544",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_bootstrap.py",
+      "new_path": "automation/control_bootstrap.py",
+      "disposition": "migrate",
+      "source_sha256": "9db5c1e9848070d380f049dbc5f9d29d03255d4ab1e6c21a92290f081dc192cf",
+      "new_sha256": "9db5c1e9848070d380f049dbc5f9d29d03255d4ab1e6c21a92290f081dc192cf",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_docker_credentials.py",
+      "new_path": "automation/control_docker_credentials.py",
+      "disposition": "migrate",
+      "source_sha256": "2c0acd27505a5001b16393761b7139456788baca868c7538006490cfaa9bd86d",
+      "new_sha256": "2c0acd27505a5001b16393761b7139456788baca868c7538006490cfaa9bd86d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_docker_http.py",
+      "new_path": "automation/control_docker_http.py",
+      "disposition": "migrate",
+      "source_sha256": "d6c7bf99149e76ddcbff4492b7985ac7dfff02b6ee832ee70670475b26e8020f",
+      "new_sha256": "d6c7bf99149e76ddcbff4492b7985ac7dfff02b6ee832ee70670475b26e8020f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_docker_io.py",
+      "new_path": "automation/control_docker_io.py",
+      "disposition": "migrate",
+      "source_sha256": "70178b03ec1223413cea02393b694ea9559490db4a685d2106f6bdb877eac335",
+      "new_sha256": "70178b03ec1223413cea02393b694ea9559490db4a685d2106f6bdb877eac335",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_docker_stream.py",
+      "new_path": "automation/control_docker_stream.py",
+      "disposition": "migrate",
+      "source_sha256": "bf8a89e7615f2b1078958b8abedc58ca0ded449fe81694bcf118c8d37deba349",
+      "new_sha256": "bf8a89e7615f2b1078958b8abedc58ca0ded449fe81694bcf118c8d37deba349",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_guardian_protocol.py",
+      "new_path": "automation/control_guardian_protocol.py",
+      "disposition": "migrate",
+      "source_sha256": "59cbe80b459736960edf828b8034aa33f33ee740d36390b00f6d3ff9d3efdaf4",
+      "new_sha256": "59cbe80b459736960edf828b8034aa33f33ee740d36390b00f6d3ff9d3efdaf4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_assets.py",
+      "new_path": "automation/control_runtime_assets.py",
+      "disposition": "migrate",
+      "source_sha256": "e4432b2b8183842538a7f76e5dc1266955bcabf8da250a9a13f21d9eb5377e37",
+      "new_sha256": "e4432b2b8183842538a7f76e5dc1266955bcabf8da250a9a13f21d9eb5377e37",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_bootstrap.py",
+      "new_path": "automation/control_runtime_bootstrap.py",
+      "disposition": "migrate",
+      "source_sha256": "4c6d5b6ee4e4707cc2db67695266184f5fe2ca45c01fc83b91a6cc4cd6e1916e",
+      "new_sha256": "4c6d5b6ee4e4707cc2db67695266184f5fe2ca45c01fc83b91a6cc4cd6e1916e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_channel.py",
+      "new_path": "automation/control_runtime_channel.py",
+      "disposition": "migrate",
+      "source_sha256": "cb100ac16322e82071b8411bc91de68e3a74a150fed584e1e882d2ec9563fded",
+      "new_sha256": "cb100ac16322e82071b8411bc91de68e3a74a150fed584e1e882d2ec9563fded",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_clock.py",
+      "new_path": "automation/control_runtime_clock.py",
+      "disposition": "migrate",
+      "source_sha256": "20e7c527dcc0ceffdf7f254ce445d90ade211e46b687b93754349b1d1592fcc8",
+      "new_sha256": "20e7c527dcc0ceffdf7f254ce445d90ade211e46b687b93754349b1d1592fcc8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_configuration.py",
+      "new_path": "automation/control_runtime_configuration.py",
+      "disposition": "migrate",
+      "source_sha256": "389d16fa3e47a0f36f0b80e5d6544f3d17b41ce1c918d66e42e0acb8c30526f6",
+      "new_sha256": "389d16fa3e47a0f36f0b80e5d6544f3d17b41ce1c918d66e42e0acb8c30526f6",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_consumer.py",
+      "new_path": "automation/control_runtime_consumer.py",
+      "disposition": "migrate",
+      "source_sha256": "254acb58b87115ad89aa4b0429499acb54fdde4a001c7a6b513f2759a982f522",
+      "new_sha256": "254acb58b87115ad89aa4b0429499acb54fdde4a001c7a6b513f2759a982f522",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_containment.py",
+      "new_path": "automation/control_runtime_containment.py",
+      "disposition": "migrate",
+      "source_sha256": "3d616718cff1347952276a2c1bee500e0047c835e35d1a826948c12f9c59986c",
+      "new_sha256": "3d616718cff1347952276a2c1bee500e0047c835e35d1a826948c12f9c59986c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_dispatch.py",
+      "new_path": "automation/control_runtime_dispatch.py",
+      "disposition": "migrate",
+      "source_sha256": "216f539dbb927d925ef31887119cb75e5958b2010680b374361cf1ce96330866",
+      "new_sha256": "216f539dbb927d925ef31887119cb75e5958b2010680b374361cf1ce96330866",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_docker_recipe.py",
+      "new_path": "automation/control_runtime_docker_recipe.py",
+      "disposition": "migrate",
+      "source_sha256": "ca72bc967176e78fea679f7bc6439188a794c5cafde88e88e22b0e7d98191801",
+      "new_sha256": "ca72bc967176e78fea679f7bc6439188a794c5cafde88e88e22b0e7d98191801",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_elf.py",
+      "new_path": "automation/control_runtime_elf.py",
+      "disposition": "migrate",
+      "source_sha256": "e495f8d0820634c79b4ecf8292e8ba2e478481a83ed5f1cc1740be799f0a4b62",
+      "new_sha256": "e495f8d0820634c79b4ecf8292e8ba2e478481a83ed5f1cc1740be799f0a4b62",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_execution_root.py",
+      "new_path": "automation/control_runtime_execution_root.py",
+      "disposition": "migrate",
+      "source_sha256": "93a85e03901084cdf3a4f77d40db5eb7156adef0537b2e35ac89da8fdf27dc0f",
+      "new_sha256": "93a85e03901084cdf3a4f77d40db5eb7156adef0537b2e35ac89da8fdf27dc0f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_frozen.py",
+      "new_path": "automation/control_runtime_frozen.py",
+      "disposition": "migrate",
+      "source_sha256": "65a2e9587d2ae7866440abf1332b6ed8d0702e5db2b30f23f5836d3b4b20d6aa",
+      "new_sha256": "65a2e9587d2ae7866440abf1332b6ed8d0702e5db2b30f23f5836d3b4b20d6aa",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_handoff.py",
+      "new_path": "automation/control_runtime_handoff.py",
+      "disposition": "migrate",
+      "source_sha256": "96cccd361e3830f9dacb883681f83f78d714debdfd19eff1c639451091c4a226",
+      "new_sha256": "96cccd361e3830f9dacb883681f83f78d714debdfd19eff1c639451091c4a226",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_launch_data.py",
+      "new_path": "automation/control_runtime_launch_data.py",
+      "disposition": "migrate",
+      "source_sha256": "0f096762e5d6ae0016df398de4a5af4da1e86d63b45be0747816ba05ee053f5a",
+      "new_sha256": "0f096762e5d6ae0016df398de4a5af4da1e86d63b45be0747816ba05ee053f5a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_lifetime.py",
+      "new_path": "automation/control_runtime_lifetime.py",
+      "disposition": "migrate",
+      "source_sha256": "03f4578346da6cc5ffe3a1c0d3419b5eae3cadf8dc17c04dd6c2bcc6c740c883",
+      "new_sha256": "03f4578346da6cc5ffe3a1c0d3419b5eae3cadf8dc17c04dd6c2bcc6c740c883",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_linux.py",
+      "new_path": "automation/control_runtime_linux.py",
+      "disposition": "migrate",
+      "source_sha256": "a5a21ee6abab42fda2b33fa3b0ced7f1e25a99e61a16c5a34e873892d33e834b",
+      "new_sha256": "a5a21ee6abab42fda2b33fa3b0ced7f1e25a99e61a16c5a34e873892d33e834b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_manager.py",
+      "new_path": "automation/control_runtime_manager.py",
+      "disposition": "migrate",
+      "source_sha256": "4849f9a7e42cc4638a4a5e6a434dbc9e4c7df8ed41e70514e2b079a04972c271",
+      "new_sha256": "4849f9a7e42cc4638a4a5e6a434dbc9e4c7df8ed41e70514e2b079a04972c271",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_observer.py",
+      "new_path": "automation/control_runtime_observer.py",
+      "disposition": "migrate",
+      "source_sha256": "e1aab501db6b9401bf9199ac88d8b99ad8626d550b5b0e5dbbdabe5545c3d468",
+      "new_sha256": "e1aab501db6b9401bf9199ac88d8b99ad8626d550b5b0e5dbbdabe5545c3d468",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_operational.py",
+      "new_path": "automation/control_runtime_operational.py",
+      "disposition": "migrate",
+      "source_sha256": "92ac04d278f324aa0e75f15f7bbbf10c24b623202e13833f211d948f2252e74e",
+      "new_sha256": "92ac04d278f324aa0e75f15f7bbbf10c24b623202e13833f211d948f2252e74e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_original.py",
+      "new_path": "automation/control_runtime_original.py",
+      "disposition": "migrate",
+      "source_sha256": "35be34c08a541160be6dd2b4e1b5956de3fcbed01a11c9fdcba2c580a4008572",
+      "new_sha256": "35be34c08a541160be6dd2b4e1b5956de3fcbed01a11c9fdcba2c580a4008572",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_payload.py",
+      "new_path": "automation/control_runtime_payload.py",
+      "disposition": "migrate",
+      "source_sha256": "ec875383090dfb2c87dcbb0f814f3dd8b6ac56581ba1c61a461951ee327f73c4",
+      "new_sha256": "ec875383090dfb2c87dcbb0f814f3dd8b6ac56581ba1c61a461951ee327f73c4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_prefork.py",
+      "new_path": "automation/control_runtime_prefork.py",
+      "disposition": "migrate",
+      "source_sha256": "ddf2d41aeba88e0ce28cac37228cf4fa7666965f3889166fdbea78336aa2acf9",
+      "new_sha256": "ddf2d41aeba88e0ce28cac37228cf4fa7666965f3889166fdbea78336aa2acf9",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_proc.py",
+      "new_path": "automation/control_runtime_proc.py",
+      "disposition": "migrate",
+      "source_sha256": "3345038c25e1d400ff47b368e2a4445464cdb65632aa88f9b6ddbeaf297852d8",
+      "new_sha256": "3345038c25e1d400ff47b368e2a4445464cdb65632aa88f9b6ddbeaf297852d8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_proc_view.py",
+      "new_path": "automation/control_runtime_proc_view.py",
+      "disposition": "migrate",
+      "source_sha256": "8aa1a8660b2a5ffdccebe46f518489ee0b0bb3afc85eba5a426e8f7a5f48e4ef",
+      "new_sha256": "8aa1a8660b2a5ffdccebe46f518489ee0b0bb3afc85eba5a426e8f7a5f48e4ef",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_project_layout.py",
+      "new_path": "automation/control_runtime_project_layout.py",
+      "disposition": "migrate",
+      "source_sha256": "cfeb7f29dc967acfeaf14eaeb8f740fa605202ca2ce27afb6307810dd2eb5e7e",
+      "new_sha256": "cfeb7f29dc967acfeaf14eaeb8f740fa605202ca2ce27afb6307810dd2eb5e7e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_provisioner.py",
+      "new_path": "automation/control_runtime_provisioner.py",
+      "disposition": "migrate",
+      "source_sha256": "d446561f17a7fec032ebdc974cec46e8d165b23a846cab405caabc6cbbd1fa72",
+      "new_sha256": "d446561f17a7fec032ebdc974cec46e8d165b23a846cab405caabc6cbbd1fa72",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_readiness.py",
+      "new_path": "automation/control_runtime_readiness.py",
+      "disposition": "migrate",
+      "source_sha256": "d770e84e427f74573579eca0ac065d92313afa9a90c52232de48f04851a0803f",
+      "new_sha256": "d770e84e427f74573579eca0ac065d92313afa9a90c52232de48f04851a0803f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_receiver.py",
+      "new_path": "automation/control_runtime_receiver.py",
+      "disposition": "migrate",
+      "source_sha256": "6bf5c9602dbdfe57150af717591beecf1f46d60fd78b3a673c4383805b93414f",
+      "new_sha256": "6bf5c9602dbdfe57150af717591beecf1f46d60fd78b3a673c4383805b93414f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_root_entry.py",
+      "new_path": "automation/control_runtime_root_entry.py",
+      "disposition": "migrate",
+      "source_sha256": "0ccef352853ad00c0dd31c4bc09bd730498f286f56833a15f179792b9db61a20",
+      "new_sha256": "0ccef352853ad00c0dd31c4bc09bd730498f286f56833a15f179792b9db61a20",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_seal.py",
+      "new_path": "automation/control_runtime_seal.py",
+      "disposition": "migrate",
+      "source_sha256": "434c5b89f1a18ef019680155debec9a159d648d3417062adfd19058e29755e68",
+      "new_sha256": "434c5b89f1a18ef019680155debec9a159d648d3417062adfd19058e29755e68",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_source_pins.py",
+      "new_path": "automation/control_runtime_source_pins.py",
+      "disposition": "migrate",
+      "source_sha256": "a5b3855c8d6421f72692963fb22fe5002598c8d42e73b73ec50a4957bebc6050",
+      "new_sha256": "a5b3855c8d6421f72692963fb22fe5002598c8d42e73b73ec50a4957bebc6050",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_state.py",
+      "new_path": "automation/control_runtime_state.py",
+      "disposition": "migrate",
+      "source_sha256": "5307b7b48b558a37aecc80887b807a3a42c2d3f817b12b8fac147bc9851f341e",
+      "new_sha256": "5307b7b48b558a37aecc80887b807a3a42c2d3f817b12b8fac147bc9851f341e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_systemd.py",
+      "new_path": "automation/control_runtime_systemd.py",
+      "disposition": "migrate",
+      "source_sha256": "6880967f922a2a8b1aff86a273053b785a40bae1a9074928875d1c4748bb18f8",
+      "new_sha256": "6880967f922a2a8b1aff86a273053b785a40bae1a9074928875d1c4748bb18f8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_runtime_verity.py",
+      "new_path": "automation/control_runtime_verity.py",
+      "disposition": "migrate",
+      "source_sha256": "f60bb941bcabd0c3724234e0744f4133c3ac69584dc955adb79301f8e939a38b",
+      "new_sha256": "f60bb941bcabd0c3724234e0744f4133c3ac69584dc955adb79301f8e939a38b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_startup.py",
+      "new_path": "automation/control_startup.py",
+      "disposition": "migrate",
+      "source_sha256": "61a342cdbcb4d67887983a2e28f19bc7ac2e40ed7ccb680a418798c1b902596d",
+      "new_sha256": "61a342cdbcb4d67887983a2e28f19bc7ac2e40ed7ccb680a418798c1b902596d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_store.py",
+      "new_path": "automation/control_store.py",
+      "disposition": "migrate",
+      "source_sha256": "56e807ea664863916ffb610b4a1dc0867bde479d960076d41c04aae50c9eb4fe",
+      "new_sha256": "56e807ea664863916ffb610b4a1dc0867bde479d960076d41c04aae50c9eb4fe",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_supervisor.py",
+      "new_path": "automation/control_supervisor.py",
+      "disposition": "migrate",
+      "source_sha256": "2594ada74190d8e14a560d0d6d163e08257fb5d94383e090c823f89e03c7b000",
+      "new_sha256": "2594ada74190d8e14a560d0d6d163e08257fb5d94383e090c823f89e03c7b000",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_transport.py",
+      "new_path": "automation/control_transport.py",
+      "disposition": "migrate",
+      "source_sha256": "d49fd7161c6254e34a29358b7888df5a1f5fea1b60015816769363950a28741d",
+      "new_sha256": "d49fd7161c6254e34a29358b7888df5a1f5fea1b60015816769363950a28741d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/control_workspace.py",
+      "new_path": "automation/control_workspace.py",
+      "disposition": "migrate",
+      "source_sha256": "d14b2de5f6b6193b61f4a76899519c1e8d9ea937886e3fdee21ce4b53fc54e76",
+      "new_sha256": "d14b2de5f6b6193b61f4a76899519c1e8d9ea937886e3fdee21ce4b53fc54e76",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/github.py",
+      "new_path": "automation/github.py",
+      "disposition": "migrate",
+      "source_sha256": "b65c0e72a5a592a4dba7eb5c1d2566fbc6583dda219f0e3e651733470e7c3878",
+      "new_sha256": "b65c0e72a5a592a4dba7eb5c1d2566fbc6583dda219f0e3e651733470e7c3878",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/github_transport.py",
+      "new_path": "automation/github_transport.py",
+      "disposition": "migrate",
+      "source_sha256": "fd75b5d0c2f6ce7a3f42a07eb7abbae44c13d8452632e53b48947aaca3e7d36e",
+      "new_sha256": "fd75b5d0c2f6ce7a3f42a07eb7abbae44c13d8452632e53b48947aaca3e7d36e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/hold_journal.py",
+      "new_path": "automation/hold_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "6434614a8be079a2fbb2d7bc50d68d6484840a903fad0ae551990feb7a5eaa43",
+      "new_sha256": "6434614a8be079a2fbb2d7bc50d68d6484840a903fad0ae551990feb7a5eaa43",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/lifecycle.py",
+      "new_path": "automation/lifecycle.py",
+      "disposition": "migrate",
+      "source_sha256": "9219cf557cde75a7a4e373ac2f4772759bcc7452612224b354e4a3deea1f3268",
+      "new_sha256": "9219cf557cde75a7a4e373ac2f4772759bcc7452612224b354e4a3deea1f3268",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/live_contracts.py",
+      "new_path": "automation/live_contracts.py",
+      "disposition": "migrate",
+      "source_sha256": "ce68d4fb6f3dc5336c8aab2f64ed47ec1e50e40b183d91369e1e5a86d5f93ed9",
+      "new_sha256": "ce68d4fb6f3dc5336c8aab2f64ed47ec1e50e40b183d91369e1e5a86d5f93ed9",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/live_io.py",
+      "new_path": "automation/live_io.py",
+      "disposition": "migrate",
+      "source_sha256": "379681178f7ff208419e3622f461e40b1d199061774c9e8f772a2d90e85955ed",
+      "new_sha256": "379681178f7ff208419e3622f461e40b1d199061774c9e8f772a2d90e85955ed",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/live_preview.py",
+      "new_path": "automation/live_preview.py",
+      "disposition": "migrate",
+      "source_sha256": "0ddadec8b254e43b75f9794f7993ea1d473f82f72ad77283a7923f8fc300e69e",
+      "new_sha256": "0ddadec8b254e43b75f9794f7993ea1d473f82f72ad77283a7923f8fc300e69e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/managed_config.py",
+      "new_path": "automation/managed_config.py",
+      "disposition": "migrate",
+      "source_sha256": "f609131790bd657cecebe4eff72826070190763382d4fb41c5db05d82e5baae6",
+      "new_sha256": "f609131790bd657cecebe4eff72826070190763382d4fb41c5db05d82e5baae6",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/managed_observation.py",
+      "new_path": "automation/managed_observation.py",
+      "disposition": "migrate",
+      "source_sha256": "bba52440d09dc16a56c0a1d127656b92364de7934f7b9870040ed97ccaabc124",
+      "new_sha256": "bba52440d09dc16a56c0a1d127656b92364de7934f7b9870040ed97ccaabc124",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_guardian.c",
+      "new_path": "automation/native/runtime_guardian.c",
+      "disposition": "migrate",
+      "source_sha256": "2dd71b4605bb7c5042281ddc142b15b2aa5159dfb2214aa9513fa77793d0571c",
+      "new_sha256": "2dd71b4605bb7c5042281ddc142b15b2aa5159dfb2214aa9513fa77793d0571c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_admission.c",
+      "new_path": "automation/native/runtime_stage0_admission.c",
+      "disposition": "migrate",
+      "source_sha256": "bfdb89148ad14b8746f0058d82c074ee05268eb7ce450e9c27f2c0b477d55b9f",
+      "new_sha256": "bfdb89148ad14b8746f0058d82c074ee05268eb7ce450e9c27f2c0b477d55b9f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_admission.h",
+      "new_path": "automation/native/runtime_stage0_admission.h",
+      "disposition": "migrate",
+      "source_sha256": "cf4ab80aa748ae681ce5f60e1110e3ec3da8fd0ff38fe0a7c69e4b8daa9a710a",
+      "new_sha256": "cf4ab80aa748ae681ce5f60e1110e3ec3da8fd0ff38fe0a7c69e4b8daa9a710a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_clock.c",
+      "new_path": "automation/native/runtime_stage0_clock.c",
+      "disposition": "migrate",
+      "source_sha256": "8b991efcb43c2fc1d3bf867c02277978db99f415924e413836b32c3b6ec03280",
+      "new_sha256": "8b991efcb43c2fc1d3bf867c02277978db99f415924e413836b32c3b6ec03280",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_clock.h",
+      "new_path": "automation/native/runtime_stage0_clock.h",
+      "disposition": "migrate",
+      "source_sha256": "4b18c2877e9259c138af07b2e184cb3af50b17fdfc4b5824544441db9643f0c7",
+      "new_sha256": "4b18c2877e9259c138af07b2e184cb3af50b17fdfc4b5824544441db9643f0c7",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_launch.c",
+      "new_path": "automation/native/runtime_stage0_launch.c",
+      "disposition": "migrate",
+      "source_sha256": "289d656716b7567a9e24382f0800e10a1679a4ca6da5a06dc4b5713e07061156",
+      "new_sha256": "289d656716b7567a9e24382f0800e10a1679a4ca6da5a06dc4b5713e07061156",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_launch.h",
+      "new_path": "automation/native/runtime_stage0_launch.h",
+      "disposition": "migrate",
+      "source_sha256": "35749e46e4a0ee0e58eb2bf0eb2552461f81cc1634289f8b2d57a68ffa3c4b36",
+      "new_sha256": "35749e46e4a0ee0e58eb2bf0eb2552461f81cc1634289f8b2d57a68ffa3c4b36",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_preparer.c",
+      "new_path": "automation/native/runtime_stage0_preparer.c",
+      "disposition": "migrate",
+      "source_sha256": "07cd7e8594eae0f38fcf43782b19ee745ed9a871512e2eba836f055770d7d7d8",
+      "new_sha256": "07cd7e8594eae0f38fcf43782b19ee745ed9a871512e2eba836f055770d7d7d8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_preparer.h",
+      "new_path": "automation/native/runtime_stage0_preparer.h",
+      "disposition": "migrate",
+      "source_sha256": "4e804d799e576baeb57312f0ddeaeac351b982565e9d24481769bda0d951d641",
+      "new_sha256": "4e804d799e576baeb57312f0ddeaeac351b982565e9d24481769bda0d951d641",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_qualification_main.c",
+      "new_path": "automation/native/runtime_stage0_qualification_main.c",
+      "disposition": "migrate",
+      "source_sha256": "bb07dcda0fe5f3cf40f93a622fb222c8b8214282d2776976beca181dc5cbedb1",
+      "new_sha256": "bb07dcda0fe5f3cf40f93a622fb222c8b8214282d2776976beca181dc5cbedb1",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_records.c",
+      "new_path": "automation/native/runtime_stage0_records.c",
+      "disposition": "migrate",
+      "source_sha256": "9f4db76d6ef53032ad56dff50e2eac28a249b12350520f7e176577b40d03951e",
+      "new_sha256": "9f4db76d6ef53032ad56dff50e2eac28a249b12350520f7e176577b40d03951e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_records.h",
+      "new_path": "automation/native/runtime_stage0_records.h",
+      "disposition": "migrate",
+      "source_sha256": "b69d4a3942d54ba8ce24f49ff4e23c4505d5ea32793402808b536050ca8559bb",
+      "new_sha256": "b69d4a3942d54ba8ce24f49ff4e23c4505d5ea32793402808b536050ca8559bb",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/native/runtime_stage0_validate_main.c",
+      "new_path": "automation/native/runtime_stage0_validate_main.c",
+      "disposition": "migrate",
+      "source_sha256": "c6cd8b6110cbc10dd9544c566a98910c64419c21671e95e8de03df4712aaacdc",
+      "new_sha256": "c6cd8b6110cbc10dd9544c566a98910c64419c21671e95e8de03df4712aaacdc",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/operation_journal.py",
+      "new_path": "automation/operation_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "2e351176cdb1d297a9ee227318c8a6b41f6cce426132d10a0559f9435a962859",
+      "new_sha256": "2e351176cdb1d297a9ee227318c8a6b41f6cce426132d10a0559f9435a962859",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/selection.py",
+      "new_path": "automation/selection.py",
+      "disposition": "migrate",
+      "source_sha256": "513c9ebe5c5f24074b7805e6dda18b122cb295baeff02ad328993e4c0182db01",
+      "new_sha256": "513c9ebe5c5f24074b7805e6dda18b122cb295baeff02ad328993e4c0182db01",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/sqlite_support.py",
+      "new_path": "automation/sqlite_support.py",
+      "disposition": "migrate",
+      "source_sha256": "a30d8dc0e6be9353f6b2f23233cb6b4b56d76a1dcd9aa0a48a312e3045fadfd8",
+      "new_sha256": "a30d8dc0e6be9353f6b2f23233cb6b4b56d76a1dcd9aa0a48a312e3045fadfd8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "automation/usage_journal.py",
+      "new_path": "automation/usage_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "247365eceffb157d2b369b53a08e3add80690396cc7ed239b8176ed3b945cb50",
+      "new_sha256": "247365eceffb157d2b369b53a08e3add80690396cc7ed239b8176ed3b945cb50",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "bootstrap.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "9cb72d7e88b07740492f5191b8f14a0ef7623a91e0f9fb10633b3473b5cf893e"
+    },
+    {
+      "old_path": "cliff.toml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "29185cfd0e0e051073665727d5fe5491792510435a1a60a3d4d30e76fbb0590e"
+    },
+    {
+      "old_path": "conventional.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "db43d54b156e89ee76b83971c22fd49fd8d157bac9803b70bb4956b7af293c8d"
+    },
+    {
+      "old_path": "docs/agent-skills/README.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a4d6ba56e97258eda8729fa3f771ab236ae2b44590b0f285a467bf7644b79288"
+    },
+    {
+      "old_path": "docs/agent-skills/deduplication.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "73a8efd8c9d05ec4469fba5cea31e90490affb33d11db7b9e9ef23ba29139f32"
+    },
+    {
+      "old_path": "docs/agent-skills/distribution.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "06515b6017f5e86115e646196cc96c32556b8cd239badfede87f13ad2aaaac47"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/baseline.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "760fd9b332ec2c2dd249563cf66f8c3cc598a606020c8a1d7dcf1e55e77b5a9c"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/bundle-provenance.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "acd2cd0d8116bf20d03a926f25f9fc1adf2f17134a5fda5d41b6df956b046a34"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/catalog-validation.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "be696e1d427f5882a21c5c3b29484971b9818afc9f903185d224fce5f9bd5b40"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/codex-discovery.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a035d8f40278fe8cda813e1a6a5bb2a819dafa7a766b45fb6a677784b18edce7"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/codex-execution.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "8307fa24e79d3831894202a4a83f71c3d57e8f197d3f665f8b5ec88a538cfe0d"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/codex-implicit-scenario.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "7c99b7c91eb99f42fbf90ae3492092bdd44250ea7dcef7f065e7c238e9673a25"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/distribution-tests.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "3391ef614fa9661094e12632bb9d28f1c6a50c003664af9f33a13552d0e6b226"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/01-product.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "8bb99361dc593405e453b107dc0822c1512eef5d749b2ab4c3c06671dc359102"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/02-onboarding.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "753c869c35fe2ad269a70c62a26442ee7f61a51fb5fd3718a629ecb652dbf880"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/03-design-roadmap.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "c0fed43f3a1104b914e2ebde432d458a241cce87741c37e8614e47d8bc23a18d"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/04-readiness.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "811cca476c7cd5128fcf5c375210e155ec5da31d2eadca091fe4edb42d775941"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/05-grill-me-evaluation.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "849f4a544381b8747701531c9fc1d3a7b84fc1389e18cb0ed09355557cad04bb"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/06-evaluation.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "71f6ae838264d325796a3bd15110198610aef9a8c5f1d96c126fa62e1cd7e905"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/checks.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "c2bb0eb0ac19dccd9c5a8943dca37416b6557cedc12c8f16af455bdf2e2304d0"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/evidence.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "8f90fe91f42cd350fbd9c786f9cd4c1093ab74afd4dd56e1a631f0fe9a6aa7a4"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/invalid-message.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f5b83cf9a626f0df58c90344731e8d53c223f731ef70784645091cfbc64990b8"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/forward-eval/valid-message.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "7ad8a6fcdf70b856715e97ad465a2b862b91991ecd96fdda7d36e3a56932ffc1"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/full-tests-before-version-update.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "53c656c3a25e83505ade652f4c69ea4afc4703c638f8b7c9fe52528bec760eb3"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/full-tests.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "050c00337173e64a04d0d35ccb5a0b94aef1f04b889696e50bd20b61e33113d1"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/installed-links.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "6144f301d88486c196a8a05677323717183dceb7a4ef60eb28dfa9c220212d39"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/integration-review-final.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "502fe33dd870ae508c1dc575844f8a2a526cde44b0038fbfbeea8ebe7cf8799f"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/integration-review.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "d5de7aebb61c07f8fe0d8745d600e3f4cfb8b55d840c39298d692b6fb0a74ba2"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/inventory.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "53efe8ac3088346b6981bcfe9224a7b629027358e22ea9c8f702e76bace57d31"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-discovery.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "233e69331f58a490ae8f98955faed206a3c1cb6c09e100002a77bf4d5e4df963"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/docs/issues/import/001-existing.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "cfcb45ec68481e5c3c8757f7aa0c31bd00874f67655e36328a8c7d761118b2f5"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/docs/issues/import/002-import-valid-contacts.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "e65dd9c31f6e6ee25b0fe564d4cd69b7b8286168161d36904232cdf150ca957a"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/docs/issues/import/003-replay-import-result.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "e765e805918042145144db2d3c5da02b9c370e3ebd576fde12209483d90c5ea0"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/docs/issues/import/004-download-error-csv.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "35d50f351d0a69f702154943e5884b29fe89d5a177f7ebd56ceda93cf0adcc53"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/docs/prd/import.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "3ea61babdfedba70257588c028a809a7e0b6bfb8a312a975943331cc1a5a12bb"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/evaluation.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "32e3818ab9aacade8e05614660c2e5ab116b5a9bf6d2a3426356bbd2c6111f36"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/src/contacts.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "fd4fef6f444d882d6ecf5cad408d55323db274192fcedca0c504a20a5ab17c81"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-forward/src/upload.html",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "135f2a9cdd422edadf7d61633f77671e0fcd674a1f7119e72cffa07c8bd1eff6"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/prd-to-issues-upstream.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f1f68e5ec66878bf23d5dd057ffb70abeec1ec4fc6e52d332a68e8cf226b3b02"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/proposed-upstream.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "26e600d8e606ccab9657f093375c1e46853048b388e9362629d58acfea4ab98a"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/review-regression-red.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "45d0ea4bdee17325fd09f7aca68093808e9a7f49be7975cb2643042c3e656b99"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/source-review.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "44b719eef1d88fb503c3bd73d6ef7baca84d0885f21733796e44c7d558e1cd52"
+    },
+    {
+      "old_path": "docs/agent-skills/evidence/upstream-evidence.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1ba85bde4f401dee801bce00d7bf954ce47b51033e6444429280e49ddfce699a"
+    },
+    {
+      "old_path": "docs/agent-skills/inventory.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "4aab367f3a224c545aa53b42c4283d7a39b37a855f9be7e478ff165e7568c936"
+    },
+    {
+      "old_path": "docs/agent-skills/prd-to-issues-research.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "ab7e24f0f0a848c91994db926cf6b8e7a3a7ff9d71572a649bc17fd59c312988"
+    },
+    {
+      "old_path": "docs/agent-skills/validation.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "db30490ba8952c48d1a023bbe4e46391497c4ca06cae6969ab79ff2d9a87935e"
+    },
+    {
+      "old_path": "docs/agent-skills/workflow.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f9bd4583f9272353076b2f97e89c10c1ddb16e07a166cacd3ea6e3abea873ece"
+    },
+    {
+      "old_path": "docs/automation.md",
+      "new_path": "docs/automation.md",
+      "disposition": "migrate",
+      "source_sha256": "f02175508b4698c57a91cdbe9edd71c9a748208a63779e277a341673c65a55b8",
+      "new_sha256": "f08c32f0310b7c68ebf9615be0f7dba620d7080ec72828a9bfe9cd2acf3de50c",
+      "transformation": "CLI/config path and corresponding tests/docs",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/bootstrap.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "007b3d9f012cc65f2179199b165e658d3858d347b59f0c5913895ca6af2e24b3"
+    },
+    {
+      "old_path": "docs/cleanup-inventory.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a6126f663be9a42fab7cfc4eba3bfb9232736af13ae7c35bac3810975a0a54fe"
+    },
+    {
+      "old_path": "docs/codex-chat-creation-investigation-20261024.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "70ca9833783c2ab90fc4b6dc467e3250391b33fa4499617227634d45600c4fc3"
+    },
+    {
+      "old_path": "docs/codex-loading-result.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "56b2b85bab18c5a6f1991fdf7b23c31bd93d63d7127fd4a463a0be082d249a5d"
+    },
+    {
+      "old_path": "docs/codex-plugins.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "db6da88c7ba84eb4738cc3cbd267d6985e49a2306d7c631c3ae3a6db56e98ae7"
+    },
+    {
+      "old_path": "docs/consolidation-review.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "55d80fe86874f56e43b41eb991e5846d115f896545c2aa832b358045e3fbca46"
+    },
+    {
+      "old_path": "docs/design-and-plan.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1177b711970e43395de5b90c43e7a5578840602bbdb260fe7aea49895bf7ee98"
+    },
+    {
+      "old_path": "docs/development-document-workflow.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "8f293a641f60af452cd9669d7a07546339b78b5b09cb69c7550241686b0141a4"
+    },
+    {
+      "old_path": "docs/development-operations.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "8fd8c7be9767ce4e505e92fe05ab0f12fa62457ff069d413b84e66a742c9e58f"
+    },
+    {
+      "old_path": "docs/documentation-guidelines.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "89124441372ed4f065cc10dc32b5adcc00ba7af23a7a0359cd863e752250cc83"
+    },
+    {
+      "old_path": "docs/editor-setup.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "44e1f6c0ab6efebcb3069198fc5d783664c483947f22cb9ee8c94fd9cf30889b"
+    },
+    {
+      "old_path": "docs/engine.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "faafc5903a4ce06a615f67717584364ffe11a5058c45d365b90793dfa950904c"
+    },
+    {
+      "old_path": "docs/environment-before.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "58609edf2e49b3b4318e38112f95fae67cb609d988690c6f6ba7bbb6aa5b4298"
+    },
+    {
+      "old_path": "docs/erp-adoption.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "feb2207d27419c67b2209b22f8b026a5b91c0a9cc52a3eb94f2db24c31968a36"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-09-autonomous-workflow-planning.md",
+      "new_path": "docs/handoffs/2026-11-09-autonomous-workflow-planning.md",
+      "disposition": "migrate",
+      "source_sha256": "a2aa1c94b31bbadaf745775d3a8098ccc5e8348e1c8c0f3928687d7a49be3412",
+      "new_sha256": "a2aa1c94b31bbadaf745775d3a8098ccc5e8348e1c8c0f3928687d7a49be3412",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-09-development-docs-discussion.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f86e119d48f7d212302e25288e1f1aa7f442626a01b5079f91306bc047987584"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-09-lavish-controls-consolidation.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "461da1e6383e4cb1be67639507280ab3ced836a6c7a8d0a45ed32f4692950e49"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-10-runner-workflow-independent-review-request.md",
+      "new_path": "docs/handoffs/2026-11-10-runner-workflow-independent-review-request.md",
+      "disposition": "migrate",
+      "source_sha256": "756fcf6ed0cd5516706ca4fb428f208c8a6123d94900ca5cf41ccbe8f7932e56",
+      "new_sha256": "756fcf6ed0cd5516706ca4fb428f208c8a6123d94900ca5cf41ccbe8f7932e56",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-14-agent-runner-continuation.txt",
+      "new_path": "docs/handoffs/2026-11-14-agent-runner-continuation.txt",
+      "disposition": "migrate",
+      "source_sha256": "25b16a03e03e58edd14d54c5d4dae8963be85957d79712697e22519edc5c0494",
+      "new_sha256": "25b16a03e03e58edd14d54c5d4dae8963be85957d79712697e22519edc5c0494",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-18-rnr-d00-continuation-request.txt",
+      "new_path": "docs/handoffs/2026-11-18-rnr-d00-continuation-request.txt",
+      "disposition": "migrate",
+      "source_sha256": "ca59d7c176e602fc853eba95473b804cafc962c81f504d3b6e01f17a813d6274",
+      "new_sha256": "ca59d7c176e602fc853eba95473b804cafc962c81f504d3b6e01f17a813d6274",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/handoffs/2026-11-18-rnr-d00-history-review.json",
+      "new_path": "docs/handoffs/2026-11-18-rnr-d00-history-review.json",
+      "disposition": "migrate",
+      "source_sha256": "c55e62da487535aa3d221fdc90078cd55761010c1917b59a835b0d3d0d91be2b",
+      "new_sha256": "c55e62da487535aa3d221fdc90078cd55761010c1917b59a835b0d3d0d91be2b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/handoffs/codex-plugin-installation-2026-10-27.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "73c9e5eae2d5777cab5f3b701c09d03d923c909a84ec35ff836a78b957f41063"
+    },
+    {
+      "old_path": "docs/installation.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "198e61b1cf39a072e031fe86f81a2b6562747b9c5e983c70cae94825df70ee2d"
+    },
+    {
+      "old_path": "docs/installed-global.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "c13822757ce3045dafdf57565ed1f99260de50d4504fbfedfd8ce93f72d77df2"
+    },
+    {
+      "old_path": "docs/pc-setup.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "71d65fcfcd5ec8e57ef60db4d69bf623697eee37cf38b29409df9ad6fee0dccb"
+    },
+    {
+      "old_path": "docs/preservation-checks.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f35758b45f3030420cc37d4af886f99983d00cebb999d1ab41e015f829ad81bc"
+    },
+    {
+      "old_path": "docs/reviews/2026-11-09-lavish-firstmate-comparison.html",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "cb3f1d45afe170fbefc6270d9eaa9515166fcf4f0f60d8f396b65ff1ffa6e6ea"
+    },
+    {
+      "old_path": "docs/reviews/2026-11-19-agent-runner-e2e.html",
+      "new_path": "docs/reviews/2026-11-19-agent-runner-e2e.html",
+      "disposition": "migrate",
+      "source_sha256": "aa7f026201dbe8ba87220caae866627ea57abac4c0e909ff3f04fa866ecb2271",
+      "new_sha256": "aa7f026201dbe8ba87220caae866627ea57abac4c0e909ff3f04fa866ecb2271",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/skill-migration/.gitattributes",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "258821bb51ab94c869f7ee6388b070a6797532cc225b964b7f3fb94df3b0da38"
+    },
+    {
+      "old_path": "docs/skill-migration/teamwork-windows-wrapper.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f876ee9ced9753aee6749dceebb8afdb9e170eae5de36339bdf42e830e295ca6"
+    },
+    {
+      "old_path": "docs/superpowers/plans/2026-11-08-agent-skills.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f3385ec233be084c3a3bef6a64be4e846c037778345691292483a131406d8cc1"
+    },
+    {
+      "old_path": "docs/superpowers/plans/2026-11-09-lavish-url.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1a09d64d7578780947857b176b091406fbb1cec3e072abf4438faedde56ba93d"
+    },
+    {
+      "old_path": "docs/superpowers/plans/2026-11-09-setup-pc.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a8fc770366f9667b66f60666c0a3d201aa0b6c87cf351be191ffa4c7a7928468"
+    },
+    {
+      "old_path": "docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.html",
+      "new_path": "docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.html",
+      "disposition": "migrate",
+      "source_sha256": "7ae0478d0da33b9ab666c1f40ba9203b62d63767474d13e6c72109b349389d67",
+      "new_sha256": "7ae0478d0da33b9ab666c1f40ba9203b62d63767474d13e6c72109b349389d67",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.md",
+      "new_path": "docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.md",
+      "disposition": "migrate",
+      "source_sha256": "82b9cf7c95af223b2d05113fda84950ed94af5011bf8de330061dba2104ecad2",
+      "new_sha256": "82b9cf7c95af223b2d05113fda84950ed94af5011bf8de330061dba2104ecad2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "redirect retained for existing links; original content imported"
+    },
+    {
+      "old_path": "docs/superpowers/specs/2026-11-09-setup-pc-design.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "67beda3780f79525242fdcb1a5fd3a2c2996b4ae107bd2c0b735a53e473e9f57"
+    },
+    {
+      "old_path": "docs/task-state.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "02acbe0f65677498b3a278c770bf21aa9b960da5b9bccf5fe4437c85004d0431"
+    },
+    {
+      "old_path": "docs/verification.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "0e5a15e41b73c0648e0cb1516d923523d755fab340a5eb882ca73b05f071cdd2"
+    },
+    {
+      "old_path": "global_install.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "d8603a7d5e8d7b72d29766fb9f4508997ed98854afa83487e433675e3cd5c814"
+    },
+    {
+      "old_path": "pc_setup.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "cd415230410e0acb8037aa5e3438c478468553ee5de5e0bc93c75ce940431580"
+    },
+    {
+      "old_path": "setup-pc.ps1",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "c24f2f4ccf3e92979e77240c7575571b3a0e78d4ed4d57850f9d5ed0cf98243d"
+    },
+    {
+      "old_path": "skill_distribution.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "2390d395a039575f2b8ea98c2d23a9b30cc5fed6e03ccaf00de2492886377132"
+    },
+    {
+      "old_path": "skills/README.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "5c893498344af944719e837447b80a45af4dc8ada67951b8936201d9a1820aff"
+    },
+    {
+      "old_path": "skills/architecture-planning/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "cac92e774c7e4b417a3d41fd8ecae76c27c1292aec876b8d8755dcf712abcf12"
+    },
+    {
+      "old_path": "skills/catalog.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "fcbf01bf1e58055efb7156e4946bd850e778a60a48f5e0aab236d1710c3c9fa5"
+    },
+    {
+      "old_path": "skills/codebase-investigation/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "2c73a8f8566375a46852462245766ac9dbbdcd95f13a03ba304c9aeb9ded9bb8"
+    },
+    {
+      "old_path": "skills/delivery-readiness/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "d7b283c4402277d512643c1c1aa0a3f1f08d487d8ac7b4aa4b5605b73345f568"
+    },
+    {
+      "old_path": "skills/delivery-readiness/references/readiness.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "2fe5dae7d45092b5a6fa9f0b863b5d7cd19fe07e88205c6fc6638b9aa4bc8446"
+    },
+    {
+      "old_path": "skills/delivery-readiness/references/recovery.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "643bfdda1448c3e00b15164c1480fc51e9f38c6e3531c9b041f9bf72070e10f0"
+    },
+    {
+      "old_path": "skills/google-drive-upload/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "731ce6744d5a7e0365b422752ff03f5a6800d2b4936134e387ebc18e2004a3b3"
+    },
+    {
+      "old_path": "skills/google-drive-upload/agents/openai.yaml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "6ea94a4231b7bd982c0272878bfa65a73296cc5064ace9fd70d785d5dbc6d993"
+    },
+    {
+      "old_path": "skills/grill-me/LICENSE.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a328f73b817b572c96a8f52a2cbee0202c41fb423577892f5afc7c1276eadb19"
+    },
+    {
+      "old_path": "skills/grill-me/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "055569792718d00f4d3494232f3faa5b21f71bc1c407878df2af8325ea5bdbc0"
+    },
+    {
+      "old_path": "skills/grill-me/agents/openai.yaml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94"
+    },
+    {
+      "old_path": "skills/lavish-url/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "64d0b542ce3525622697f06f966e8bd90d23853b2a43fe0d38683942e883d6ca"
+    },
+    {
+      "old_path": "skills/lavish-url/assets/review.js",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "9dd8292a3bd4dbbc9b20364ea9cbeabe5cdf4fe3bc666f3f45269c2a9f8b37ce"
+    },
+    {
+      "old_path": "skills/lavish-url/scripts/lavish_url.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "c6cf9dec3d842ca3ef9f18c60588f11232f489b4c947ecb5f17df4a6be787342"
+    },
+    {
+      "old_path": "skills/lavish/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "996fe3f4b2fc5ccd01df91972c9d35c1ca869510d7316cfb760119f3c9c789b7"
+    },
+    {
+      "old_path": "skills/open-codex-chat/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "d0c96726fac5463f0c155f2e55ea5616b15dcd001ef55487c7c509608bc715a3"
+    },
+    {
+      "old_path": "skills/open-codex-chat/agents/openai.yaml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "d17c2c22347660c1efba9c6a4a57a0397bc90d4fefa2871a7061ea656bea7a31"
+    },
+    {
+      "old_path": "skills/open-codex-chat/references/app-server.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "bfe32cc87352ac2abc72e8fd68f32a7dfce7466b60255d2b5bfdf2138f0068be"
+    },
+    {
+      "old_path": "skills/open-codex-chat/references/workflow.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "b04ea8e9b1f7fab8df328f2d3a81671b0900cb4b6f96921f76fe3e745cec07f9"
+    },
+    {
+      "old_path": "skills/open-codex-chat/scripts/open_chat.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "e117aac12a64592a180cf04a05d80c93d2e1e12ba3ae6c84d9de4b32390ecf37"
+    },
+    {
+      "old_path": "skills/open-codex-chat/scripts/requirements.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "9ec828179a682425537349fb41440b48a47b1ef006b7b3e1d1542566d3ec6943"
+    },
+    {
+      "old_path": "skills/open-codex-chat/scripts/test_open_chat.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "5caadf8e14081b9a40aa03439209f9b487c9899131bfa2e94ea272c978c09663"
+    },
+    {
+      "old_path": "skills/prd-to-issues/LICENSE.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+    },
+    {
+      "old_path": "skills/prd-to-issues/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "9a71818e13c346a14edbdb128ba0612a08dc458bfdde4f29aee648186e092cc3"
+    },
+    {
+      "old_path": "skills/prd-to-issues/references/ticket-template.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "560c36f5d6d657d803be4435344899ead7df5f7531c7f052f54ca46aef90155b"
+    },
+    {
+      "old_path": "skills/product-preparation/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1484138e9e16ee0a11f09c5581aca6d6f9120ab601e754a06b133f813779261f"
+    },
+    {
+      "old_path": "skills/product-preparation/references/requirements.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "acf23d5afd83c18ee8c05ac56893df1207e5233cb3c92291293f20f2a98eb13e"
+    },
+    {
+      "old_path": "skills/teamwork/SKILL.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1c3d57a0dba62acce37e617d233618204fb144d304a841883c19cf31c6c373f4"
+    },
+    {
+      "old_path": "skills/teamwork/references/agent-identity-and-runtime.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "452fc005e07944bb65fd1797fe44c67ade86fe8eb5ad45fdb3722ac4aec33eff"
+    },
+    {
+      "old_path": "skills/teamwork/references/communication.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "21fed90371305f80df3a0daee66eb5182fc048692a94927c8e447d9bb39fa126"
+    },
+    {
+      "old_path": "skills/teamwork/references/coordination-plan.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "4d2dc5d6ccb96aa52a2da17ba43fa8bd190840cb12c6f7ca03bcf343cad4d99b"
+    },
+    {
+      "old_path": "skills/teamwork/references/workflow.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "a030974427932fe07c4b69ab67905cc042e059dee7d03357b15175a319f2792a"
+    },
+    {
+      "old_path": "skills/teamwork/teamwork-instructions.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "dc4aba8c1d8afb12fd65160ce60c9618c1aacaab665b01e2fcf517a29b1f4fc7"
+    },
+    {
+      "old_path": "standards.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "de1b606338bd10eae772c0625785adf2e2d7f0bd79962f63c99b8dade00da16f"
+    },
+    {
+      "old_path": "templates/AI_AGENT_COORDINATION.txt",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "0b3609b105479f039ad59cfb80757fa86ce7c33700d63dd8d588631b278d4108"
+    },
+    {
+      "old_path": "templates/BACKLOG.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "329575fb4496487bbb88ab9bb2f1b6efe1593713cd11901a0fd2516a85fc1226"
+    },
+    {
+      "old_path": "templates/ci-check.sh",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f80758cdff198aeb504fb513b51a5b79cea5ab94c7e809496844ff946f460d8c"
+    },
+    {
+      "old_path": "templates/github.yml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "6e8da0c64c4a7a52e714b491489cffcb5ec624de0e11168a33bc6d3851ce1060"
+    },
+    {
+      "old_path": "templates/gitlab-ci.yml",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "42e9a1ecc79ec2c0aa26ec94019ea5a334eca9feff789565fd9565505d0b7614"
+    },
+    {
+      "old_path": "templates/handoff.md",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "7bffb1bb572054e6e3e4993c22fcd95fcd0773af37638455bbf51a591ecc7b6a"
+    },
+    {
+      "old_path": "templates/interactive-review.html",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "32434db51c8c95609a0b118a1f5fb5160d960e4d61b297d232feb054d2c61115"
+    },
+    {
+      "old_path": "tests/control_bootstrap_fixtures.py",
+      "new_path": "tests/control_bootstrap_fixtures.py",
+      "disposition": "migrate",
+      "source_sha256": "9ec4e2f7888c0c026a7faa4c2d3631eac648249d066ab3ab5f838be62ab6bcf6",
+      "new_sha256": "9ec4e2f7888c0c026a7faa4c2d3631eac648249d066ab3ab5f838be62ab6bcf6",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/guardian_native_unit.c",
+      "new_path": "tests/guardian_native_unit.c",
+      "disposition": "migrate",
+      "source_sha256": "2dd7dd5fedb562cd9d247f13e7093a6774d9f18f3c87c61a3d18e2051d7db62b",
+      "new_sha256": "2dd7dd5fedb562cd9d247f13e7093a6774d9f18f3c87c61a3d18e2051d7db62b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/interactive-review.test.cjs",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1096b200c6934b4b1f206f011f8124d5787a87d75368aef0623f1a645313ee25"
+    },
+    {
+      "old_path": "tests/lavish-url.test.cjs",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "f11c7c4aac1ef46f9f5c0e6abdc87e8d18eeeafd2ebb029428511f54bb575237"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_admission.c",
+      "new_path": "tests/native/test_runtime_stage0_admission.c",
+      "disposition": "migrate",
+      "source_sha256": "2b5a139a30ad036753dc2506bbfa7496d83d4b687e97acae0a589711724138cd",
+      "new_sha256": "2b5a139a30ad036753dc2506bbfa7496d83d4b687e97acae0a589711724138cd",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_clock.c",
+      "new_path": "tests/native/test_runtime_stage0_clock.c",
+      "disposition": "migrate",
+      "source_sha256": "44a2924c75203b1600ef4cd15e17f3978959a8354f2ab2e0a842a20bbe18e94b",
+      "new_sha256": "44a2924c75203b1600ef4cd15e17f3978959a8354f2ab2e0a842a20bbe18e94b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_final_roles.c",
+      "new_path": "tests/native/test_runtime_stage0_final_roles.c",
+      "disposition": "migrate",
+      "source_sha256": "55a2dfac1f3a47c8c2d1cb6f6d9184cda39088f1abd6f7da4dfd4bd954d963ee",
+      "new_sha256": "55a2dfac1f3a47c8c2d1cb6f6d9184cda39088f1abd6f7da4dfd4bd954d963ee",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_fixed_bind_clock.c",
+      "new_path": "tests/native/test_runtime_stage0_fixed_bind_clock.c",
+      "disposition": "migrate",
+      "source_sha256": "40a25fab8ebf3d7e38bae512f66d9f8270fa64a00e4935364e04bb5886e6e276",
+      "new_sha256": "40a25fab8ebf3d7e38bae512f66d9f8270fa64a00e4935364e04bb5886e6e276",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_fixed_binds.c",
+      "new_path": "tests/native/test_runtime_stage0_fixed_binds.c",
+      "disposition": "migrate",
+      "source_sha256": "27e362a0d95c5f4d1e7c3af8c811f405c045b0455530571aa1202fc43e4d0ca0",
+      "new_sha256": "27e362a0d95c5f4d1e7c3af8c811f405c045b0455530571aa1202fc43e4d0ca0",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_fork.c",
+      "new_path": "tests/native/test_runtime_stage0_fork.c",
+      "disposition": "migrate",
+      "source_sha256": "0810121a7249fc6cc423e08a44a4a75441e0fbdb4313e7bffe6bc30cc3b1a8f7",
+      "new_sha256": "0810121a7249fc6cc423e08a44a4a75441e0fbdb4313e7bffe6bc30cc3b1a8f7",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_fork_abort.c",
+      "new_path": "tests/native/test_runtime_stage0_fork_abort.c",
+      "disposition": "migrate",
+      "source_sha256": "9fa5e01635ca6123cf43ebdd8d66e069113947af496f46bfda7257fbc858ee3a",
+      "new_sha256": "9fa5e01635ca6123cf43ebdd8d66e069113947af496f46bfda7257fbc858ee3a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_fork_parent_loss.c",
+      "new_path": "tests/native/test_runtime_stage0_fork_parent_loss.c",
+      "disposition": "migrate",
+      "source_sha256": "e353af6378295a9dfd9c6bec01916863f740427c1ad245c41ecd1ef3f86552bf",
+      "new_sha256": "e353af6378295a9dfd9c6bec01916863f740427c1ad245c41ecd1ef3f86552bf",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_host_view.c",
+      "new_path": "tests/native/test_runtime_stage0_host_view.c",
+      "disposition": "migrate",
+      "source_sha256": "008d625ff38e43974bf1a6de9d8ed6ee80343f4e47503d6ad42b899e11f0b1b6",
+      "new_sha256": "008d625ff38e43974bf1a6de9d8ed6ee80343f4e47503d6ad42b899e11f0b1b6",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_launch.c",
+      "new_path": "tests/native/test_runtime_stage0_launch.c",
+      "disposition": "migrate",
+      "source_sha256": "7f5accfe762a5a39abf006a02878cdb76cdd6b24fd29ee37ddfb452ccb472e76",
+      "new_sha256": "7f5accfe762a5a39abf006a02878cdb76cdd6b24fd29ee37ddfb452ccb472e76",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_media.c",
+      "new_path": "tests/native/test_runtime_stage0_media.c",
+      "disposition": "migrate",
+      "source_sha256": "3241fc6aedcdbd05fcacd6514064adfd5ac6b341045367f40eca7e9672a696af",
+      "new_sha256": "3241fc6aedcdbd05fcacd6514064adfd5ac6b341045367f40eca7e9672a696af",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_media_child.c",
+      "new_path": "tests/native/test_runtime_stage0_media_child.c",
+      "disposition": "migrate",
+      "source_sha256": "d30a2f91d8b4827c644d7eb552c93c8a316460a4bee40355af8f39f020c7aba0",
+      "new_sha256": "d30a2f91d8b4827c644d7eb552c93c8a316460a4bee40355af8f39f020c7aba0",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_media_flow.c",
+      "new_path": "tests/native/test_runtime_stage0_media_flow.c",
+      "disposition": "migrate",
+      "source_sha256": "a6bc1fc0b131089117c5a47ebad3816917451acd2dad19e8b084aff49238e30e",
+      "new_sha256": "a6bc1fc0b131089117c5a47ebad3816917451acd2dad19e8b084aff49238e30e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_preparer.c",
+      "new_path": "tests/native/test_runtime_stage0_preparer.c",
+      "disposition": "migrate",
+      "source_sha256": "387c7ff4c8c5ea4ee83743a60c0b3067a21ce7b495675816a1a54aee069d7685",
+      "new_sha256": "387c7ff4c8c5ea4ee83743a60c0b3067a21ce7b495675816a1a54aee069d7685",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_qualification_main.c",
+      "new_path": "tests/native/test_runtime_stage0_qualification_main.c",
+      "disposition": "migrate",
+      "source_sha256": "10a4b01f80c511b31e08503b8ca67ed86f306d5cdbe0367371df526a4c52cd8a",
+      "new_sha256": "10a4b01f80c511b31e08503b8ca67ed86f306d5cdbe0367371df526a4c52cd8a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_records.c",
+      "new_path": "tests/native/test_runtime_stage0_records.c",
+      "disposition": "migrate",
+      "source_sha256": "5f3bfe91c588dbda6ada1c956c576ad9fa340e647189425ab228f73af68c739e",
+      "new_sha256": "5f3bfe91c588dbda6ada1c956c576ad9fa340e647189425ab228f73af68c739e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/native/test_runtime_stage0_unused_final.h",
+      "new_path": "tests/native/test_runtime_stage0_unused_final.h",
+      "disposition": "migrate",
+      "source_sha256": "a6918410b7228bb9aba14a2c5e5875d4076f7dae83bce58a96d590aac6edcf47",
+      "new_sha256": "a6918410b7228bb9aba14a2c5e5875d4076f7dae83bce58a96d590aac6edcf47",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_acceptance.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "186e58fef470ffa5accec5f66e0541a0e9c0df58cea558c5e3c400ccae006f2c"
+    },
+    {
+      "old_path": "tests/test_automation_accounting.py",
+      "new_path": "tests/test_automation_accounting.py",
+      "disposition": "migrate",
+      "source_sha256": "5b6bd8120d9ba00764e07c3caa02b27fcec3ba982c7246635046065ee93c187f",
+      "new_sha256": "5b6bd8120d9ba00764e07c3caa02b27fcec3ba982c7246635046065ee93c187f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_bootstrap_context.py",
+      "new_path": "tests/test_automation_bootstrap_context.py",
+      "disposition": "migrate",
+      "source_sha256": "a9a543b7d32835ecb46de545c0081bbed59feb9be68399a88915f09e2b09140d",
+      "new_sha256": "a9a543b7d32835ecb46de545c0081bbed59feb9be68399a88915f09e2b09140d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_callbacks.py",
+      "new_path": "tests/test_automation_callbacks.py",
+      "disposition": "migrate",
+      "source_sha256": "98dd2dd15a359c3029a1aa8e242b1c3b94f273490d39b4e3f8f3393fb30b7c82",
+      "new_sha256": "98dd2dd15a359c3029a1aa8e242b1c3b94f273490d39b4e3f8f3393fb30b7c82",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_cli.py",
+      "new_path": "tests/test_automation_cli.py",
+      "disposition": "migrate",
+      "source_sha256": "44650193172c7b0d80739214c5351f7d98a6d3fa3f75e502793112a8ef14eee6",
+      "new_sha256": "2cb89356eabcc6327ba5a629aa3f178291f9cddad430c5eecef758598eb1a2c2",
+      "transformation": "CLI/config path and corresponding tests/docs",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_config.py",
+      "new_path": "tests/test_automation_config.py",
+      "disposition": "migrate",
+      "source_sha256": "31f0518ecb8154ef6a393c7c747e53f6813203b1e86b75fcceba28e3ed62fc70",
+      "new_sha256": "abd8471caf3e8d74df2bfd031c2f260f09f87149e30fbcb2831f4a10ba862858",
+      "transformation": "CLI/config path and corresponding tests/docs",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_contained_observation.py",
+      "new_path": "tests/test_automation_contained_observation.py",
+      "disposition": "migrate",
+      "source_sha256": "e5507578056c705d46bb9cce064e3399360a9f59955a108019ab92d3815dd68a",
+      "new_sha256": "e5507578056c705d46bb9cce064e3399360a9f59955a108019ab92d3815dd68a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_contained_policy.py",
+      "new_path": "tests/test_automation_contained_policy.py",
+      "disposition": "migrate",
+      "source_sha256": "d4af487cb763075b448207df75a9945574b2ecc42c5e9ba920dab761302c1fd2",
+      "new_sha256": "d4af487cb763075b448207df75a9945574b2ecc42c5e9ba920dab761302c1fd2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_contracts.py",
+      "new_path": "tests/test_automation_contracts.py",
+      "disposition": "migrate",
+      "source_sha256": "90fb04c86d9315a288669da228ac9649c3d76d675f3bb6c32974923ac2c353b7",
+      "new_sha256": "90fb04c86d9315a288669da228ac9649c3d76d675f3bb6c32974923ac2c353b7",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control.py",
+      "new_path": "tests/test_automation_control.py",
+      "disposition": "migrate",
+      "source_sha256": "8b87af265d0e2c76019f752a38c1ccff8e645cbdf9f7fe3155d9ffc2f3342b00",
+      "new_sha256": "8b87af265d0e2c76019f752a38c1ccff8e645cbdf9f7fe3155d9ffc2f3342b00",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_bootstrap.py",
+      "new_path": "tests/test_automation_control_bootstrap.py",
+      "disposition": "migrate",
+      "source_sha256": "526235d18657c4909ac5c57b6e9d3685e87689100ec3e1578a926c61a80a7874",
+      "new_sha256": "526235d18657c4909ac5c57b6e9d3685e87689100ec3e1578a926c61a80a7874",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_bootstrap_integration.py",
+      "new_path": "tests/test_automation_control_bootstrap_integration.py",
+      "disposition": "migrate",
+      "source_sha256": "45bce16c967a0fbb45bc0213265f36d70e951764f0a1a9f0ad5c766659393c3c",
+      "new_sha256": "45bce16c967a0fbb45bc0213265f36d70e951764f0a1a9f0ad5c766659393c3c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_bootstrap_store.py",
+      "new_path": "tests/test_automation_control_bootstrap_store.py",
+      "disposition": "migrate",
+      "source_sha256": "84321450f6703a4c078d60af9edbfbed83538714a7f149316b7f55062430d891",
+      "new_sha256": "84321450f6703a4c078d60af9edbfbed83538714a7f149316b7f55062430d891",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_runtime_channel.py",
+      "new_path": "tests/test_automation_control_runtime_channel.py",
+      "disposition": "migrate",
+      "source_sha256": "f811135fedb4eb1716153ad6362ff7923dc648d90127d46154f75aeeb0d05d0e",
+      "new_sha256": "f811135fedb4eb1716153ad6362ff7923dc648d90127d46154f75aeeb0d05d0e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_startup.py",
+      "new_path": "tests/test_automation_control_startup.py",
+      "disposition": "migrate",
+      "source_sha256": "fa30ff47a51ccff3f7da5cc1dba19f9ed2e18eb9138223092bc80ede3bc94556",
+      "new_sha256": "fa30ff47a51ccff3f7da5cc1dba19f9ed2e18eb9138223092bc80ede3bc94556",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_store_turns.py",
+      "new_path": "tests/test_automation_control_store_turns.py",
+      "disposition": "migrate",
+      "source_sha256": "561d648b5245e93b3ff6a452d217aec55762912faa9cd9634c86d995d1778027",
+      "new_sha256": "561d648b5245e93b3ff6a452d217aec55762912faa9cd9634c86d995d1778027",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_supervisor.py",
+      "new_path": "tests/test_automation_control_supervisor.py",
+      "disposition": "migrate",
+      "source_sha256": "12eeafd22eed6a0419753007ab67ad2f9c631a929dc5c4ef38e52d92e1ff202d",
+      "new_sha256": "12eeafd22eed6a0419753007ab67ad2f9c631a929dc5c4ef38e52d92e1ff202d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_transport.py",
+      "new_path": "tests/test_automation_control_transport.py",
+      "disposition": "migrate",
+      "source_sha256": "b777556f7752447532542c5f8e616ea2f842884aeed0e7cbf5a7de1dfe97cf51",
+      "new_sha256": "b777556f7752447532542c5f8e616ea2f842884aeed0e7cbf5a7de1dfe97cf51",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_control_workspace.py",
+      "new_path": "tests/test_automation_control_workspace.py",
+      "disposition": "migrate",
+      "source_sha256": "21d57e6ded5a22b261dea6179b0bd9143afbd5ce1307dd029775c78bb55a4b2e",
+      "new_sha256": "21d57e6ded5a22b261dea6179b0bd9143afbd5ce1307dd029775c78bb55a4b2e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_authenticated.py",
+      "new_path": "tests/test_automation_docker_authenticated.py",
+      "disposition": "migrate",
+      "source_sha256": "bbbed7e41951bb269527977d1239000182aa0d45f634b958937e6c589421b17f",
+      "new_sha256": "bbbed7e41951bb269527977d1239000182aa0d45f634b958937e6c589421b17f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_credentials.py",
+      "new_path": "tests/test_automation_docker_credentials.py",
+      "disposition": "migrate",
+      "source_sha256": "50b0e64fe4e72edbcba1b7291f5b6808ee5fa926de1f1a3d65ccb0ebc29daa00",
+      "new_sha256": "50b0e64fe4e72edbcba1b7291f5b6808ee5fa926de1f1a3d65ccb0ebc29daa00",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_discovery.py",
+      "new_path": "tests/test_automation_docker_discovery.py",
+      "disposition": "migrate",
+      "source_sha256": "bc690d493f2151e10a0ecf9654701495c7ca430b248b93c9d41f57964fa6f97f",
+      "new_sha256": "bc690d493f2151e10a0ecf9654701495c7ca430b248b93c9d41f57964fa6f97f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_http.py",
+      "new_path": "tests/test_automation_docker_http.py",
+      "disposition": "migrate",
+      "source_sha256": "712c88a81e303e5e64407ce24f6a8011160a045ad222007c8970089756d96812",
+      "new_sha256": "712c88a81e303e5e64407ce24f6a8011160a045ad222007c8970089756d96812",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_io.py",
+      "new_path": "tests/test_automation_docker_io.py",
+      "disposition": "migrate",
+      "source_sha256": "4f076bc0f466f6195ff76aaf54cbcbaa7a91e7c41dc55246cf8ab18b6ab90a38",
+      "new_sha256": "4f076bc0f466f6195ff76aaf54cbcbaa7a91e7c41dc55246cf8ab18b6ab90a38",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_docker_stream.py",
+      "new_path": "tests/test_automation_docker_stream.py",
+      "disposition": "migrate",
+      "source_sha256": "e41c6a5af201e10de723c04102936e24bf44e5a0afa666a8853cd184022c55f2",
+      "new_sha256": "e41c6a5af201e10de723c04102936e24bf44e5a0afa666a8853cd184022c55f2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_entry_descriptors.py",
+      "new_path": "tests/test_automation_entry_descriptors.py",
+      "disposition": "migrate",
+      "source_sha256": "da4984cddec1b900839e0f855a4883048b2464747401f5a7404daeda841e1fb2",
+      "new_sha256": "da4984cddec1b900839e0f855a4883048b2464747401f5a7404daeda841e1fb2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_github.py",
+      "new_path": "tests/test_automation_github.py",
+      "disposition": "migrate",
+      "source_sha256": "6da00c73bc5f2639b30be61cc8d4c6fadc4767b6cb9eb8698d6a6b67053f3567",
+      "new_sha256": "6da00c73bc5f2639b30be61cc8d4c6fadc4767b6cb9eb8698d6a6b67053f3567",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_github_transport.py",
+      "new_path": "tests/test_automation_github_transport.py",
+      "disposition": "migrate",
+      "source_sha256": "56fb9758e5d09f89984ccad4baa3579dc5b92edf649bb957b3faafaad311836d",
+      "new_sha256": "56fb9758e5d09f89984ccad4baa3579dc5b92edf649bb957b3faafaad311836d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guarded_bootstrap_views.py",
+      "new_path": "tests/test_automation_guarded_bootstrap_views.py",
+      "disposition": "migrate",
+      "source_sha256": "f9bcd8a4f77e2f54946b17bf0f73804e1d870ef7441a5277954407084c198805",
+      "new_sha256": "f9bcd8a4f77e2f54946b17bf0f73804e1d870ef7441a5277954407084c198805",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guarded_create.py",
+      "new_path": "tests/test_automation_guarded_create.py",
+      "disposition": "migrate",
+      "source_sha256": "aee571f0b3fccca62c8943cb48f2d2fdfbc112b8d898c3932aac743162001d82",
+      "new_sha256": "aee571f0b3fccca62c8943cb48f2d2fdfbc112b8d898c3932aac743162001d82",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guarded_inspection.py",
+      "new_path": "tests/test_automation_guarded_inspection.py",
+      "disposition": "migrate",
+      "source_sha256": "7223465ad00dd6ba2dff781e1fbc1db5c9acd3f1c10a1407a1769a89ecb0e117",
+      "new_sha256": "7223465ad00dd6ba2dff781e1fbc1db5c9acd3f1c10a1407a1769a89ecb0e117",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guarded_start.py",
+      "new_path": "tests/test_automation_guarded_start.py",
+      "disposition": "migrate",
+      "source_sha256": "141faba92bba78801f09a446647fff7c35475fb27364af096914e45f3d85bd70",
+      "new_sha256": "141faba92bba78801f09a446647fff7c35475fb27364af096914e45f3d85bd70",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guarded_store.py",
+      "new_path": "tests/test_automation_guarded_store.py",
+      "disposition": "migrate",
+      "source_sha256": "0a368fae7b0f644dbbf377d39f3facd6b0ccd5fc319656e34808e0b0acbdeb8f",
+      "new_sha256": "0a368fae7b0f644dbbf377d39f3facd6b0ccd5fc319656e34808e0b0acbdeb8f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_guardian_protocol.py",
+      "new_path": "tests/test_automation_guardian_protocol.py",
+      "disposition": "migrate",
+      "source_sha256": "345b64b9b3371d6f6132417cde851d89f3a3efa92ea240ddc2b903a8ab1f7325",
+      "new_sha256": "345b64b9b3371d6f6132417cde851d89f3a3efa92ea240ddc2b903a8ab1f7325",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_hold_journal.py",
+      "new_path": "tests/test_automation_hold_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "9f86298f73d499ed1193ec1777c034033233601ce3bffd58c729c59b16bf5473",
+      "new_sha256": "9f86298f73d499ed1193ec1777c034033233601ce3bffd58c729c59b16bf5473",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_launch_data.py",
+      "new_path": "tests/test_automation_launch_data.py",
+      "disposition": "migrate",
+      "source_sha256": "0822c2730c6159dcc114c258f8ca24e3e2de7497c9055320b0e2b92028a931ee",
+      "new_sha256": "0822c2730c6159dcc114c258f8ca24e3e2de7497c9055320b0e2b92028a931ee",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_lifecycle.py",
+      "new_path": "tests/test_automation_lifecycle.py",
+      "disposition": "migrate",
+      "source_sha256": "9a2eff53d28843cfbc846c54be54d930dad4f72ecc9d67f03eee35c8640d183e",
+      "new_sha256": "9a2eff53d28843cfbc846c54be54d930dad4f72ecc9d67f03eee35c8640d183e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_cli.py",
+      "new_path": "tests/test_automation_live_cli.py",
+      "disposition": "migrate",
+      "source_sha256": "3fd31ea0c806d1e951ebf5ca5a3eea0125de42ca66f0abd459cf6eeeb721c587",
+      "new_sha256": "3fd31ea0c806d1e951ebf5ca5a3eea0125de42ca66f0abd459cf6eeeb721c587",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_contracts.py",
+      "new_path": "tests/test_automation_live_contracts.py",
+      "disposition": "migrate",
+      "source_sha256": "fa4dbf1c05ae5faa5d8b08029df753df989f70e143f305ea04458197b51d6701",
+      "new_sha256": "fa4dbf1c05ae5faa5d8b08029df753df989f70e143f305ea04458197b51d6701",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_io.py",
+      "new_path": "tests/test_automation_live_io.py",
+      "disposition": "migrate",
+      "source_sha256": "cc201a175349a0b73df9d3d67aaa6f53b108ad970fa23bf9258383b346389e03",
+      "new_sha256": "cc201a175349a0b73df9d3d67aaa6f53b108ad970fa23bf9258383b346389e03",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_posix.py",
+      "new_path": "tests/test_automation_live_posix.py",
+      "disposition": "migrate",
+      "source_sha256": "455d4b86e960977842b6fcfbd61d9e6f1b0030b78fc4416e2ee39c70ebd4db99",
+      "new_sha256": "455d4b86e960977842b6fcfbd61d9e6f1b0030b78fc4416e2ee39c70ebd4db99",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_posix_qualification.py",
+      "new_path": "tests/test_automation_live_posix_qualification.py",
+      "disposition": "migrate",
+      "source_sha256": "2f674c8dfdf8dfcdeeb5086861f07c16adba7fc5ff3542e2a176ace7ae826096",
+      "new_sha256": "2f674c8dfdf8dfcdeeb5086861f07c16adba7fc5ff3542e2a176ace7ae826096",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_preview.py",
+      "new_path": "tests/test_automation_live_preview.py",
+      "disposition": "migrate",
+      "source_sha256": "86afc69d9b80ce77eac159177e40213bd51e238ac89c63b55341b99260444c3f",
+      "new_sha256": "86afc69d9b80ce77eac159177e40213bd51e238ac89c63b55341b99260444c3f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_live_worker_channel.py",
+      "new_path": "tests/test_automation_live_worker_channel.py",
+      "disposition": "migrate",
+      "source_sha256": "1646e8db99bf2fb787b9ae9009a7a0044c1288aa0df782e0e36b8c13054e20c9",
+      "new_sha256": "1646e8db99bf2fb787b9ae9009a7a0044c1288aa0df782e0e36b8c13054e20c9",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_managed_config.py",
+      "new_path": "tests/test_automation_managed_config.py",
+      "disposition": "migrate",
+      "source_sha256": "35cea67a7eab0119809c33717f72a9a1da0386c373e43f3f716629fd8af89fcc",
+      "new_sha256": "35cea67a7eab0119809c33717f72a9a1da0386c373e43f3f716629fd8af89fcc",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_managed_observation.py",
+      "new_path": "tests/test_automation_managed_observation.py",
+      "disposition": "migrate",
+      "source_sha256": "69e48f83d21627fd03cdb312c8971faf3a8b1dd0ce151767dcfb16324f0c13e3",
+      "new_sha256": "69e48f83d21627fd03cdb312c8971faf3a8b1dd0ce151767dcfb16324f0c13e3",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_native_fork.py",
+      "new_path": "tests/test_automation_native_fork.py",
+      "disposition": "migrate",
+      "source_sha256": "1c382da701297f177b98ee7e3987f48c0e0e08a4301fd55e6208dc842ab2432c",
+      "new_sha256": "1c382da701297f177b98ee7e3987f48c0e0e08a4301fd55e6208dc842ab2432c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_native_handoff.py",
+      "new_path": "tests/test_automation_native_handoff.py",
+      "disposition": "migrate",
+      "source_sha256": "caaec99d983aaa1d6c9edcd870ec1492ec87ed0ef34d21c16fdcd9ef5369f4db",
+      "new_sha256": "caaec99d983aaa1d6c9edcd870ec1492ec87ed0ef34d21c16fdcd9ef5369f4db",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_operation_journal.py",
+      "new_path": "tests/test_automation_operation_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "7f442425bf6f1bd3cc10ca7ba588fa4a11fd2f9fe12f6a42a64b755e11ba366a",
+      "new_sha256": "7f442425bf6f1bd3cc10ca7ba588fa4a11fd2f9fe12f6a42a64b755e11ba366a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_operational_preparation.py",
+      "new_path": "tests/test_automation_operational_preparation.py",
+      "disposition": "migrate",
+      "source_sha256": "44ce0cf81dbb04d76cd8de71428b64433a04855a95a45133655b582ade704450",
+      "new_sha256": "44ce0cf81dbb04d76cd8de71428b64433a04855a95a45133655b582ade704450",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_protected_client.py",
+      "new_path": "tests/test_automation_protected_client.py",
+      "disposition": "migrate",
+      "source_sha256": "ea9552bcdf963f0015f2845f7a77cfd6d588bb0c5a21a1cf03faf582b3667207",
+      "new_sha256": "ea9552bcdf963f0015f2845f7a77cfd6d588bb0c5a21a1cf03faf582b3667207",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_receiver_guard.py",
+      "new_path": "tests/test_automation_receiver_guard.py",
+      "disposition": "migrate",
+      "source_sha256": "d8cffcc0c02e2a95d0af89c62f040113bc929daf1989dd330750ceba7194ddd2",
+      "new_sha256": "d8cffcc0c02e2a95d0af89c62f040113bc929daf1989dd330750ceba7194ddd2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_recorded_create.py",
+      "new_path": "tests/test_automation_recorded_create.py",
+      "disposition": "migrate",
+      "source_sha256": "eb3f1f4e7b40ea78a8190dabfb9bcb2e7ab05e350525cd9e58e8fd7ef411344e",
+      "new_sha256": "eb3f1f4e7b40ea78a8190dabfb9bcb2e7ab05e350525cd9e58e8fd7ef411344e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_recorded_start.py",
+      "new_path": "tests/test_automation_recorded_start.py",
+      "disposition": "migrate",
+      "source_sha256": "edd77faa7d52618a66e02ea3fa76a864bee6397dda09653b6aecde0a829a7c15",
+      "new_sha256": "edd77faa7d52618a66e02ea3fa76a864bee6397dda09653b6aecde0a829a7c15",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_release_identity.py",
+      "new_path": "tests/test_automation_release_identity.py",
+      "disposition": "migrate",
+      "source_sha256": "f5a636c975980273b03138b8285ef19ea130c2c6bd60cf9e0be24365b3e44bf5",
+      "new_sha256": "f5a636c975980273b03138b8285ef19ea130c2c6bd60cf9e0be24365b3e44bf5",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_retained_inspection.py",
+      "new_path": "tests/test_automation_retained_inspection.py",
+      "disposition": "migrate",
+      "source_sha256": "7cbe298933d74e3f82c059618e6bb78d38ff08f33852ff596a0dd24260524fcc",
+      "new_sha256": "7cbe298933d74e3f82c059618e6bb78d38ff08f33852ff596a0dd24260524fcc",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_running_inspection.py",
+      "new_path": "tests/test_automation_running_inspection.py",
+      "disposition": "migrate",
+      "source_sha256": "ae9e01384fffd4741e4c92171dfacec478417263a4ad24386a9950196289c1c3",
+      "new_sha256": "ae9e01384fffd4741e4c92171dfacec478417263a4ad24386a9950196289c1c3",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_assets.py",
+      "new_path": "tests/test_automation_runtime_assets.py",
+      "disposition": "migrate",
+      "source_sha256": "9e7347efbf37989c1e6169e5af0fafcff248b3442f90d89ee93ef26071ce3a71",
+      "new_sha256": "9e7347efbf37989c1e6169e5af0fafcff248b3442f90d89ee93ef26071ce3a71",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_bootstrap.py",
+      "new_path": "tests/test_automation_runtime_bootstrap.py",
+      "disposition": "migrate",
+      "source_sha256": "f7e143f0be7364ad57d8b6d600c8a186721a1c766beab5e30db8108d1aec280b",
+      "new_sha256": "f7e143f0be7364ad57d8b6d600c8a186721a1c766beab5e30db8108d1aec280b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_claim.py",
+      "new_path": "tests/test_automation_runtime_claim.py",
+      "disposition": "migrate",
+      "source_sha256": "db99c21c689096e1548336c8038ee6028e74ac29c4d9e4fbeacb831f051fa0b4",
+      "new_sha256": "db99c21c689096e1548336c8038ee6028e74ac29c4d9e4fbeacb831f051fa0b4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_clock.py",
+      "new_path": "tests/test_automation_runtime_clock.py",
+      "disposition": "migrate",
+      "source_sha256": "512fdee430ba50c52af963747140ec56ccfce58cfe8bd06df3b9c922f6d4b8b8",
+      "new_sha256": "512fdee430ba50c52af963747140ec56ccfce58cfe8bd06df3b9c922f6d4b8b8",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_configuration.py",
+      "new_path": "tests/test_automation_runtime_configuration.py",
+      "disposition": "migrate",
+      "source_sha256": "13a019126f00e3c2e1efcbe86f5c437a87c0fad0489d1fdc3a350d1c5b7acb02",
+      "new_sha256": "13a019126f00e3c2e1efcbe86f5c437a87c0fad0489d1fdc3a350d1c5b7acb02",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_consumer.py",
+      "new_path": "tests/test_automation_runtime_consumer.py",
+      "disposition": "migrate",
+      "source_sha256": "6af222acfa432b953982782206c576764456026338249e216c23cdc46dd1e342",
+      "new_sha256": "6af222acfa432b953982782206c576764456026338249e216c23cdc46dd1e342",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_containment.py",
+      "new_path": "tests/test_automation_runtime_containment.py",
+      "disposition": "migrate",
+      "source_sha256": "3895c5cd28e4aaf2717f5b51a07667c6356c65ce98d1160272c9eac486f02002",
+      "new_sha256": "3895c5cd28e4aaf2717f5b51a07667c6356c65ce98d1160272c9eac486f02002",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_dispatch.py",
+      "new_path": "tests/test_automation_runtime_dispatch.py",
+      "disposition": "migrate",
+      "source_sha256": "745342db3873e073357466f7f522111edb77d8360f465da2718937236a83a27d",
+      "new_sha256": "745342db3873e073357466f7f522111edb77d8360f465da2718937236a83a27d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_dispatch_client.py",
+      "new_path": "tests/test_automation_runtime_dispatch_client.py",
+      "disposition": "migrate",
+      "source_sha256": "15dfd60cbb247411619cf6f237c434b968df586bee3db9c48274748ec3013cb4",
+      "new_sha256": "15dfd60cbb247411619cf6f237c434b968df586bee3db9c48274748ec3013cb4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_docker_recipe.py",
+      "new_path": "tests/test_automation_runtime_docker_recipe.py",
+      "disposition": "migrate",
+      "source_sha256": "8e240e77fb9c55f1962bf5c2483e1cc72cc3001111ff387565448841bd7d4278",
+      "new_sha256": "8e240e77fb9c55f1962bf5c2483e1cc72cc3001111ff387565448841bd7d4278",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_effect.py",
+      "new_path": "tests/test_automation_runtime_effect.py",
+      "disposition": "migrate",
+      "source_sha256": "63612b988beb7fbc7310a34f277c3164cf9976cce43c1af351074c47fdb12e87",
+      "new_sha256": "63612b988beb7fbc7310a34f277c3164cf9976cce43c1af351074c47fdb12e87",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_elf.py",
+      "new_path": "tests/test_automation_runtime_elf.py",
+      "disposition": "migrate",
+      "source_sha256": "073062e1ec9a74dde252b7d386d4cb2fa1c7756ff251ca4d540a0d51b8aa763d",
+      "new_sha256": "073062e1ec9a74dde252b7d386d4cb2fa1c7756ff251ca4d540a0d51b8aa763d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_execution_root.py",
+      "new_path": "tests/test_automation_runtime_execution_root.py",
+      "disposition": "migrate",
+      "source_sha256": "7857cc4dd2f537990dce79aae20c074895f4ff852df413ed465be2db9cf85f14",
+      "new_sha256": "7857cc4dd2f537990dce79aae20c074895f4ff852df413ed465be2db9cf85f14",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_frozen.py",
+      "new_path": "tests/test_automation_runtime_frozen.py",
+      "disposition": "migrate",
+      "source_sha256": "a3ee8722c98777e3410f4277b1e484a5ee61e33a120f0cea618f8fe0f8d89fab",
+      "new_sha256": "a3ee8722c98777e3410f4277b1e484a5ee61e33a120f0cea618f8fe0f8d89fab",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_frozen_delivery.py",
+      "new_path": "tests/test_automation_runtime_frozen_delivery.py",
+      "disposition": "migrate",
+      "source_sha256": "c782664e3eb9192b9d7d55169a6f027d271796d2cf3fd1ed91acba69091c7eb4",
+      "new_sha256": "c782664e3eb9192b9d7d55169a6f027d271796d2cf3fd1ed91acba69091c7eb4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_frozen_fd.py",
+      "new_path": "tests/test_automation_runtime_frozen_fd.py",
+      "disposition": "migrate",
+      "source_sha256": "b63b478c586bf1909818dc853eb8a1c8dacb959209b14f680deb45d59f9a6167",
+      "new_sha256": "b63b478c586bf1909818dc853eb8a1c8dacb959209b14f680deb45d59f9a6167",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_frozen_integration.py",
+      "new_path": "tests/test_automation_runtime_frozen_integration.py",
+      "disposition": "migrate",
+      "source_sha256": "a7843973540335f0cfd73e44d07632d019100bb6572c4c22f7fffd01ef2f0d1d",
+      "new_sha256": "a7843973540335f0cfd73e44d07632d019100bb6572c4c22f7fffd01ef2f0d1d",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_frozen_model.py",
+      "new_path": "tests/test_automation_runtime_frozen_model.py",
+      "disposition": "migrate",
+      "source_sha256": "79a09a28e4477df7c0530f98d06f77a4fea739764378b4bdeb0a1333ef460f06",
+      "new_sha256": "79a09a28e4477df7c0530f98d06f77a4fea739764378b4bdeb0a1333ef460f06",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_inotify_fd.py",
+      "new_path": "tests/test_automation_runtime_inotify_fd.py",
+      "disposition": "migrate",
+      "source_sha256": "f0b79e80314b001bfd884b82b3e90ca14f8f0e002ad2b6091886fc6af29c837c",
+      "new_sha256": "f0b79e80314b001bfd884b82b3e90ca14f8f0e002ad2b6091886fc6af29c837c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_kcmp.py",
+      "new_path": "tests/test_automation_runtime_kcmp.py",
+      "disposition": "migrate",
+      "source_sha256": "ff67f2a4a613b1def23889399cc04dbeabea48e64e08efe292be1cba57f24f7f",
+      "new_sha256": "ff67f2a4a613b1def23889399cc04dbeabea48e64e08efe292be1cba57f24f7f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_lifetime.py",
+      "new_path": "tests/test_automation_runtime_lifetime.py",
+      "disposition": "migrate",
+      "source_sha256": "bafc1a21c58bacca7da46e07e8e0f10d9743100fae38a1f5fecc6fbc9321a1aa",
+      "new_sha256": "bafc1a21c58bacca7da46e07e8e0f10d9743100fae38a1f5fecc6fbc9321a1aa",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_linux.py",
+      "new_path": "tests/test_automation_runtime_linux.py",
+      "disposition": "migrate",
+      "source_sha256": "bb27c4a79547f64b87ae2dc74b04548b0347b6fabdd24d43cefd6771b485913c",
+      "new_sha256": "bb27c4a79547f64b87ae2dc74b04548b0347b6fabdd24d43cefd6771b485913c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_manager.py",
+      "new_path": "tests/test_automation_runtime_manager.py",
+      "disposition": "migrate",
+      "source_sha256": "a4d1def8cb7cadf6171ea59dfcb8538139081e961208eae62c85bf7d836a809a",
+      "new_sha256": "a4d1def8cb7cadf6171ea59dfcb8538139081e961208eae62c85bf7d836a809a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_observer.py",
+      "new_path": "tests/test_automation_runtime_observer.py",
+      "disposition": "migrate",
+      "source_sha256": "7d9b34bdbb81f4fa11a1cd75df90cf792ab8c190f0e6084ccafe2256152f9d5a",
+      "new_sha256": "7d9b34bdbb81f4fa11a1cd75df90cf792ab8c190f0e6084ccafe2256152f9d5a",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_original.py",
+      "new_path": "tests/test_automation_runtime_original.py",
+      "disposition": "migrate",
+      "source_sha256": "f34ebebc2964582bba795665a7441d08b56f57bacf344fea2f16262018590cc4",
+      "new_sha256": "f34ebebc2964582bba795665a7441d08b56f57bacf344fea2f16262018590cc4",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_payload.py",
+      "new_path": "tests/test_automation_runtime_payload.py",
+      "disposition": "migrate",
+      "source_sha256": "b1e54b78f4087319e9c3511e2e4453b81ccad42fa40530c0e0f69d9984f10329",
+      "new_sha256": "b1e54b78f4087319e9c3511e2e4453b81ccad42fa40530c0e0f69d9984f10329",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_prefork.py",
+      "new_path": "tests/test_automation_runtime_prefork.py",
+      "disposition": "migrate",
+      "source_sha256": "84ca7509cb53fdf16401c8a5e59bdc4c425f2e70ea9cb2b18574185c53630434",
+      "new_sha256": "84ca7509cb53fdf16401c8a5e59bdc4c425f2e70ea9cb2b18574185c53630434",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_proc.py",
+      "new_path": "tests/test_automation_runtime_proc.py",
+      "disposition": "migrate",
+      "source_sha256": "c3181f701b23a604f102bb271d43a556cedec8d27d30e6e4aa42414aa36d7a93",
+      "new_sha256": "c3181f701b23a604f102bb271d43a556cedec8d27d30e6e4aa42414aa36d7a93",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_proc_identity.py",
+      "new_path": "tests/test_automation_runtime_proc_identity.py",
+      "disposition": "migrate",
+      "source_sha256": "992759b0a55bd2c9611918bf6e6819df4975ec90d934a8525cce695ee67b4806",
+      "new_sha256": "992759b0a55bd2c9611918bf6e6819df4975ec90d934a8525cce695ee67b4806",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_proc_view.py",
+      "new_path": "tests/test_automation_runtime_proc_view.py",
+      "disposition": "migrate",
+      "source_sha256": "aca80636268c6b599b21f2885e2cd02c227f901f40c0bd3c3465f833e9ff66a0",
+      "new_sha256": "aca80636268c6b599b21f2885e2cd02c227f901f40c0bd3c3465f833e9ff66a0",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_project_layout.py",
+      "new_path": "tests/test_automation_runtime_project_layout.py",
+      "disposition": "migrate",
+      "source_sha256": "e5e87feb7a1795e435850ca392810490b7941f249cf7bb31f9ac4344d6a297a7",
+      "new_sha256": "e5e87feb7a1795e435850ca392810490b7941f249cf7bb31f9ac4344d6a297a7",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_provisioner.py",
+      "new_path": "tests/test_automation_runtime_provisioner.py",
+      "disposition": "migrate",
+      "source_sha256": "30f6341ebdb0e6202bc9adbdddc2636bd2dd18f7da192eb17a6554cabde89e3b",
+      "new_sha256": "30f6341ebdb0e6202bc9adbdddc2636bd2dd18f7da192eb17a6554cabde89e3b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_readiness.py",
+      "new_path": "tests/test_automation_runtime_readiness.py",
+      "disposition": "migrate",
+      "source_sha256": "e774279aa6a6f732513e9fdd5c865fc83e87edc595214b28933eb32cd337e0bd",
+      "new_sha256": "e774279aa6a6f732513e9fdd5c865fc83e87edc595214b28933eb32cd337e0bd",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_receiver.py",
+      "new_path": "tests/test_automation_runtime_receiver.py",
+      "disposition": "migrate",
+      "source_sha256": "0369f66bdee80e9b1ecf111b0664b230a335b19e7f1d4a4b629795d66f738236",
+      "new_sha256": "0369f66bdee80e9b1ecf111b0664b230a335b19e7f1d4a4b629795d66f738236",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_result.py",
+      "new_path": "tests/test_automation_runtime_result.py",
+      "disposition": "migrate",
+      "source_sha256": "9fba274957e2ee84e38643a18fa042b3cd68ce1b909fa0820774ed029c496da1",
+      "new_sha256": "9fba274957e2ee84e38643a18fa042b3cd68ce1b909fa0820774ed029c496da1",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_root_entry.py",
+      "new_path": "tests/test_automation_runtime_root_entry.py",
+      "disposition": "migrate",
+      "source_sha256": "3dd9cbaed77b89252431136cf0392046e0592fed098a6eecafe6e9bdd4fb4e80",
+      "new_sha256": "3dd9cbaed77b89252431136cf0392046e0592fed098a6eecafe6e9bdd4fb4e80",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_seal.py",
+      "new_path": "tests/test_automation_runtime_seal.py",
+      "disposition": "migrate",
+      "source_sha256": "56d6eabacffcc4fa87de176f717ef5c04cd5c9fa31347c8c7dc18791646180ee",
+      "new_sha256": "56d6eabacffcc4fa87de176f717ef5c04cd5c9fa31347c8c7dc18791646180ee",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_state.py",
+      "new_path": "tests/test_automation_runtime_state.py",
+      "disposition": "migrate",
+      "source_sha256": "7e51a0ce863fecefa56c5935f7a35059a7ec75739b7bc7c1ca288a7cba5ce131",
+      "new_sha256": "7e51a0ce863fecefa56c5935f7a35059a7ec75739b7bc7c1ca288a7cba5ce131",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_systemd.py",
+      "new_path": "tests/test_automation_runtime_systemd.py",
+      "disposition": "migrate",
+      "source_sha256": "7f0469e7a153653fe7ee2623eaf829af1cea110cc3ddb135392e29c97374787c",
+      "new_sha256": "7f0469e7a153653fe7ee2623eaf829af1cea110cc3ddb135392e29c97374787c",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_runtime_verity.py",
+      "new_path": "tests/test_automation_runtime_verity.py",
+      "disposition": "migrate",
+      "source_sha256": "7284df105b5128813c5a28ea849dd99bd9edcf20e854f064b2bc8226174a4963",
+      "new_sha256": "7284df105b5128813c5a28ea849dd99bd9edcf20e854f064b2bc8226174a4963",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_sealed_output_retention.py",
+      "new_path": "tests/test_automation_sealed_output_retention.py",
+      "disposition": "migrate",
+      "source_sha256": "3c306728cac8d93cdfeebdb70d3996c5bd6356b3a45b2c5cb13472e2f1c45e67",
+      "new_sha256": "3c306728cac8d93cdfeebdb70d3996c5bd6356b3a45b2c5cb13472e2f1c45e67",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_selection.py",
+      "new_path": "tests/test_automation_selection.py",
+      "disposition": "migrate",
+      "source_sha256": "bca86c3fc710d6fe2c3d85b1238bf1bd65f9bcd613eee4bec6ef39486c0873c0",
+      "new_sha256": "bca86c3fc710d6fe2c3d85b1238bf1bd65f9bcd613eee4bec6ef39486c0873c0",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_source_cleanup.py",
+      "new_path": "tests/test_automation_source_cleanup.py",
+      "disposition": "migrate",
+      "source_sha256": "2ea403b5a7fa78ceccd6cabf1a8f5bf69e3e12ca4c40feb5b2155c8112dc0f3b",
+      "new_sha256": "2ea403b5a7fa78ceccd6cabf1a8f5bf69e3e12ca4c40feb5b2155c8112dc0f3b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_source_pins.py",
+      "new_path": "tests/test_automation_source_pins.py",
+      "disposition": "migrate",
+      "source_sha256": "27f8fb7e6d9d5a5f78034cae0eec60bddb6e4a868f4d69a78c02f7d2d74dea36",
+      "new_sha256": "27f8fb7e6d9d5a5f78034cae0eec60bddb6e4a868f4d69a78c02f7d2d74dea36",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_supervised_policy.py",
+      "new_path": "tests/test_automation_supervised_policy.py",
+      "disposition": "migrate",
+      "source_sha256": "355d7c29e21ff89dee67dc2c602786b5b3a4985131abbcd16d3f55fde45bf84f",
+      "new_sha256": "355d7c29e21ff89dee67dc2c602786b5b3a4985131abbcd16d3f55fde45bf84f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_automation_usage_journal.py",
+      "new_path": "tests/test_automation_usage_journal.py",
+      "disposition": "migrate",
+      "source_sha256": "989d243b56cb9ec2e9e5598b35367256320157edc442c271574f94a7d83f7ce2",
+      "new_sha256": "989d243b56cb9ec2e9e5598b35367256320157edc442c271574f94a7d83f7ce2",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_bootstrap.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "1cdf98969cd33fd46692f57338fa2985812fff44dfff0e2b689f64af773d8fea"
+    },
+    {
+      "old_path": "tests/test_engine.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "edac0b05e4bc66a6a09b957033735718508a093b3e2071dbc4fdb6ded0802afd"
+    },
+    {
+      "old_path": "tests/test_global_install.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "085f0b2d905693341b3c81121d921511c24f2637f59a9a23b278bc9f7fd1b4f1"
+    },
+    {
+      "old_path": "tests/test_lavish_url.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "01f88d9a004091982a96f4e749489f68e2a42b1c5b48713e79749456779140c0"
+    },
+    {
+      "old_path": "tests/test_pc_setup.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "7a3f5934953a74570ca6d6938a025a0115b2865100ed3440c4c366880720f0d9"
+    },
+    {
+      "old_path": "tests/test_runner_container_preflight.py",
+      "new_path": "tests/test_runner_container_preflight.py",
+      "disposition": "migrate",
+      "source_sha256": "7f5a4de6c73049ce3b127c3d4cba9e742456aaf9a540dc72f6e9f12b3e78768b",
+      "new_sha256": "7f5a4de6c73049ce3b127c3d4cba9e742456aaf9a540dc72f6e9f12b3e78768b",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_runner_idle_notifications.py",
+      "new_path": "tests/test_runner_idle_notifications.py",
+      "disposition": "migrate",
+      "source_sha256": "bfd0443cd8df3e6b23f17328cba5dce70026c551fc12109b9d321b1bc309b69e",
+      "new_sha256": "bfd0443cd8df3e6b23f17328cba5dce70026c551fc12109b9d321b1bc309b69e",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tests/test_skills.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "766d013f258767b329a99ae3389cae07b0c11ad3f97494493849e2b7606af9b4"
+    },
+    {
+      "old_path": "tests/test_tool_recipes.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "5bb77ac3e5fa744008b9ec1a88b89bf4122efe6198180ef35ab494a1ec393002"
+    },
+    {
+      "old_path": "tool_recipes.py",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "850e117236045426a128ef4d32a76598fb4474b408b75a6b478ca3d6ba6006a1"
+    },
+    {
+      "old_path": "tools/catalog.json",
+      "new_path": null,
+      "disposition": "retain-shared-or-unrelated",
+      "source_sha256": "af9eb1dd21053b62957db7fc09e19389270c5287b40c448e573e78f2442c3e2d"
+    },
+    {
+      "old_path": "tools/runner_container_preflight.py",
+      "new_path": "tools/runner_container_preflight.py",
+      "disposition": "migrate",
+      "source_sha256": "6b90fe5eb41c3833ed86e76dac4c7fda96d003178226435c5f130ecdc7107c6f",
+      "new_sha256": "6b90fe5eb41c3833ed86e76dac4c7fda96d003178226435c5f130ecdc7107c6f",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    },
+    {
+      "old_path": "tools/runner_idle_notifications.py",
+      "new_path": "tools/runner_idle_notifications.py",
+      "disposition": "migrate",
+      "source_sha256": "fe7052bac4311ac575f24c617701e347ab61497c225e916aff07e3e7c34b0088",
+      "new_sha256": "fe7052bac4311ac575f24c617701e347ab61497c225e916aff07e3e7c34b0088",
+      "transformation": "byte-identical scoped import",
+      "source_after_migration": "removed after source hash and installed package/native closure verification"
+    }
+  ],
+  "shared_dependencies": [
+    "Canonical policy and custom skill sources stay in /home/faris/development-standards. Managed standards tooling is a supported policy snapshot, not a runtime dependency.",
+    "Host Git; CPython >=3.12; Linux x86_64/GCC for native checks. No ordinary Python runtime dependencies.",
+    "Private historical schemas and protected evidence remain external; dependent tests explicitly skip if unavailable.",
+    "Frozen /rnr/project and /var/lib/rnr paths describe future protected runtime, not an import from the former checkout. No runtime stores, consumed records or native artifacts copied."
+  ],
+  "exclusions": [
+    "Unrelated standards/PC installers/shared skills/templates/tests/CI retained. Relevant CI is replaced with dedicated package/test lanes.",
+    "Source .env.local, credentials, ignored/untracked files, all runtime state and compiled artifacts excluded.",
+    "Source CHANGELOG remains original history; imported provenance is recorded here, destination changelog starts with its own commits."
+  ],
+  "license": "Source has no repository LICENSE and imported files contain no explicit copyright/license grant. No modkit MIT license is borrowed; see NOTICE.md.",
+  "portable_evidence": [
+    {
+      "new_path": "docs/migration/prior-evidence/first-release-review.json",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/first-release-review.json",
+      "sha256": "744df932e146edf799f4cab0334c6f118837ff0b620a342177b164d6868be150",
+      "kind": "sanitized historical text only; not current runtime proof"
+    },
+    {
+      "new_path": "docs/migration/prior-evidence/rollover-fork143.md",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/rollover-fork143.md",
+      "sha256": "0e4066cd8860aa83cee4be699681c3dc87769b9371e2967d7c084940022ce410",
+      "kind": "sanitized historical text only; not current runtime proof"
+    },
+    {
+      "new_path": "docs/migration/prior-evidence/first-release-implementation-ledger.md",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/first-release-implementation-ledger.md",
+      "sha256": "c4f9cd801aa4d21e6554193f04aa27b55bc2fa9457b2ee9bab39279865e92179",
+      "kind": "sanitized historical text only; not current runtime proof"
+    },
+    {
+      "new_path": "docs/migration/prior-evidence/keeper-design119.md",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/keeper-design119.md",
+      "sha256": "9c5eccbf9a9444bdc7a80eb2f31621549fb8201dec8c88f4e3fb9286d445d7b8",
+      "kind": "sanitized historical text only; not current runtime proof"
+    },
+    {
+      "new_path": "docs/migration/prior-evidence/continuation-fork143.txt",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/continuation-fork143.txt",
+      "sha256": "fd5c1a82153afb8e843af387c2f862a40f8760323ead26595194571dd8a710cf",
+      "kind": "sanitized historical text only; not current runtime proof"
+    },
+    {
+      "new_path": "docs/migration/prior-evidence/native-keeper-fork140/checkpoint.json",
+      "external_origin": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117/live-completion-20261118/native-keeper-fork140/checkpoint.json",
+      "sha256": "a7acecb75f7b2618c4c53ecb251e55be01f70c4520bf2718c39fd55832b5c483",
+      "kind": "sanitized historical text only; not current runtime proof"
+    }
+  ]
+}

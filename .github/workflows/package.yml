@@ -1,0 +1,29 @@
+name: Runner package and source checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv==0.12.19
+      - run: python -m unittest discover -s tests -v
+      - run: uv build
+      - run: python scripts/check_installation.py dist/agent_runner-0.1.0.dev0-py3-none-any.whl
+      - name: Validate all new repository commits and generated changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+          MESSAGE=$(mktemp)
+          trap 'rm -f "$MESSAGE"' EXIT
+          for COMMIT in $(git rev-list --reverse HEAD); do
+            git show -s --format=%B "$COMMIT" > "$MESSAGE"
+            python .development-standards/standards.py validate-message "$MESSAGE"
+          done
+          python .development-standards/standards.py changelog --check

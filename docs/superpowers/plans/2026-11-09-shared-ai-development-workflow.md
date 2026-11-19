@@ -1,0 +1,5 @@
+# Shared AI development workflow proposal
+
+The authoritative [interactive plan](2026-11-09-shared-ai-development-workflow.html) contains the complete proposal and review controls. This compatibility link preserves the former path; it contains no independently maintained plan.
+
+Current status is maintained only in the authoritative HTML plan and the [latest handoff](../../handoffs/2026-11-09-autonomous-workflow-planning.md). The 16 November 2026 successor implemented the inert Store/receiver boundary and bounded HTTP/attach layer, passed Main offline checks and froze and corrected a native candidate through Main and independent source/QA review; the active successor added dormant credential/discovery helpers and a Store-bound contained policy, independently source-reviewed with Main offline checks; protected bootstrap/containment integration and physical qualification remain pending; several earlier bounded components have passed source review and independent QA. Full D00 readiness remains incomplete. This pointer grants no execution or live-test authority.

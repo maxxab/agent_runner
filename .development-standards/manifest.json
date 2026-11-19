@@ -1,0 +1,17 @@
+{
+  "agents_block": "ea2b81ae70b0d8f9de30b82eea5869797552a76e01909adb61a31ce9a5aa627f",
+  "baseline": null,
+  "files": {
+    ".cursor/rules/development-standards.mdc": "977950bd0e134ce599b0ff9e675d4678eb196076e029aa1cd2aeb3ed6e4419ff",
+    ".development-standards/POLICY.md": "2d2fc27ccabffbce64b6753094dc1e7865611efbb910c9a74e46dca2df315075",
+    ".development-standards/ci-check.sh": "f80758cdff198aeb504fb513b51a5b79cea5ab94c7e809496844ff946f460d8c",
+    ".development-standards/cliff.toml": "29185cfd0e0e051073665727d5fe5491792510435a1a60a3d4d30e76fbb0590e",
+    ".development-standards/conventional.json": "db43d54b156e89ee76b83971c22fd49fd8d157bac9803b70bb4956b7af293c8d",
+    ".development-standards/standards.py": "de1b606338bd10eae772c0625785adf2e2d7f0bd79962f63c99b8dade00da16f",
+    ".github/workflows/development-standards.yml": "6e8da0c64c4a7a52e714b491489cffcb5ec624de0e11168a33bc6d3851ce1060"
+  },
+  "hooks": {},
+  "policy_mode": "reference",
+  "policy_source": "/home/faris/development-standards/POLICY.md",
+  "version": "1.3.0"
+}

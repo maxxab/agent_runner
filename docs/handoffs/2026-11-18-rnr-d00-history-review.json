@@ -1,0 +1,191 @@
+{
+  "date": "2026-11-18",
+  "host": "remote-wsl:Ubuntu-24.04",
+  "selection": "Active and archived Codex history enumerated to end, repository-scoped runner/workflow title or summary matches; no archived entries returned. No unrelated project message history read. Historical subagent reports used, not predecessor messaging.",
+  "chats": [
+    {
+      "id": "01a1ec63-bed0-7742-b997-94d4a6e717a2",
+      "title": "Resume RNR-D00 live qualification",
+      "pages": 2,
+      "turns": 2,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1ec29-0d87-7c42-8e3f-ddce4ac4a8b0",
+      "title": "Resume RNR-D00 qualification",
+      "pages": 2,
+      "turns": 2,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1ebf9-f150-7132-8ea9-5b9d5fc864a2",
+      "title": "Resume RNR-D00 implementation",
+      "pages": 1,
+      "turns": 1,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1eac1-a071-7411-ac29-5815879a9acb",
+      "title": "Resume RNR-D00 validation",
+      "pages": 12,
+      "turns": 12,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e72b-ae1f-77c2-9fe1-cb91c2887299",
+      "title": "Resume RNR-D00",
+      "pages": 5,
+      "turns": 5,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e6cc-2716-7ef3-a4b5-f7e801396204",
+      "title": "Resume RNR-D00",
+      "pages": 2,
+      "turns": 2,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e67c-11d5-7673-9442-921f15f5b01d",
+      "title": "Resume RNR-D00 handoff work",
+      "pages": 7,
+      "turns": 7,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1ea0b-0c81-7ed1-89e5-538c69dd91e4",
+      "title": "Resume RNR-D00 successor work",
+      "pages": 5,
+      "turns": 5,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e519-dcf8-7522-bc7a-3eb75e0e7aae",
+      "title": "Resume RNR-D00",
+      "pages": 6,
+      "turns": 6,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e5f1-5c49-7ed3-99c4-096df31b6a59",
+      "title": "Resume RNR-D00 in /home/faris/development-standards.FIRST i…",
+      "pages": 1,
+      "turns": 1,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e17c-ed07-7821-bc71-5cca75b86231",
+      "title": "Resume broader D00 readiness in /home/faris/development-sta…",
+      "pages": 4,
+      "turns": 4,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e0cf-a4f0-7d12-903e-e995a6028ab9",
+      "title": "Continue D00–D03 runner work",
+      "pages": 8,
+      "turns": 8,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1e039-6a53-7e22-8d41-b1dfbe87ada6",
+      "title": "Resume D00–D03 runner implementation",
+      "pages": 2,
+      "turns": 2,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1df77-f9b1-77e3-92b1-84e08686d5e4",
+      "title": "Continue agent runner implementation",
+      "pages": 6,
+      "turns": 6,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1dc2f-fc6f-7441-8d24-9ce7bb62ee99",
+      "title": "Review failed runner readiness",
+      "pages": 5,
+      "turns": 5,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1db5f-cbcc-7a31-a196-1fbcfcaf4cab",
+      "title": "Resume agent runner work",
+      "pages": 6,
+      "turns": 6,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1da77-7d0d-70a3-bfd1-4c7da7b96f95",
+      "title": "Resume agent runner work",
+      "pages": 9,
+      "turns": 9,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1d73a-78d8-7de1-bd92-2f6f5b654644",
+      "title": "Resume agent runner work",
+      "pages": 6,
+      "turns": 6,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1d710-02df-71f0-ba59-b0b90972c663",
+      "title": "Resume agent runner implementation",
+      "pages": 6,
+      "turns": 6,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1d6d4-1dcf-7be0-8e5d-a8bb1ed2e890",
+      "title": "Review agent runner checkpoint",
+      "pages": 3,
+      "turns": 3,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1c2f0-8916-7c22-9421-3b238c93f178",
+      "title": "Resume workflow readiness review",
+      "pages": 8,
+      "turns": 8,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1c2b6-6beb-75f0-9594-e2534be87a3b",
+      "title": "Clarify runner workflow resume prompt",
+      "pages": 3,
+      "turns": 3,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    },
+    {
+      "id": "01a1be5d-31f7-75f3-a60e-42150c035876",
+      "title": "Locate workflow Markdown file",
+      "pages": 1,
+      "turns": 1,
+      "errors": [],
+      "coverage": "All returned turn pages traversed; agent messages reviewed. Outputs omitted; corroborate with durable evidence. Tool truncation may omit message tails."
+    }
+  ]
+}

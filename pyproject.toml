@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-runner"
+version = "0.1.0.dev0"
+description = "Bounded project-owned agent runner; operational release gates remain open"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+agent-runner = "automation.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["automation", "tools"]
+artifacts = ["automation/native/*.c", "automation/native/*.h"]
+
+[tool.hatch.build.targets.sdist]
+include = ["automation", "tools", "tests", "scripts", "docs", "pyproject.toml", "README.md", "NOTICE.md", "CHANGELOG.md", "TROUBLESHOOTING.md", "AGENTS.md"]
+exclude = ["**/__pycache__", "**/*.pyc", "/docs/handoffs/2026-11-09-autonomous-workflow-planning.md"]

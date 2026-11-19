@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.egg-info/
+.env
+.env.*
+!.env.example
+.agent-runner/venv/
+.agent-runner/logs/
+.agent-runner/state/
