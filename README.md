@@ -23,6 +23,7 @@ That check uses uv to install into separate disposable consumer environments and
 builds packaged native artifacts without running them. GCC 13 on Linux x86_64 is
 the checked native target; the installed package does not auto-build/activate them.
 
+[Historical experiment setup](docs/experiment-setup.md),
 [Migration/provenance](docs/migration/README.md),
 [handoff](docs/handoffs/2026-11-19-extraction.md),
 [accepted product plan](docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.html),

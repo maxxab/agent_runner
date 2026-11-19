@@ -46,3 +46,19 @@ legacy enrollments pinned to the old config path are not transparently accepted.
 An owner must deliberately approve a new config/revision/digest/enrollment.
 CLI is agent-runner or python -m automation, no bootstrap dependency. The
 old standards automation command is removed. No other runtime behavior is enabled.
+
+## 19 November extraction audit
+
+The [audit handoff](../handoffs/2026-11-19-extraction-audit.md) records successor
+ownership, source/dependency trace, verification and release limits. Original
+manifest hashes remain the extraction snapshot; `audit_reconciliation` records
+the later split of runner experiment setup from shared PC setup and the corrected
+shared-skill documentation reference. Dedicated post-extraction source commits are
+not folded back into historical hashes.
+
+[External source index](external-source-index.json) identifies protected historical
+qualification/diagnostic/SDK candidates and schema provenance. Only this sanitized
+index is transferred; original source, frozen native resources, runtime state and
+consumed grants stay in place. Their historical path/pin bindings are intentional
+and do not become current package dependencies. The bounded inventory is not
+whole-release qualification or an exhaustive audit of private experiment contents.

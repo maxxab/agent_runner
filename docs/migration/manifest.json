@@ -2826,5 +2826,40 @@
       "sha256": "a7acecb75f7b2618c4c53ecb251e55be01f70c4520bf2718c39fd55832b5c483",
       "kind": "sanitized historical text only; not current runtime proof"
     }
-  ]
+  ],
+  "audit_reconciliation": {
+    "date": "2026-11-19",
+    "baselines": {
+      "source_current": "1f00db36343f39a0666007a417f17fa49a274101",
+      "destination_current": "c84df233fb193a3a01d30f8b9d18eec35176c398"
+    },
+    "original_manifest": "Original 355 entries and original/import hashes preserved; post-extraction source evolution remains in dedicated Git history.",
+    "changes": [
+      {
+        "old_path": "docs/pc-setup.md",
+        "source_repository": "development-standards",
+        "new_path": "docs/experiment-setup.md",
+        "disposition": "split-runner-section-retain-generic-shared-file",
+        "section": "Agent runner pre-implementation setup, including device-code sign-in subsection",
+        "source_file_sha256": "cad25d0eadc217e4eb572b2515ed5993f50a233fea71a73176849766064178b5",
+        "source_section_sha256": "7a89927febca055d50bbddf5ed346891966054c067e8b35792c3d4350edd6bbb",
+        "transformation": "Historical wrapper + canonical shared skill URL; original procedure body retained with final blank line normalized. Source retains generic setup plus pointer.",
+        "reason": "Runner prerequisites/procedures belong beside product; generic installer and recipes remain shared."
+      },
+      {
+        "path": "TROUBLESHOOTING.md",
+        "disposition": "repair-shared-skills-reference",
+        "reason": "Canonical skills/README.md remains shared; link no longer assumes a runner-local skills directory."
+      }
+    ],
+    "external_sources": "docs/migration/external-source-index.json; protected originals retained, no runtime state or binaries imported",
+    "intentional_shared_ownership": [
+      "Policy/teamwork/ownership/communication/review/continuation/development workflow, including runner-prompted improvements",
+      "Commit/changelog/version validators, project adoption/sync, global Git/editor integration",
+      "Generic PC installer/catalog/provider recipes and associated tests/design",
+      "Skill catalog/distribution/discovery and SINGLE canonical skills/agent-runner/SKILL.md"
+    ],
+    "coverage": "All 214 migrated paths present; all 355 original source hashes verified; current application imports stdlib plus packaged modules; current shared tracked content inspected for residual product source.",
+    "handoff": "docs/handoffs/2026-11-19-extraction-audit.md"
+  }
 }

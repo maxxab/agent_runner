@@ -121,3 +121,13 @@ actual log/status rather than mistaking these prior source checkpoints for final
 The available HTTPS token refused workflow-file scope, then existing SSH authentication
 completed the destination normal push without changing permissions/settings.
 CI definitions are committed, hosted CI execution remains unobserved.
+
+## Subsequent extraction audit
+
+The authorized successor [extraction audit](2026-11-19-extraction-audit.md)
+reconciles residual runner setup documentation, records current ownership and
+external source provenance, and separately verifies package/consumer closure.
+Use that audit for current extraction results. This document's migration stop and
+publication narrative describe the earlier migration chat; they are historical.
+Release readiness remains governed by the first-release handoff, with all five
+gates OPEN. The audit grants no activation or new delegation.

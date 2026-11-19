@@ -240,3 +240,12 @@ selected143's original clocks, exchanges and once-only rules. Do not invent acce
 Do not repeat still-valid completed checks solely to reconstruct history. Keep clear
 progress updates; user wants completion, not an unsupported claim that it is live.
 ```
+
+## Extraction audit precedence
+
+The subsequent authorized [extraction audit](2026-11-19-extraction-audit.md)
+ran before further release implementation. It owns current extraction verification
+and successor ownership; earlier source/review evidence in this handoff is retained.
+No release source, gate, authenticated transport or activation changed in the audit.
+Historical runner setup is now docs/experiment-setup.md in this repository;
+development-standards retains generic setup and the single canonical runner skill.

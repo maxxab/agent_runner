@@ -1,0 +1,537 @@
+{
+  "date": "2026-11-19",
+  "scope": "Bounded external source/evidence discovery; not a claim that private states or all historical snapshots are portable",
+  "inventory_evidence": "/home/faris/.local/state/agent-runner/extraction-audit-20261119/external-source-inventory.json",
+  "originals": "All protected originals retained. No credentials, runtime records, logs, binaries, consumed grants or actual state imported.",
+  "roots": [
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-a2-review-20261115",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-bootstrap-source-20261115",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-boundary-design-20261115",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-control-review-20261114-successor",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "c4187bd509922d728ace1475cb107b4cad20c681533416adea44d982d8382c8c",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-control-source-20261114",
+      "indexed_source_files": 9,
+      "source_inventory_sha256": "157f87a01f582752028d9fdced8d0b41203c6348ac23c0927196647ba8188377",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-d00-acceptance-20261116",
+      "indexed_source_files": 1005,
+      "source_inventory_sha256": "99e521e051c63d5dbf90b57a576e39bc0303689dbb12209f4013ad73f4551dff",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-d00-d03-completion-20261115",
+      "indexed_source_files": 3,
+      "source_inventory_sha256": "ef11e124738ada3aa9c8b848bd55fb6ae87805230f9fc7c4f67929586a5ba65f",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-d00-review-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-d00-startup-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-d01-live-20261115",
+      "indexed_source_files": 1,
+      "source_inventory_sha256": "838319e630fdeae559c0e5f42e15c7fa83d3006e8464f3cfddaf4af4317b9fde",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-artifacts-20261114",
+      "indexed_source_files": 17,
+      "source_inventory_sha256": "8d5edfef3b16a784e23425837050ecb6787e27fc672c3a5de9c014d8ce682ee6",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-20261115",
+      "indexed_source_files": 4,
+      "source_inventory_sha256": "27205468a7c0c6ec8880a965f2cfdf0412f17da5b02e3590dc494189397c5d8c",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-artifacts-20261115",
+      "indexed_source_files": 19,
+      "source_inventory_sha256": "d0503a96380892f8d90b1a27af394af4a9a897d2454437ba89ca3ece6ed267e5",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-package-review-20261115",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "cbd78d75bac183f9eef6c815d7a3a8fdcbd1901a473ad8e314a61317a1a52c3d",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-refresh-20261115",
+      "indexed_source_files": 19,
+      "source_inventory_sha256": "07be53fd5251a7b5a80592f8bc40df2dbb96035e88923c0fac5909815153ddd5",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-refresh-grants-20261115",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-refresh-review-20261115",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "6301a0d2aae07524da759dd1afc44334070ef2937ac2d1826dc5764e4d111fdf",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-refresh-runs-20261115",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-review-20261115",
+      "indexed_source_files": 8,
+      "source_inventory_sha256": "1778ab71038e55773ede2b7477acea9c77625c5b37a5cd4b39df79fc405237be",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-v2-20261115",
+      "indexed_source_files": 4,
+      "source_inventory_sha256": "13ce8dd8ce4b2a3724aa41bb40dd3e04ad5320a8b715e157d9ada076f4d9ff48",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-grants-20261114",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-review-20261114",
+      "indexed_source_files": 3,
+      "source_inventory_sha256": "c84b8653d8e318653075545c0fc9228354596b52c0f0f0a8e29d61cb1ce956dc",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-deadline-runs-20261114",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-direct-20261116",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "e08966147bd0a785587e6cd80f008ee29bf91d1d6f3f39be56473be42c292d7f",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-feature-difference-diagnostic-20261116",
+      "indexed_source_files": 26,
+      "source_inventory_sha256": "243fafc1deba43b3af5df400703dac93c9fef8ddc67e7accc35760f1d8b75300",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-feature-difference-diagnostic-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-feature-difference-diagnostic-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-http-attach-20261116",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "cd1dfa10be69d5a52310a2c4cb832d25f16570e636915c1100fe9e133322acb0",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-http-review-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-catalog-uri-corrected-20261116",
+      "indexed_source_files": 26,
+      "source_inventory_sha256": "2ad931bf5bebe041ff2abffda623bcde58120360422873a2bb3066d4530f4762",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-catalog-uri-corrected-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-catalog-uri-corrected-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-overlay-corrected-20261116",
+      "indexed_source_files": 26,
+      "source_inventory_sha256": "951285a65db029466945bfeda6feb484f7652669909c7c26ebc081877bca9824",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-overlay-corrected-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-overlay-corrected-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-response-diagnostic-20261116",
+      "indexed_source_files": 26,
+      "source_inventory_sha256": "867fbf56c5065b46f12d9804e3f1d0739643398b3bbce1119c59634b24d55750",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-response-diagnostic-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-response-diagnostic-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-corrected-20261116",
+      "indexed_source_files": 25,
+      "source_inventory_sha256": "3fc401f41cedada5cf1d25e21fc30fb24a68d105a76e1c2b9fde00415da028f6",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-corrected-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-corrected-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-diagnostic-20261116",
+      "indexed_source_files": 25,
+      "source_inventory_sha256": "e9bf63942388986b3246b42864fc3ad711e5fa713e900dafcaf16d7fe1662657",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-diagnostic-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-diagnostic-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-probe-20261116",
+      "indexed_source_files": 24,
+      "source_inventory_sha256": "be4c03a8495531bee542dc0656dccb885c2d84345ebe9fbec5cd4e84d502a83f",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-probe-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-startup-probe-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-views-corrected-20261116",
+      "indexed_source_files": 26,
+      "source_inventory_sha256": "17f05bd84ae3876eeff7739259e25274ce30fd064e6af5e05f898922de8610a9",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-views-corrected-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-managed-views-corrected-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-native-http-candidate-20261116",
+      "indexed_source_files": 45,
+      "source_inventory_sha256": "b68b6bc77e74e00479961331fd95f1a3e5918645ca4a10fbe7d9928353f945ae",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-native-http-candidate-20261116-review1",
+      "indexed_source_files": 45,
+      "source_inventory_sha256": "3d49e9c79b1538c941aa7ca81f80b1e48dc45113d48bf901175e2752acf41345",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-native-http-candidate-20261116-review2",
+      "indexed_source_files": 45,
+      "source_inventory_sha256": "b10afc7b80608b0d3cf34d5c3a6e4e2c6c23d2ce7b8bf620d8ff1d977457eb63",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-native-http-candidate-20261116-review3",
+      "indexed_source_files": 45,
+      "source_inventory_sha256": "1bf40f801601742cec80977afed5dee7741a100b09a5a86cf5514ce9a251fd8c",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-notification-fix-20261116",
+      "indexed_source_files": 20,
+      "source_inventory_sha256": "eee8966ff4df0f73a25e6f253f0657276a337dc8d9fff3120842fc9e1295ee19",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-notification-fix-grants-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-notification-fix-runs-20261116",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-notification-investigation-20261116",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "c696f3d3872457dfb43dc68c89ce74b62a1a726a11868931b17b0b2623b6ded0",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-preflight-20261114-3p53gfwr",
+      "indexed_source_files": 5,
+      "source_inventory_sha256": "845802f21956d90c760b9aa692fcc14ce7b451dcb54a61953df6c36ed615f05c",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-probes",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-protected-source-20261116",
+      "indexed_source_files": 9,
+      "source_inventory_sha256": "f633e0e865403e62c39e8c94107c292b746d7c7748685ce909534ed7528887b7",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-qualification-gates-20261116",
+      "indexed_source_files": 13,
+      "source_inventory_sha256": "77b2d3ab47eb401c956c061efc59cd8a8371da253a7bbc24be631f8e4da2ec79",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-readiness-diagnosis-20261115-rd1",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-receiver-guard-20261117",
+      "indexed_source_files": 271,
+      "source_inventory_sha256": "b85c3f8caeaa7b9ee25fce648cc583101202af4a09e28658fa31302a73820dfc",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-runtime-config-20261116",
+      "indexed_source_files": 19,
+      "source_inventory_sha256": "f9342caa3b45142858d9007bba34057cfe4804a8c7f89ed2b6b161df2de2d781",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-slice-prerequisite-20261117",
+      "indexed_source_files": 17,
+      "source_inventory_sha256": "5c1b296f5863c85f4d1389fc6aa0a55adcea575d2ad7b6c022afc90205944f15",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-slice-prerequisite-20261117-review2",
+      "indexed_source_files": 5,
+      "source_inventory_sha256": "02d6a50e3f80ca2039345a661a4e0eb11c567298caf6a93c471f1254065e0363",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-turn-admission-source-20261115",
+      "indexed_source_files": 2,
+      "source_inventory_sha256": "f53817353314e5b6af47f09c6e4cfbf779345a1b0e08f9ccd1ffd6f6813e4267",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-zero-model-artifacts-20261114",
+      "indexed_source_files": 21,
+      "source_inventory_sha256": "877ff690cd91ccb3bd667d8e33344abf1fc51a8b8e8855a5cf1e9e9287294981",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-zero-model-grants-20261114",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-zero-model-review-20261114",
+      "indexed_source_files": 93,
+      "source_inventory_sha256": "841faabe9c9b9bc373be9f1c0801bde857e022308455c3aca2ed9157462a64e2",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/runner-zero-model-runs-20261114",
+      "indexed_source_files": 0,
+      "source_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    },
+    {
+      "external_root": "/home/faris/.local/state/development-standards/lavish-reviews/preimplementation-x0ngvay0",
+      "indexed_source_files": 464,
+      "source_inventory_sha256": "0918848b76be44a5c18a2f5d9dd5bb927e9da0dc7ed876473017c6bc6806514f",
+      "disposition": "protected historical source/evidence; index only; not installed or authorized to run",
+      "reason": "Frozen qualification/diagnostic candidates, snapshots or private probes bind historical pins, grants, clocks and host paths; destination owns current application. No original removed or rewritten."
+    }
+  ],
+  "reviewed_entrypoints": [
+    {
+      "path": "/home/faris/.local/state/development-standards/runner-native-http-candidate-20261116/qualification.py",
+      "review": "Fixed zero-model native HTTP harness; exact manifest/image/app/guardian, current grant and independent host/review gates required; not the missing real qualification entry. README explicitly not ready. Index only."
+    },
+    {
+      "path": "/home/faris/.local/state/development-standards/runner-deadline-diagnostic-refresh-20261115/diagnostics.py",
+      "review": "Fixed-stage receipt recorder imports local contract/receipts and writes /workspace/inner-error.json. TRACE binds original allowance, native library hashes and external 160-pin closure. Index only; no portable standalone install contract."
+    },
+    {
+      "path": "/home/faris/.local/state/development-standards/runner-preflight-20261114-3p53gfwr/sdk_controller.py",
+      "review": "Historical SDK harness pins former checkout path, image, package inventory and two consumed bounded attempts. Do not rewrite historical pins or replay; current runner_container_preflight source already migrated."
+    },
+    {
+      "path": "/home/faris/.local/state/development-standards/lavish-reviews/preimplementation-x0ngvay0/cli-schema",
+      "review": "Historical provider-generated CLI schema fixtures referenced only by optional tests. Retain privately; intentional test-only external dependency, never runtime import."
+    }
+  ]
+}
