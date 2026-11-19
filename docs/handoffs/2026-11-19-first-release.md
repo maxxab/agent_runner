@@ -502,3 +502,40 @@ updated together; action-time approval validity separate from installer admissio
 policy; historical referenced bytes retained outside Git; never rewrite pending/
 uncertain task.bin. Main incorporated these points. All reviewer operations now
 finished, available only for same-task follow-up; source/docs/Git remain Main-owned.
+
+
+## Safe continuation checkpoint for current admission chat
+
+Main reached a suitable publication checkpoint after1confirmed compaction and
+substantive further contract work. Remaining coupled implementation would need
+another compaction; select continuation now while enough context remains for a
+complete handoff. This is not rollover merely because the first compaction occurred.
+Main stops source/docs/Git work after final documentation/changelog push receipt
+and protected checkpoint/ownership-transfer verification. No running delegated or
+owned source/test/build/native/account/runtime operation remains. Reviewer v5 is
+completed and becomes historical/unavailable to the successor; saved reports cover
+all feedback. Fresh successor must inspect stopping receipt before taking writes.
+
+Supported create/dispatch tools are absent in the current catalog. Existing daemon
+preflight `codex app-server daemon version` failed ENOENT; default control socket
+does not exist. Helper interpreter exists but cannot connect; no daemon/config
+change or creation/dispatch attempt was made. No successor ID exists. Do not silently
+substitute helper model defaults for unexposed current runtime settings. Protected
+rollover-preflight.json records the actual limitation. Full Access must be confirmed
+again in the genuinely new chat. UNKNOWN numeric Main/counter remain preserved.
+
+Ready-to-copy standalone prompt:
+/home/faris/.local/state/agent-runner/release-admission-20261119/continuation-prompt.txt.
+Read protected checkpoint.json and ownership-transfer.json for final exact HEAD/
+remote/clean/source/evidence/stopping receipts. Additional source trace pitfalls are
+in next-coupled-design-notes.md; unaccepted IPC sketches there are not specifications.
+Latest source/test/build five hashes match verified-snapshot.json; the evolving
+contract doc hash intentionally differs. Exact check is preserved in continuation-
+source-verification.json. No suite/build repeated for documentation-only changes.
+
+Publication before this final handoff update was122f9fa/0ae6ca5, live SSH remote
+0ae6ca540b3fc4bc78d47b1d800e7b4678349166 observed. Final docs/changelog receipts follow
+outside Git. All5release gates remain OPEN; extraction COMPLETE. Nothing activates.
+Current native persistence remains uninvoked and the qualification main unsafe to
+run unsupervised. Continue in successor Main, at most one fresh reviewer for remaining
+work; never contact historical v5/v4/old owners or reconstruct completed teams.
