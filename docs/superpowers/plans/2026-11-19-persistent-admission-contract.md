@@ -1,7 +1,8 @@
 # RNR-D00 persistent admission and late containment contract
 
-Status: proposal for same-task independent challenge; no persistent path, unit,
-record or runtime effect implemented by this document. Main is sole writer.
+Status: coupled admission remains a proposal; Revision B storage preparation is
+implemented and independently reviewed, but uninvoked. No operational path, unit
+or runtime effect is authorized by this document. Main is sole writer.
 Canonical workflow: /home/faris/development-standards/docs/development-document-workflow.md.
 Refines F1/F2/F5 in the selected143 admission review; all five release gates OPEN.
 Existing historical stores and attempts remain untouched at their original paths.
@@ -159,8 +160,10 @@ frozen even if keeper dies before observer registration. Original Main uses its
 existing kernel PDEATHSIG; native helper parent-death closure must be proven.
 Filesystem/loop/DM/mount objects remain consumed/UNKNOWN, not inferred absent.
 
-Keep workload ancestor frozen through both emergency target exchanges and the
-observer registration/arm/new-connection/negative placement/READY sequence. Extend
+Historical proposal (SUPERSEDED by the sole-thaw serialization below; do not
+implement READY-before-thaw): Keep workload ancestor frozen through both emergency
+target exchanges and the observer registration/arm/new-connection/negative
+placement/READY sequence. Extend
 the same observer's held controls to the exact workload ancestor BEFORE READY.
 Do not thaw until keeper has authenticated that independently placed observer is
 armed with the same original clocks and ancestor controls. Thaw is one consumed
@@ -421,3 +424,257 @@ Reviewer v4's initial independent report is saved under protected
 The accepted direction is reused; exact F1/F2/F5 and provider contracts still need
 concrete independent challenge before their dependent implementation. No release
 gate closes from the execution plan or the team authorization.
+
+## Successor admission contract freeze — 19 November, revision A
+
+Main resumes from clean4861726 on WSL Ubuntu24.04, with implementation in Main
+and at most one fresh reviewer. RNR-D00 is the retained local assignment; no issue
+URL or numeric Main/IssueLead counter is invented. Predecessors released ownership
+and are historical only. This section is a proposal for independent challenge,
+not permission to run the native artifact. Existing fail-closed wrapper stays.
+
+The next outcome is ONE coupled admission boundary: authenticated declaration,
+durable claim and enumerated intents, held hierarchy/placement and final GO.
+Implementation may proceed in dependency order, but no intermediate codec, store
+or protocol component can grant declaration authority or positive continuation.
+Do not replace the accepted fixed fork owner, clocks or initially frozen ancestor.
+Main owns all source, tests, docs, Git and host operations. Reviewer is read-only
+until explicitly assigned bounded mocked QA. No account or physical qualification.
+
+### F1 exact proposed inventory
+
+All integers below are unsigned little endian; signed clock values must first
+validate positive signed64. Reserved bytes are zero. No C struct wire layout.
+Use full original bytes, not a newly selected hash dependency. Project directory
+is /var/lib/rnr/projects/<project64>; consumed is its child; active is a fixed
+project-directory entry. Traverse every component nofollow, retain identities,
+reject writable/non-root ancestry and unexpected mounts. Project and consumed
+are0700. Require persistent ext4, matched installation dev/inode/fsid/boot and a
+read-only128-byte instance record (0400, root:root, nlink1). Instance framing:
+magic RNRINST1 at0, version1 u32 at8, zero12..15, project32 at16, instance16 at48,
+consumed dev/ino u64 at64/72, fsid two u32 at80, boot UUID36 at88, zero124..127.
+The installation's store dev/ino refer to consumed; filesystem ID refers to that
+same held directory. Reject any inconsistent meaning rather than repin silently.
+Instance metadata/content must be unchanged before and after reading and before
+any latch/claim creation. No runtime creation of missing directories/instance.
+
+Proposed durable binding is a fixed256-byte header plus original installation448,
+original task framing (65..65600) and original trusted launch-policy bytes (bounded
+separately; exact F2 schema must be accepted before source integration). Header:
+magic RNRBIND1 at0, version1 u32 at8, total bytes u32 at12; project32 at16;
+instance16 at48; task16 at64; original keeper PID/start u64 at80/88; original Main
+PID/start u64 at96/104; original T0 boot/wall u64 at112/120; original setup/positive/
+trigger/negative-stop boot cutoffs u64 at128/136/144/152; outer wall cutoff u64 at160;
+original time namespace dev/ino u64 at168/176; boot UUID36 at184; installation/task/
+policy lengths u32 at220/224/228; zero232..255. Explicitly retain original sampled
+origins and exact full declaration, including separate Store44 and outer60–90.
+No digest alone authenticates a supplied policy. Wire length caps and offsets
+must be checked without overflow before copying. Claim and latch both contain
+this exact binding, so a surviving latch identifies even a missing/torn claim.
+
+Order: fully validate declaration and obtain keeper declaration ACK FIRST. Then
+create active O_WRONLY|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC mode0600; consume create
+before syscall; retain UNKNOWN on every uncertain return. Validate created object
+root:root regular0600 nlink1, perform one bounded write, fsync(active), fsync(project),
+with the original SETUP15 admission predicate before/after every metadata/I/O
+syscall and before each next syscall, packet or effect. A late return fences
+positive work; it never switches to the Store44 predicate. Then create consumed/task32
+with the same flags/mode; one binding write, fsync(claim), fsync(consumed). Only after
+all four successful fsyncs, unchanged named/held identities and fresh setup check
+may Main emit CLAIM_SYNCED. Any existing active or task entry rejects regardless
+of type/content. Short write/EINTR/error/late result never retries, truncates,
+replaces, appends repair, removes latch or emits receipt. Keeper never touches disk.
+FD closes are once-only and do not remove consumption. No receipt on lost ACK.
+
+Intent frames follow the binding in the held claim: fixed256 bytes, at most64
+frames (maximum16384 append bytes), no repair/truncation/retry. Proposed layout:
+magic RNRINT01 at0; version1 u32 at8; operation u32 at12; sequence u64 at16;
+previous sequence u64 at24 (zero for first); project32 at32; instance16 at64;
+task16 at80; exact original keeper/Main PID and start values u64 at96..127;
+original T0 boot/wall u64 at128/136; target kind u32 at144; target role u32 at148;
+held target dev/ino/mount u64 at152/160/168; reserved176..255 zero. Target kind and
+role are closed constants, never paths. Before acquisition, expected targets are
+fixed derived hierarchy names pinned in the complete binding; metadata fields
+must be zero. After acquisition, exact held object identities must be nonzero and
+match keeper-held controls. Every frame has a fixed predecessor/opcode transition,
+not caller-selected sequence. Reserve append before one pwrite at the exact prior
+length; require full write, fsync(claim), exact new size and fresh budget before
+receipt. No future frame or receipt can excuse an unknown preceding operation.
+
+Latch retirement is NEVER an attempt cleanup. No online unlink/rename API is
+released by this boundary. Retain active even after successful attempt completion
+until the eventual independent negative actor has finished and all late manager
+operations and resource holdings have been reconciled. The sole future retirement
+route is exclusive offline maintenance: disable admission, retain all records,
+verify original installation/store and active binding, inventory every consumed
+intent and actual target/helper/manager job, prove no live/queued/recreatable
+resource remains, quarantine every uncertain task ID durably, then retire the
+exact active entry and sync project before repinning a new reviewed epoch.
+Missing/partial/corrupt active, changed boot/store, inability to prove closure or
+any incomplete reconciliation forbids retirement. This route needs an exact
+finite evidence/authorization format and independent review before implementation;
+no general administrator cleanup command is implied. Absent records prove nothing.
+
+### F2 and F5 coupled gates still to freeze
+
+The new binding cannot be populated by arbitrary decoded values: the fixed
+original owner must read/compare the complete installed unit/controller manifest,
+owner config/enrollment/startup-closure bytes, current unit/cgroup/boot/store and
+original lineage before declaration. Existing installation digests are only DATA.
+The trusted policy needs exact paths/byte grammar, file size caps/digests, kernel/
+manager observations and expected launch identity; compare actual values rather
+than echoing nonzero pins. The keeper must authenticate a finite full declaration
+from its exact original fork child, preserve original identity/high-water and
+narrow cutoff once. No SO_PEERCRED learned from inherited socketpair substitutes
+for SCM_CREDENTIALS/current original process identity validation.
+
+Enumerated durable effects must include positive preparation-leaf creation,
+negative observer-leaf creation/acquisition, Main placement and GO, both emergency
+target phases, expected observer registration/arm/new connection/negative placement,
+sole thaw and irreversible NO_MORE_THAW/negative commit/READY. Workload ancestor
+starts frozen before the attempt; Main preparation leaf is a sibling; keeper
+remains outside both. Actual unit must preserve negative observer survival, and
+all helper descendants need actual immutable parent-death closure. Exact cgroup
+paths/control identity checks, protocol packet schemas/finite bounds, every
+operation's previous/next state and whole normal/failure FD peaks must be frozen
+and challenged before any dependent positive code. Until then the original
+wrapper always drains/abandons and exits125; no persistence is called from it.
+
+### Implementation and verification order
+
+- [ ] Independent review of exact F1 inventory and unresolved F2/F5 contracts;
+      settle findings before affected source. Save report outside Git.
+- [ ] Freeze remaining trusted policy/protocol/hierarchy/helper/latch-retirement
+      contracts and exact finite operation inventory in this same document.
+- [ ] Add meaningful red fixtures, then implement Main-owned native persistence,
+      trusted comparisons and fixed keeper exchanges in dependency order.
+- [ ] Integrate actual modules with mocked syscall boundaries, test each blocked/
+      short/late/failure/death/ACK-loss/collision/replacement case and no GO leak.
+- [ ] Independent snapshot review/QA, strict actual link without execution,
+      package closure and applicable broader regression checks.
+- [ ] Only the fully reviewed coupled boundary may change the fail-closed wrapper;
+      whole release/private entry/provider/profile/closure/qualification gates remain.
+
+
+### Revision B: bounded persistence preparation, no new admission authority
+
+Independent reviewer v5 requires four corrections before coupled integration:
+full opcode/operand/ACK inventory; actual trusted-policy schema and authenticated
+finite declaration transport; unambiguous SETUP15 checks; sole-thaw-before-commit
+ordering. First and second remain OPEN. The setup wording is corrected above;
+the historical READY-before-thaw proposal is explicitly superseded. Canonical
+order is PREPARED -> sole durable thaw intent/sole thaw -> NO_MORE_THAW ->
+NEGATIVE_COMMIT -> committed READY -> Store. Only exact keeper death permits
+observer precommit negative takeover. No positive implementation is released.
+
+Proceed with the substantive F1 persistence preparation permitted by v5, as a
+private module not called by the existing fail-closed wrapper. This is not a
+codec milestone and supplies no protocol receipt or resource authority. Exact
+private API takes only the already-frozen original binding byte buffer, its
+length and an exclusive error object; decode installation448 from that buffer; no caller path, clock,
+callback, FD, opcode, reset, retirement or effect selector. Installation/raw
+binding authentication belongs to the fixed future F2 caller and remains OPEN.
+Binding bytes remain immutable throughout acquisition, do not overlap the exclusive
+error output (reject overlap before clearing), and are not borrowed after return.
+The module always calls the fixed launch admission check before/after each
+syscall, including metadata and cleanup-independent comparisons. It cannot
+capture/import/extend a clock. A standalone caller without the existing original
+held launch owner fails before any storage access. No Main/keeper packet is sent.
+
+Implementation file runtime_stage0_persistence.{c,h}, private-qualification only.
+Use one atomic reservation and one process/thread owner. NEW -> ACQUIRING -> HELD
+or terminal FENCED; rejection/reentry can never restore state. Abandon only the
+original quiescent owner, invalidate FD slots before once-close, never unlink,
+rename, repair, retry or claim resource absence. Always preserve first error,
+operation-entered/returned results, latch/claim creation disposition, and cleanup
+errors. A failed acquisition drains its own FDs and retains UNKNOWN data; no losing
+or reentrant caller drains another in-progress operation. Checked close failures
+remain terminal; cleanup may close owned FDs after setup expiry without storage
+mutation. No keeper storage syscall exists.
+
+Freeze the bounded byte contract for this preparation independently of unfinished
+F2 policy semantics: exact header256, installation448, task65..65600, policy1..65536;
+maximum131840 bytes. Validate magic/version/total/lengths/reserved bytes, exact
+installation448 against decoded installation-v2 and exact task framing/v3 DATA,
+project/instance/task/boot correlation before traversal. Persist the complete
+supplied immutable buffer without reconstructing it. These checks are structural
+and equality checks, never authentication of policy or original origin. Header
+PID/start/origin/cutoff fields must be positive signed64; exact original lineage/
+clock/actual policy comparison is explicitly the unreleased future caller's gate.
+No intent-append API until the complete operation inventory is frozen. This
+preparation creates/synchronizes the exact latch and initial claim only.
+
+Instance is exactly project/instance. Hold seven ancestry directories: /, var,
+lib, rnr, projects, project64, consumed; validate root:root protected directories,
+project/consumed0700. Reject mount changes via per-role statx MNT_ID, before/after
+held/named device/inode/mode/owner checks, and consumed ext4/dev/ino/fsid matches. Project and consumed must share the
+same supported writable ext4 device, fsid and mount ID: a mount boundary between
+these two is rejected, so active and claim share the pinned durable filesystem.
+Read instance once with bounded pread128 plus EOF1; verify root:root0400 regular
+nlink1, exact format/values, stable timestamps/size/names and same filesystem as
+consumed. Read-only or unsupported filesystem rejects. All ancestors remain held
+through claim sync; external privileged mutation/rollback remains excluded.
+New active/claim must be regular0600 root:root nlink1, exact zero initial size,
+same device/mount as their respective retained parent. One full pwrite at0,
+one fsync(file), one fsync(parent), exact post-write size/identity and original
+SETUP15 checks; no write retries even EINTR. Recheck all original paths/instance
+and both created files before returning HELD. HELD is storage-only result, never
+permission to emit CLAIM_SYNCED absent F2/F5. Both files remain on every outcome.
+
+Role peak for this preparation: existing held input5 + stdio3 + gate1 =9;
+seven directory FDs + instance + latch + claim =10; one named-recheck temporary
++ one launch-clock identity temporary =2; total21 below native256. Count holds
+on failure too; no descriptor alias/stdio overwrite is accepted. This does not
+close later protocol/hierarchy/native/helper or Python/observer budgets.
+
+Focused fixture: wholly mocked syscalls and actual persistence module; exact
+success write/sync ordering; collision at each create; wrong fs/boot/instance/
+metadata/mount/named identity; missing instance; short/failed/late writes and syncs;
+clock failure before/after every operation; reentry/foreign/duplicate owner;
+no subsequent write/receipt or deletion on failure; once-only descriptor cleanup.
+The fixture must audit host-effect imports and never touch a real store or fork.
+Strict compile-only actual source and installed-resource checks follow. Full
+coupled integration remains the next outcome; do not relabel this preparation
+as F1 closure, release readiness or activation. Active persists after success;
+no second attempt until separately reviewed offline reconciliation/retirement.
+
+
+### Revision B implemented checkpoint
+
+Main implemented only runtime_stage0_persistence.{c,h}, a private storage owner
+with no caller in the launch/preparer/qualification route. Independently reviewed
+snapshot and mocked QA are at protected release-admission-20261119/reviewer-v5/;
+Main preserves source-snapshot.json and review-v5-{contract,source}.md alongside.
+RED fixture first failed on the absent header, then actual source passed the
+fully mocked failure matrix. Reviewer v5 matched all six frozen hashes and passed
+one focused fixture (1.153s), strict -Wpedantic compile and full actual private
+source link without execution. Optional fixture-import hardening was strengthened
+to an exact allowed-import set, independently rechecked (1.243s, driver SHA256
+b27b72e890cc25b3555ff9ad7dad3e8b21ea942646bf8687b1f98877751e9356).
+Four Main native drivers passed10.084s. Broader verification recorded in handoff.
+No physical filesystem durability, real-store invocation, GO, recovery or whole
+release acceptance is claimed. New packaged native resource count is15.
+
+Manual trace before checks: fixed original launch check first (no new capture),
+then bounded binding DATA/alias validation; nofollow root/var/lib/rnr/projects/
+project/consumed retained traversal; same writable ext4/dev/fsid/mount and exact
+instance record; one active creation/write/file-sync/project-sync; same one-shot
+claim sequence with consumed sync; held/named originals and files rechecked.
+Every operation has before/after setup15 checks. Blocked/late/error/reentry fences
+positive progress and drains only original owned FDs; consumption is never removed.
+Storage HELD does not authorize the next native or keeper stage. Source has no
+keeper persistence path, packet/receipt sender, intent append, resource mutation,
+retirement or route to ordinary preparation. Test syscall substitutes are not
+actual durability qualification; exact allowed imports are audited before fixture
+execution, including fortified syscall aliases through rejection of unknown imports.
+
+Next coupled design work: F2 must choose exact protected policy bytes and trusted
+unit/controller/enrollment/config/closure comparison sources BEFORE declaration.
+F5 must update all existing root-target assumptions consistently: current
+slice_recipe/verify_recipe_snapshot, bootstrap _target_metadata, provisioner target
+acquisition and frozen runtime all bind /sys/fs/cgroup/rnr<TaskID>.slice at the root.
+Putting a new frozen ancestor in only the keeper would leave manager-created targets
+outside it. Full parent/Slice/ControlGroup/late-job attribution and observer-sibling
+placement must be frozen together; no source shortcut is authorized by the storage
+checkpoint. Preserve both emergency target phases and exact original expected
+observer/new-connection authentication. Full intent opcodes remain unfrozen.

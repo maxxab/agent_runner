@@ -346,3 +346,81 @@ No automatic successor is created: current catalog has list/read/wait tools but
 no creation/dispatch tool, and existing daemon control socket is absent. Do not
 start a daemon or change global settings to create a chat. Final publication and
 stopping receipt is protected checkpoint.json; verify it and Git before resuming.
+
+
+## Admission successor — reviewed storage preparation
+
+Current Main chat01a1f450-e4e8-78f2-83fe-42feae33aefa, supported host
+remote-wsl:Ubuntu-24.04 and cwd /home/faris/agent_runner confirmed. Genuinely new
+chat starts compactions0, confirmed-notice tracking only; predecessor history
+retained. Numeric Main ownership/next IssueLead remain UNKNOWN. Effective controls
+danger-full-access / approval never. Both main checkouts initially clean at runner
+4861726 and shared973586d; live runner remote observed4861726 before writes.
+Shared checkout has no AGENTS.md; canonical POLICY/teamwork/agent-runner guidance
+was read. Main resumed only after predecessor checkpoint and released ownership;
+no old agent contacted or runtime/uncertain operation replayed. Main implements;
+user allows at most one fresh reviewer until implementation complete, then waives
+that limit. This overrides older implementation-team requirements for this run.
+No branch/worktree/reset/force push/public package/general deployment authorized.
+
+Fresh reviewer v5 native/root/rnr_d00_admission_reviewer_v5, canonical historical
+reviewer role, reports to Main. Inherited model/effort, no stronger override. Its
+contract/source/QA operations finished; all artifacts saved outside Git at
+/home/faris/.local/state/agent-runner/release-admission-20261119. Main is sole
+source/docs/Git writer. Scope authorization included only read-only review plus
+explicit mocked fixture and strict compile/link QA; no actual native artifact,
+account, host mutation or private entry executed. Source-snapshot.json,
+review-package.diff, review-v5-contract.md, review-v5-source.md and reviewer-v5/
+preserve findings and independent evidence. No chat-only acceptance dependency.
+
+Implemented private runtime_stage0_persistence.{c,h}: fixed original setup15,
+single immutable binding buffer with alias checks, retained nofollow protected
+ancestry, project/consumed same writable ext4/dev/fsid/mount, stable pinned instance,
+exclusive active latch then task claim, one write/file-sync/parent-sync each,
+held/named rechecks and terminal ownership/drain. Existing/partial/uncertain records
+reject and remain; successful storage preparation also retains active. There is
+NO invocation from the fail-closed wrapper, intent append, receipt, GO, resource
+effect or retirement/recovery API. Only original quiescent owner closes held FDs;
+no old clock import/reset or keeper disk action. See persistent-admission-contract
+Revision B for exact preparation boundary and deferred authentication limits.
+
+RED fixture failed on absent header, then mocked storage matrix passed. Reviewer
+v5 matched all six frozen hashes, independently passed1test1.153s, strict actual
+module -Wpedantic compilation and actual full private source link without execution.
+Import-audit hardening to exact allowed imports independently passed1test1.243s;
+other five source hashes unchanged. Main's four focused native drivers passed
+10.084s. Full regression suite freshly passed1443tests191.241s with7skips, log
+full-suite.log. Offline wheel/sdist build PASS; scripts/check_installation.py PASS
+2disposable consumers and3strict installed native builds, artifacts NEVER RUN.
+Packaged native resources15. Wheel SHA256
+38212ba7adc97823ffcc91d805dd5f319ce6d39b6f1e8f1af49ee5615d4eb6d8.
+Initial fixture compile exposed a function-macro collision with struct statx;
+changed only fixture substitution to a function-like macro, then all checks passed.
+An attempted gcc command found no gcc alias; gcc-13 strict compile passed. No
+failed check touched protected store/runtime resources. Extraction remains COMPLETE.
+
+Coupled admission and all five release gates remain OPEN. V5's review corrected
+the draft's setup15/positive44 ambiguity and explicitly superseded the historical
+READY-before-thaw direction. Sole thaw -> NO_MORE_THAW -> NEGATIVE_COMMIT ->
+committed READY is canonical. Full F1 intent/recovery, trusted F2 policy/actual
+unit/controller/config/enrollment/closure comparison and authenticated finite
+declaration, F5 hierarchy/observer/service/helper/whole FD budgets still need exact
+contracts and source. Current actual root-slice assumptions would leave targets
+outside a keeper-only frozen ancestor: change all manager/target/bootstrap/frozen/
+Store/Docker path bindings together. Nested dash names introduce applicable prefix
+drop-ins; inventory/reject them. Pre-READY keeper death AFTER sole thaw relies on
+PREPARED observer exact keeper-death takeover, not a still-frozen ancestor.
+
+Protected f2-f5-open-decisions.md records the next investigation and reviewer advice.
+Prefer post-T0 standard native read-only authenticated manager verification over
+inventing a pre-T0 trusted launcher/provenance route. A pinned native bus library
+would add explicit immutable dependency, bounded-I/O and FD closure requirements;
+no library/helper/protocol/source choice is yet frozen. Existing busctl Python
+helper runs after GO and cannot silently be moved before GO under selected143.
+Next: freeze the complete trust/transport/intent/hierarchy/lifecycle contract with
+independent challenge, implement it in Main, retain fail-closed wrapper until the
+whole positive boundary is actually reviewed. Then real private entry/provider/
+profile/closure and full finite qualification before conditional activation.
+No credential cache was inspected, model endpoint called, other project enrolled
+or live runtime activated. Actual publication HEAD/receipt follows in protected
+checkpoint.json; this source checkpoint does not itself assert publication.
