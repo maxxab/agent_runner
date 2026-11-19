@@ -26,3 +26,4 @@
 - **migration:** reconcile extraction ownership and runner setup ([15cb95530384](https://github.com/maxxab/agent_runner/commit/15cb95530384f00600f394a5992687a05d624979))
 - **release:** preserve reviewed components and remaining admission gates ([cc3f5ddffe63](https://github.com/maxxab/agent_runner/commit/cc3f5ddffe63e2fa50b0d8169231e818ba3d0fc2))
 - **native:** specify reviewed admission transport and project policy ([122f9fad9830](https://github.com/maxxab/agent_runner/commit/122f9fad983002540f2ac0c73111aa843beaf6d3))
+- **release:** preserve admission continuation and ownership checkpoint ([8466723edf26](https://github.com/maxxab/agent_runner/commit/8466723edf26769886a409d718b0a7cb53038b8d))
