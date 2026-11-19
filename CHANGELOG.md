@@ -8,6 +8,7 @@
 - **native:** decode project-bound installation data ([fdbff7009fa7](https://github.com/maxxab/agent_runner/commit/fdbff7009fa734353ee837b8bd4d0d7831209553))
 - **native:** decode bounded canonical launch declarations ([bc58f30b7d3b](https://github.com/maxxab/agent_runner/commit/bc58f30b7d3b82b29ccfbe23130aefd02b77bcab))
 - **native:** supervise held-input admission without workload release ([e8a94016181f](https://github.com/maxxab/agent_runner/commit/e8a94016181f5dacbacd4be5f66cc0cbc87b2811))
+- **native:** prepare durable admission latch and claim without release ([5c423e7aaf4f](https://github.com/maxxab/agent_runner/commit/5c423e7aaf4f8d8a7a8c66c6c0cce0ee3b97fb13))
 
 ### Bug Fixes
 
