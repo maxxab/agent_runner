@@ -6,6 +6,7 @@
 
 - **native:** preserve keeper timing and validate held admission descriptors ([9fac1e4fb6de](https://github.com/maxxab/agent_runner/commit/9fac1e4fb6de9cef38ea9e0f73368e3fb874355e))
 - **native:** decode project-bound installation data ([fdbff7009fa7](https://github.com/maxxab/agent_runner/commit/fdbff7009fa734353ee837b8bd4d0d7831209553))
+- **native:** decode bounded canonical launch declarations ([bc58f30b7d3b](https://github.com/maxxab/agent_runner/commit/bc58f30b7d3b82b29ccfbe23130aefd02b77bcab))
 
 ### Refactoring
 
