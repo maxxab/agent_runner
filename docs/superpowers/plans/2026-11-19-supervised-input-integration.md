@@ -1,8 +1,8 @@
 # RNR-D00 supervised-input integration and release execution
 
 Stage: resumed release engineering after completed extraction. Existing accepted
-RNR-D00 assignment and plans remain the task source; no GitHub issue exists in
-either repository search, no URL/counter is invented or new issue published.
+RNR-D00 assignment and plans remain the task source; available searches returned
+no matching GitHub issue in either repository. No URL/counter is invented or new issue published.
 This plan's first implementation boundary is the supervised native held-input
 vertical, not a blanket assignment to implement unrelated features.
 

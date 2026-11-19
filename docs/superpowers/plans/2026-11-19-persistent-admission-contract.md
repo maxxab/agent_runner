@@ -405,6 +405,19 @@ Publish INPUTS_HELD only after GO and gate/storage/auth temporary closure plus
 fresh retained identity/time checks. Until whole protocol/persistence/lifecycle
 contracts are implemented there is no operational route returning success.
 
-This is the next integration review boundary, not yet implemented or accepted.
+The fail-closed held-input part is now implemented and independently accepted
+in the linked supervised-input plan. Full declaration/persistence/placement/GO
+and operational continuation remain unimplemented and unaccepted.
 FD counts remain to be closed for held reader/input/transport/store/control phases;
 existing local6/5 fork/initial-scanner peaks alone do not close native256.
+
+## Resumed release execution
+
+The user explicitly authorized the bounded RNR-D00 implementation team after the
+extraction audit. Current source/ownership and the first supervised-input vertical
+are coordinated in [supervised-input integration](2026-11-19-supervised-input-integration.md).
+Reviewer v4's initial independent report is saved under protected
+/home/faris/.local/state/agent-runner/release-resume-20261119/review-v4-initial.md.
+The accepted direction is reused; exact F1/F2/F5 and provider contracts still need
+concrete independent challenge before their dependent implementation. No release
+gate closes from the execution plan or the team authorization.

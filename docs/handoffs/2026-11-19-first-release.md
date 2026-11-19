@@ -249,3 +249,100 @@ and successor ownership; earlier source/review evidence in this handoff is retai
 No release source, gate, authenticated transport or activation changed in the audit.
 Historical runner setup is now docs/experiment-setup.md in this repository;
 development-standards retains generic setup and the single canonical runner skill.
+
+## Current resumed release ownership and explicit team exception
+
+After the completed extraction audit at fca3dfd, the user explicitly requested
+completion of the first operational release. This supersedes the extraction-only
+stop for this resumed release assignment; it does not weaken release acceptance
+or authorize automatic enrollment of other projects. The user then explicitly
+answered “Authorize the bounded release team” to the scoped request for one
+implementation lead, two task owners and independent review/QA, scheduled within
+capacity. This replaces the earlier no-further-agents restriction only for RNR-D00.
+Do not repeat that permission request. No stronger model/effort exception was given.
+
+Main /root remains sole writer during design preparation. Fresh report-only reviewer
+native /root/rnr_d00_release_reviewer_v4 maps to historical canonical
+/root/development_standards_rnr_d00_release_reviewer, ownership v4 after v3.
+No predecessor contacted. Model and effort inherit the parent through the supported
+full-fork contract, equal to both parent ceilings; exact effective settings are not
+exposed. Reviewer may initially read/report only, with no writes/tests/build/runtime/
+Git/account/credential/child operations. Main saves reports. Numeric Main ownership
+and next IssueLead counter remain UNKNOWN, never reset. Same chat observed
+compactions0 retained from audit; chat identifier unavailable in supplied context.
+Current permissions remain danger-full-access / approval never.
+
+Reconciled existing main clean at fca3dfd882a8b3be86b8fd27af3ca0249defbdd7,
+all prior audit operations finished. No inherited runtime operation or actual
+native artifact launched. Names-only process scan found no matching runner/test
+operation; this is not a host-resource qualification. Next: concrete provider
+transport and F1/F2/F5 contracts, independent challenge, then bounded owned
+implementation tasks and qualification. All five release gates remain OPEN.
+
+### Resumed implementation checkpoint
+
+Same chat confirmed compactions1; no reset, no automatic successor dispatched.
+The first native held-input boundary is implemented and independently accepted
+within its fail-closed scope. It never sends GO or returns child success to main;
+both child outcomes abandon/exit125. Current unsupervised qualification main is
+unchanged and MUST NOT run. See supervised-input-integration.md for full trace,
+six review refinements and the corrected fortified-open test-harness anomaly.
+Protected review: release-resume-20261119/reviewer-v4-native/review.md. All17
+hashes matched; independent3 mocked drivers PASS9.560s, including16 integrated
+cases; strict actual links PASS without execution, fixture symbol audit PASS.
+
+Implementation lead and both A/B owners finished all operations and released
+source ownership to Main, recorded in protected ilead-unknown-20261119/
+ownership-transfer.json. Main now owns corrections/source/docs/Git. Historical
+identities and UNKNOWN numeric counters are preserved in ownership.json.
+
+Main also fixed explicit finite retry controls in the inert qualification config
+and corresponding startup observation. Focused19 checks PASS, independently
+accepted/rechecked19PASS0.262s. Final full source suite1442 tests OK205.135s,
+7skips; protected main-suite-final.log. The first run (main-suite.log) had one
+stale contained-observation feature-count expectation (corrected14 to15) and
+three150ms guarded-create timing errors. Unchanged guarded-create tests passed
+in isolation14/14 and the final full suite passed with no concurrent build.
+No production deadline was increased; precise external scheduling cause UNKNOWN.
+Fresh
+offline wheel/sdist build PASS and two disposable installed consumers/three
+strict native builds PASS (artifacts not executed). Fresh wheel SHA256
+92a0e6fe09b74bb291213bd093f8609aa34f7069b59338d376258e774cbc060c.
+Evidence under protected release-resume-20261119; no real consumer enrolled.
+
+The selected runtime candidate is0.167.0, separate from installed host CLI0.162.1.
+Official pinned source was recovered at cb41599ccbe371272892f156286a236aa097bada;
+version/package correspondence does not establish actual qualified binary behavior.
+Protected provider-route proposal records client correlation, immutable capability,
+credential custody, relay lifetime and retry findings. No auth cache/account read,
+model request, actual native artifact or activation occurred. All five whole-release
+gates remain OPEN; extraction remains complete independently of release readiness.
+
+### Published source checkpoint and continuation boundary
+
+Native source commit e8a9401 and finite retry source commit6ce2f59 preserve
+independently accepted components. Main source/QA/package/consumer operations
+are finished; lead/A/B and reviewer operations are finished. No actual runner
+artifact, account request, host runtime or real project enrollment was launched.
+All remaining work stays RNR-D00. Main's current supported environment identifies
+chat01a1f1b2-5e71-7cb3-a500-20429d52af57; observed compactions1, confirmed-notice
+tracking only. Available context is approaching the next compaction before the
+remaining implementation can finish; safe checkpoint/continuation is due.
+
+First next work: exact F1 durable claim/latch/intent byte inventory and epoch/
+recovery/latch-retirement contract, full F2 trusted installation/unit/policy/
+enrollment comparisons and finite authenticated keeper exchanges, coupled with
+F5 actual hierarchy/control acquisition/placement/GO and observer negative commit.
+Use the existing accepted design and reviewer findings; retain current no-GO
+wrapper until the whole next boundary is implemented and independently checked.
+Then finish protected provider transport/custody/request correlation, actual
+private entry/session/rnr_command, immutable closure and finite actual success/
+failure/recovery qualification before activation. No gate may be bypassed by
+using the unsupervised qualification main or treating structural DATA as trust.
+
+The protected continuation assignment at release-resume-20261119/
+continuation.txt is self-contained and preserves current user preferences.
+No automatic successor is created: current catalog has list/read/wait tools but
+no creation/dispatch tool, and existing daemon control socket is absent. Do not
+start a daemon or change global settings to create a chat. Final publication and
+stopping receipt is protected checkpoint.json; verify it and Git before resuming.
