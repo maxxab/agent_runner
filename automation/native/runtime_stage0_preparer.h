@@ -37,6 +37,12 @@ struct rnr_stage0_preparer_error {
  * process/no callbacks/signals are prerequisites, not established by reads.
  */
 int rnr_stage0_prepare_inputs(struct rnr_stage0_preparer_error *);
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+/* Fixed launch child only: exact held inventory, v2 installation/v3 task DATA.
+ * Shares the one attempt; never publishes ordinary inputs or authorizes effects.
+ * Caller must abandon inputs/gate and exit125 on either result. */
+int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *);
+#endif
 /* Same original owner/clock; retains22 original proc/PID1/typed ns roles.
  * This is pre-effect view ownership, not host authentication or readiness.
  * No caller data/paths/origin, namespace mutation, helper, Store or exec.

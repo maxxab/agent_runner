@@ -275,6 +275,70 @@ static int fork_parent_gate = -1;
 static pid_t fork_parent_pid;
 static struct rnr_stage0_clock *fork_parent_clock;
 static struct rnr_stage0_fork_result *fork_parent_result;
+static int fork_admission_route, fork_single_owner;
+static int fork_child_gate=-1;
+static pid_t fork_child_parent;
+static struct rnr_stage0_clock *fork_child_clock;
+static struct rnr_stage0_fork_result *fork_child_result;
+
+/* Trusted immutable no-thread/no-reaper launch is a source prerequisite.
+ * Observe the kernel's thread count before fork; refuse unknown/truncation.
+ * No caller selector, arbitrary path or thread-discovery callback. */
+static int admission_single_owner(struct rnr_stage0_clock_error *error)
+{
+    char raw[16384], extra; int count=0;
+    int fd=open("/proc/self/status",O_RDONLY|O_NOFOLLOW|O_CLOEXEC);
+    if(fd<0){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,errno);return -1;}
+    ssize_t n=read(fd,raw,sizeof(raw));
+    int failure=n<0?errno:0;
+    if(n>0 && n<(ssize_t)sizeof(raw)){
+        ssize_t tail=read(fd,&extra,1);
+        if(tail!=0){failure=tail<0?errno:0;n=-1;}
+    }else n=-1;
+    if(close(fd)!=0){error->cleanup_errno=errno;reject_clock(error,RNR_STAGE0_CLOCK_CLEANUP,errno);return -1;}
+    if(n<=0){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,failure);return -1;}
+    for(ssize_t at=0;at<n;){
+        ssize_t end=at;while(end<n&&raw[end]!='\n')++end;
+        if(end==n){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;}
+        if(end-at>=8&&!memcmp(raw+at,"Threads:",8)){
+            ssize_t value=at+8;
+            while(value<end&&(raw[value]==' '||raw[value]=='\t'))++value;
+            if(value+1!=end||raw[value]!='1'){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;}
+            ++count;
+        }
+        at=end+1;
+    }
+    if(count!=1||getpid()!=gettid()){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;}
+    return 0;
+}
+static int negative_admission_sample(struct rnr_stage0_clock *state,
+                                     struct rnr_stage0_clock_error *error)
+{
+    if(state->phase!=RNR_STAGE0_CLOCK_NEGATIVE)return -1;
+    if(sample_owned_clock(state,error)!=0)return -1;
+    if(state->captured_boottime_ns<=0||state->captured_boottime_ns>INT64_MAX-90*NS){
+        reject_clock(error,RNR_STAGE0_CLOCK_RANGE,0);return terminal(state);
+    }
+    int64_t stop=state->captured_boottime_ns+90*NS;
+    if(state->deadline_boottime_ns<stop)stop=state->deadline_boottime_ns;
+    if(state->last_boottime_ns>=stop||state->last_wall_ns>=state->wall_deadline_ns){
+        reject_clock(error,RNR_STAGE0_CLOCK_CUTOFF,0);return terminal(state);
+    }
+    return 0;
+}
+/* Positive setup expiration is not negative expiry. Never restore state after
+ * sample_owned_clock has invalidated identity/high-water/negative ownership. */
+static int fork_setup_sample(struct rnr_stage0_clock *state,
+                              struct rnr_stage0_clock_error *error)
+{
+    if(!fork_admission_route||state->phase!=RNR_STAGE0_CLOCK_NEGATIVE)
+        return check_setup_samples(state,error);
+    if(negative_admission_sample(state,error)!=0)return -1;
+    if(state->last_boottime_ns>=state->setup_end_ns){
+        reject_clock(error,RNR_STAGE0_CLOCK_CUTOFF,0);return -1;
+    }
+    return 0;
+}
 
 static int keeper_owner(struct rnr_stage0_clock *state)
 {
@@ -380,7 +444,7 @@ static int fork_packet(int fd,const char wanted[8],struct rnr_stage0_clock *stat
                          struct rnr_stage0_clock_error *error)
 {
     unsigned char raw[8];
-    if(check_setup_samples(state,error)!=0)return -1;
+    if(fork_setup_sample(state,error)!=0)return -1;
     int64_t remaining=state->setup_end_ns-state->last_boottime_ns;
     int64_t wall_remaining=state->wall_deadline_ns-state->last_wall_ns;
     if(wall_remaining<remaining)remaining=wall_remaining;
@@ -393,7 +457,7 @@ static int fork_packet(int fd,const char wanted[8],struct rnr_stage0_clock *stat
     if(value!=1 || (ready.revents&(POLLERR|POLLNVAL)) || !(ready.revents&POLLIN)){
         reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);return -1;
     }
-    if(check_setup_samples(state,error)!=0)return -1;
+    if(fork_setup_sample(state,error)!=0)return -1;
     struct iovec vector={.iov_base=raw,.iov_len=sizeof(raw)};
     struct msghdr message={.msg_iov=&vector,.msg_iovlen=1};
     ssize_t amount=recvmsg(fd,&message,MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC);
@@ -402,24 +466,27 @@ static int fork_packet(int fd,const char wanted[8],struct rnr_stage0_clock *stat
        memcmp(raw,wanted,8)!=0){
         reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);return -1;
     }
-    return check_setup_samples(state,error);
+    return fork_setup_sample(state,error);
 }
-int rnr_stage0_clock_fork(struct rnr_stage0_clock *state,
+static int fork_clock(struct rnr_stage0_clock *state,
                           struct rnr_stage0_fork_result *result,
-                          struct rnr_stage0_clock_error *error)
+                          struct rnr_stage0_clock_error *error, int admission_route)
 {
     if(state==NULL || result==NULL || error==NULL){
-        atomic_store_explicit(&fork_reserved,1,memory_order_release);errno=EINVAL;return terminal(state);
+        atomic_store_explicit(&fork_reserved,1,memory_order_release);errno=EINVAL;
+        return fork_admission_route&&state==fork_parent_clock?-1:terminal(state);
     }
     *error=(struct rnr_stage0_clock_error){0};
     if(atomic_exchange_explicit(&fork_reserved,1,memory_order_acq_rel) || state->fork_attempted || state->admission_attempted ||
        state->phase!=RNR_STAGE0_CLOCK_PREPARING){
         state->fork_attempted=1;
-        reject_clock(error,RNR_STAGE0_CLOCK_STATE,0);return terminal(state);
+        reject_clock(error,RNR_STAGE0_CLOCK_STATE,0);
+        return fork_admission_route&&state==fork_parent_clock?-1:terminal(state);
     }
     /* A losing/invalid repeated call NEVER replaces retained child ownership. */
     state->fork_attempted=1;
     *result=(struct rnr_stage0_fork_result){.child_pidfd=-1};
+    fork_admission_route=admission_route;
     int channels[2]={-1,-1};
     struct rnr_stage0_admission_error admission={0};
     struct sigaction disposition;
@@ -436,6 +503,10 @@ int rnr_stage0_clock_fork(struct rnr_stage0_clock *state,
     }
     if(disposition.sa_handler!=SIG_DFL || (disposition.sa_flags&SA_NOCLDWAIT)){
         reject_clock(error,RNR_STAGE0_CLOCK_FORK,0);goto failed;
+    }
+    if(admission_route){
+        if(admission_single_owner(error)!=0)goto failed;
+        fork_single_owner=1;
     }
     if(rnr_stage0_clock_check_setup(state,error)!=0)goto failed;
     if(socketpair(AF_UNIX,SOCK_SEQPACKET|SOCK_CLOEXEC|SOCK_NONBLOCK,0,channels)!=0){
@@ -473,6 +544,12 @@ int rnr_stage0_clock_fork(struct rnr_stage0_clock *state,
         if(fork_parent_live(parent,error)!=0)goto child_failed;
         ssize_t amount=send(channels[1],"RNRKARM1",8,MSG_DONTWAIT|MSG_NOSIGNAL);
         if(amount!=8)goto child_failed; /* one send, never replayed */
+        if(admission_route){
+            fork_child_gate=channels[1];channels[1]=-1;
+            fork_child_parent=parent;fork_child_clock=state;fork_child_result=result;
+            state->phase=RNR_STAGE0_CLOCK_ADMISSION;
+            return 0; /* only the fixed launch wrapper may consume this branch */
+        }
         if(fork_packet(channels[1],"RNRKGO01",state,error)!=0 ||
            fork_parent_live(parent,error)!=0 ||
            fork_close(&channels[1],result,error)!=0 ||
@@ -502,8 +579,81 @@ child_failed:
 failed:
     (void)fork_close(&channels[0],result,error);
     (void)fork_close(&channels[1],result,error);
+    if(admission_route && fork_parent_clock==state){
+        result->primary=*error;
+        /* Independently validate remaining negative lease. No restoration of
+         * FAILED state after an identity/sample/rollback failure. */
+        struct rnr_stage0_clock_error negative={0};
+        if(state->phase==RNR_STAGE0_CLOCK_NEGATIVE)
+            (void)negative_admission_sample(state,&negative);
+        return -1;
+    }
     if(fork_parent_clock==state)(void)fork_close(&fork_parent_gate,result,error);
     return terminal(state);
+}
+int rnr_stage0_clock_fork(struct rnr_stage0_clock *s,
+    struct rnr_stage0_fork_result *r,struct rnr_stage0_clock_error *e)
+{return fork_clock(s,r,e,0);}
+int rnr_stage0_clock_fork_admission(struct rnr_stage0_clock *s,
+    struct rnr_stage0_fork_result *r,struct rnr_stage0_clock_error *e)
+{return fork_clock(s,r,e,1);}
+int rnr_stage0_clock_check_admission(struct rnr_stage0_clock *state,
+    struct rnr_stage0_clock_error *error)
+{
+    if(error==NULL){errno=EINVAL;return terminal(state);}
+    *error=(struct rnr_stage0_clock_error){0};
+    if(!fork_admission_route||state==NULL||state!=fork_child_clock||
+       state->phase!=RNR_STAGE0_CLOCK_ADMISSION||fork_child_gate!=4||
+       state->pid!=getpid()||getpid()!=gettid()||
+       fork_parent_live(fork_child_parent,error)!=0){
+        reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return terminal(state);
+    }
+    return check_setup_samples(state,error);
+}
+int rnr_stage0_clock_abandon_admission(struct rnr_stage0_clock *state,
+    struct rnr_stage0_fork_result *result,struct rnr_stage0_clock_error *error)
+{
+    if(!state||!result||!error){errno=EINVAL;return -1;}
+    *error=(struct rnr_stage0_clock_error){0};
+    if(!fork_admission_route||getpid()!=gettid())goto wrong;
+    if(state==fork_child_clock&&result==fork_child_result&&state->pid==getpid()&&fork_child_gate>=0)
+        return fork_close(&fork_child_gate,result,error);
+    if(state==fork_parent_clock&&result==fork_parent_result&&fork_parent_pid==getpid()&&fork_parent_gate>=0)
+        return fork_close(&fork_parent_gate,result,error);
+wrong:
+    reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;
+}
+int rnr_stage0_clock_contain_original_child(struct rnr_stage0_clock *state,
+    struct rnr_stage0_fork_result *result,struct rnr_stage0_clock_error *error)
+{
+    if(!state||!result||!error){errno=EINVAL;return -1;}
+    *error=(struct rnr_stage0_clock_error){0};
+    if(!fork_admission_route||state!=fork_parent_clock||result!=fork_parent_result||
+       result->child_pid<=0||result->signal_attempted){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;}
+    if(fork_parent_pid!=getpid()||gettid()!=getpid()){
+        reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return terminal(state);
+    }
+    if(state->phase!=RNR_STAGE0_CLOCK_NEGATIVE){reject_clock(error,RNR_STAGE0_CLOCK_STATE,0);return -1;}
+    if(result->child_pidfd<0){
+        struct sigaction disposition;
+        if(!fork_single_owner){reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return terminal(state);}
+        if(sigaction(SIGCHLD,NULL,&disposition)!=0){
+            reject_clock(error,RNR_STAGE0_CLOCK_OWNER,errno);return terminal(state);
+        }
+        if(disposition.sa_handler!=SIG_DFL||(disposition.sa_flags&SA_NOCLDWAIT)){
+            reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return terminal(state);
+        }
+    }else if(result->child_pidfd<3){
+        reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return terminal(state);
+    }
+    if(negative_admission_sample(state,error)!=0)return -1;
+    result->signal_attempted=1; /* reserve independently before sole syscall */
+    long value=result->child_pidfd>=0?
+        syscall(SYS_pidfd_send_signal,result->child_pidfd,SIGKILL,NULL,0):
+        syscall(SYS_kill,result->child_pid,SIGKILL);
+    result->signal_result=(int)value;result->signal_errno=value<0?errno:0;
+    if(value!=0){reject_clock(error,RNR_STAGE0_CLOCK_FORK,result->signal_errno);return -1;}
+    return 0;
 }
 int rnr_stage0_clock_abandon_gate(struct rnr_stage0_clock *state,
                                   struct rnr_stage0_fork_result *result,

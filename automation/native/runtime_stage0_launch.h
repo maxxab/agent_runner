@@ -14,6 +14,9 @@ struct rnr_stage0_launch_error {
     int system_errno, cleanup_errno;
     struct rnr_stage0_clock_error capture, final;
     struct rnr_stage0_clock_admission_result admission;
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    struct rnr_stage0_clock_error containment, gate_cleanup;
+#endif
 };
 /* ONE module-owned attempt, always failure if it returns. No caller paths,
  * argv, environment, reset, receipt, main, Store or positive dispatch. Future
@@ -54,4 +57,17 @@ int rnr_stage0_check_operational_preparation(struct rnr_stage0_launch_error *);
 int rnr_stage0_bind_operational_preparation_cutoff(int64_t,
                                                  struct rnr_stage0_launch_error *);
 int rnr_stage0_finish_operational(struct rnr_stage0_launch_error *);
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+struct rnr_stage0_preparer_error;
+struct rnr_stage0_installation;
+struct rnr_stage0_task;
+struct rnr_stage0_launch_declaration;
+/* Fixed held-input boundary only; every returning parent path fails and every
+ * child reader outcome abandons descriptors and _exit(125). No GO/main route. */
+int rnr_stage0_supervised_inputs(struct rnr_stage0_preparer_error *);
+int rnr_stage0_check_admission_preparation(struct rnr_stage0_launch_error *);
+int rnr_stage0_bind_admission_inputs(const struct rnr_stage0_installation *,
+    const struct rnr_stage0_task *,const struct rnr_stage0_launch_declaration *,
+    struct rnr_stage0_launch_error *);
+#endif
 #endif

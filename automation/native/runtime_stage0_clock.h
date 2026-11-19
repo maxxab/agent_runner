@@ -78,9 +78,24 @@ int rnr_stage0_admit_with_clock(struct rnr_stage0_clock *,
 struct rnr_stage0_fork_result {
     pid_t child_pid;
     int child_pidfd, fork_entered, fork_returned, child_armed;
+    int signal_attempted, signal_result, signal_errno;
+    struct rnr_stage0_clock_error primary;
     int cleanup_count;
     struct { int fd, system_errno; } cleanup_errors[2];
 };
+/* Fail-closed held reader route, sharing the physical one-shot fork. Trusted
+ * immutable native launch must contain no thread creation, callbacks, signal
+ * handlers, wait/reaper or concurrent disposition changes. The fixed proc
+ * observation establishes one thread before fork; it cannot freeze future code.
+ * No GO or positive continuation. Preserve result/clock for recovery. */
+int rnr_stage0_clock_fork_admission(struct rnr_stage0_clock *,
+    struct rnr_stage0_fork_result *, struct rnr_stage0_clock_error *);
+int rnr_stage0_clock_check_admission(struct rnr_stage0_clock *,
+    struct rnr_stage0_clock_error *);
+int rnr_stage0_clock_abandon_admission(struct rnr_stage0_clock *,
+    struct rnr_stage0_fork_result *, struct rnr_stage0_clock_error *);
+int rnr_stage0_clock_contain_original_child(struct rnr_stage0_clock *,
+    struct rnr_stage0_fork_result *, struct rnr_stage0_clock_error *);
 int rnr_stage0_clock_fork(struct rnr_stage0_clock *,
                           struct rnr_stage0_fork_result *,
                           struct rnr_stage0_clock_error *);

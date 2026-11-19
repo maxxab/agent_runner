@@ -38,6 +38,9 @@
 #endif
 enum preparer_phase { PREPARER_NEW, PREPARER_ACQUIRING,
     PREPARER_FENCED_ACQUIRING, PREPARER_INPUTS_HELD, PREPARER_FENCED_HELD,
+    PREPARER_ADMISSION_ACQUIRING, PREPARER_FENCED_ADMISSION_ACQUIRING,
+    PREPARER_ADMISSION_INPUTS_HELD, PREPARER_FENCED_ADMISSION_HELD,
+    PREPARER_ADMISSION_ABANDONING,
     PREPARER_VIEW_ACQUIRING, PREPARER_FENCED_VIEW_ACQUIRING,
     PREPARER_VIEW_HELD, PREPARER_FENCED_VIEW_HELD,
     PREPARER_JOURNAL_ACQUIRING, PREPARER_FENCED_JOURNAL_ACQUIRING,
@@ -139,7 +142,7 @@ struct preparer_owner {
     struct stat identities[5];
     uint64_t mounts[5];
     long root_filesystem;
-    unsigned char installation_raw[128], task_raw[65600];
+    unsigned char installation_raw[448], task_raw[65600];
     struct rnr_stage0_installation installation;
     struct rnr_stage0_task task;
     struct rnr_stage0_preparer_error original_error, abandon_error;
@@ -152,6 +155,12 @@ static void reject_input(struct rnr_stage0_preparer_error *e,
 
 /* Losing calls touch atomic state only, never unpublished FD/data ownership.
  * No unconditional store may override acquisition/abandonment ownership. */
+static int admission_phase(int phase)
+{
+    return phase==PREPARER_ADMISSION_ACQUIRING || phase==PREPARER_FENCED_ADMISSION_ACQUIRING ||
+        phase==PREPARER_ADMISSION_INPUTS_HELD || phase==PREPARER_FENCED_ADMISSION_HELD ||
+        phase==PREPARER_ADMISSION_ABANDONING;
+}
 static void fence_inputs(void)
 {
     int phase=atomic_load_explicit(&preparer_state,memory_order_acquire);
@@ -159,6 +168,8 @@ static void fence_inputs(void)
         int fenced;
         switch(phase){
         case PREPARER_NEW:fenced=PREPARER_FAILED_DRAINED;break;
+        case PREPARER_ADMISSION_ACQUIRING:fenced=PREPARER_FENCED_ADMISSION_ACQUIRING;break;
+        case PREPARER_ADMISSION_INPUTS_HELD:fenced=PREPARER_FENCED_ADMISSION_HELD;break;
         case PREPARER_ACQUIRING:fenced=PREPARER_FENCED_ACQUIRING;break;
         case PREPARER_INPUTS_HELD:fenced=PREPARER_FENCED_HELD;break;
         case PREPARER_VIEW_ACQUIRING:fenced=PREPARER_FENCED_VIEW_ACQUIRING;break;
@@ -190,13 +201,18 @@ static void fence_inputs(void)
                 memory_order_acq_rel,memory_order_acquire))break;
     }
 writer:
-    /* Existing NULL API is an irreversible fence, with no clock/data read. */
-    (void)rnr_stage0_check_operational_preparation(NULL);
+    /* Mode comes only from published atomic phase, never unpublished owner data.
+     * Terminal states have already fenced their route and cannot revive it. */
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    if(admission_phase(phase)){(void)rnr_stage0_check_admission_preparation(NULL);return;}
+#endif
+    if(phase!=PREPARER_FAILED_DRAINED && phase!=PREPARER_ABANDONED)
+        (void)rnr_stage0_check_operational_preparation(NULL);
 }
 static int active_preparation(void)
 {
     int phase=atomic_load_explicit(&preparer_state,memory_order_acquire);
-    return phase==PREPARER_ACQUIRING || phase==PREPARER_VIEW_ACQUIRING ||
+    return phase==PREPARER_ADMISSION_ACQUIRING || phase==PREPARER_ACQUIRING || phase==PREPARER_VIEW_ACQUIRING ||
            phase==PREPARER_JOURNAL_ACQUIRING || phase==PREPARER_RUNTIME_ACQUIRING || phase==PREPARER_DM_ACQUIRING || phase==PREPARER_MOUNT_ACQUIRING || phase==PREPARER_MEDIA_ACQUIRING || phase==PREPARER_LAUNCH_LOOPS_ACQUIRING || phase==PREPARER_LAUNCH_DM_ACQUIRING || phase==PREPARER_LAUNCH_MOUNT_ACQUIRING || phase==PREPARER_BINDS_ACQUIRING || phase==PREPARER_FINAL_ACQUIRING || phase==PREPARER_FINAL_FINISHING;
 }
 static int live_input(struct rnr_stage0_preparer_error *e)
@@ -205,7 +221,14 @@ static int live_input(struct rnr_stage0_preparer_error *e)
         reject_input(e,RNR_STAGE0_PREPARER_ATTEMPT,0);return -1;
     }
     struct rnr_stage0_launch_error clock_error={0};
-    if(rnr_stage0_check_operational_preparation(&clock_error)!=0){
+    int result;
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    int phase=atomic_load_explicit(&preparer_state,memory_order_acquire);
+    if(admission_phase(phase))result=rnr_stage0_check_admission_preparation(&clock_error);
+    else
+#endif
+        result=rnr_stage0_check_operational_preparation(&clock_error);
+    if(result!=0){
         e->launch=clock_error;
         reject_input(e,RNR_STAGE0_PREPARER_CLOCK,clock_error.system_errno);return -1;
     }
@@ -381,6 +404,22 @@ done:
     if(e->code==RNR_STAGE0_PREPARER_OK)(void)live_input(e);
     return e->code==RNR_STAGE0_PREPARER_OK?0:-1;
 }
+static int read_fixed_inputs(size_t installation_size,struct rnr_stage0_preparer_error *e)
+{
+    if(open_input(-1,"/",1,&input_owner.fds[0],e)!=0 || capture_input(0,e)!=0)return -1;
+    if(open_input(input_owner.fds[0],"etc",1,&input_owner.fds[1],e)!=0 || capture_input(1,e)!=0)return -1;
+    if(open_input(input_owner.fds[1],"rnr",1,&input_owner.fds[2],e)!=0 || capture_input(2,e)!=0)return -1;
+    if(open_input(input_owner.fds[2],"installation.bin",0,&input_owner.fds[3],e)!=0 ||
+       capture_input(3,e)!=0 || read_input(3,input_owner.installation_raw,installation_size,installation_size,e)!=0)return -1;
+    if(open_input(input_owner.fds[2],"task.bin",0,&input_owner.fds[4],e)!=0 ||
+       capture_input(4,e)!=0 || read_input(4,input_owner.task_raw,65,65600,e)!=0)return -1;
+    if(live_input(e)!=0)return -1;
+    if(rnr_stage0_decode_installation(input_owner.installation_raw,installation_size,&input_owner.installation)!=0 ||
+       rnr_stage0_decode_task(input_owner.task_raw,(size_t)input_owner.identities[4].st_size,&input_owner.task)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_DECODE,0);return -1;
+    }
+    return 0;
+}
 int rnr_stage0_prepare_inputs(struct rnr_stage0_preparer_error *e)
 {
     int expected=PREPARER_NEW;
@@ -410,18 +449,7 @@ int rnr_stage0_prepare_inputs(struct rnr_stage0_preparer_error *e)
         reject_input(e,RNR_STAGE0_PREPARER_ADMISSION,e->admission.system_errno);goto failed;
     }
     if(live_input(e)!=0)goto failed;
-    if(open_input(-1,"/",1,&input_owner.fds[0],e)!=0 || capture_input(0,e)!=0)goto failed;
-    if(open_input(input_owner.fds[0],"etc",1,&input_owner.fds[1],e)!=0 || capture_input(1,e)!=0)goto failed;
-    if(open_input(input_owner.fds[1],"rnr",1,&input_owner.fds[2],e)!=0 || capture_input(2,e)!=0)goto failed;
-    if(open_input(input_owner.fds[2],"installation.bin",0,&input_owner.fds[3],e)!=0 ||
-       capture_input(3,e)!=0 || read_input(3,input_owner.installation_raw,128,128,e)!=0)goto failed;
-    if(open_input(input_owner.fds[2],"task.bin",0,&input_owner.fds[4],e)!=0 ||
-       capture_input(4,e)!=0 || read_input(4,input_owner.task_raw,65,65600,e)!=0)goto failed;
-    if(live_input(e)!=0)goto failed;
-    if(rnr_stage0_decode_installation(input_owner.installation_raw,128,&input_owner.installation)!=0 ||
-       rnr_stage0_decode_task(input_owner.task_raw,(size_t)input_owner.identities[4].st_size,&input_owner.task)!=0){
-        reject_input(e,RNR_STAGE0_PREPARER_DECODE,0);goto failed;
-    }
+    if(read_fixed_inputs(128,e)!=0)goto failed;
     if(live_input(e)!=0)goto failed;
     if(rnr_stage0_bind_operational_preparation_cutoff(input_owner.task.wall_cutoff_ns,&e->launch)!=0){
         reject_input(e,RNR_STAGE0_PREPARER_CLOCK,e->launch.system_errno);goto failed;
@@ -444,6 +472,69 @@ failed:
             memory_order_release,memory_order_relaxed);
     return -1;
 }
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+/* Only the fixed launch wrapper enters this partial DATA boundary. There is
+ * no ordinary stage publication, declaration authority, persistence or GO. */
+int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *e)
+{
+    int expected=PREPARER_NEW;
+    int claimed=atomic_compare_exchange_strong_explicit(&preparer_state,&expected,
+        PREPARER_ADMISSION_ACQUIRING,memory_order_acq_rel,memory_order_acquire);
+    if(!e){
+        fence_inputs();
+        if(claimed){expected=PREPARER_FENCED_ADMISSION_ACQUIRING;
+            (void)atomic_compare_exchange_strong_explicit(&preparer_state,&expected,
+                PREPARER_FAILED_DRAINED,memory_order_release,memory_order_relaxed);}
+        errno=EINVAL;return -1;
+    }
+    *e=(struct rnr_stage0_preparer_error){.unadopted_fd=-1};
+    if(!claimed){reject_input(e,RNR_STAGE0_PREPARER_ATTEMPT,0);fence_inputs();return -1;}
+    /* Admission clock identity is checked before any protected input syscall;
+     * unlike legacy preparation, this route never captures a new origin. */
+    if(live_input(e)!=0)goto failed;
+    pid_t pid=getpid();
+    if(pid<=0 || syscall(SYS_gettid)!=(long)pid || geteuid()!=0 || getegid()!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_OWNER,0);goto failed;
+    }
+    atomic_store_explicit(&input_owner_pid,pid,memory_order_release);
+    if(live_input(e)!=0)goto failed;
+    if(rnr_stage0_admit_held_fds(&e->admission)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_ADMISSION,e->admission.system_errno);goto failed;
+    }
+    if(live_input(e)!=0 || read_fixed_inputs(448,e)!=0)goto failed;
+    struct rnr_stage0_launch_declaration declaration;
+    if(rnr_stage0_decode_launch_declaration(input_owner.task.payload,input_owner.task.payload_bytes,&declaration)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_DECODE,0);goto failed;
+    }
+    if(input_owner.installation.version!=2 ||
+       memcmp(declaration.allocation,input_owner.task.task_id,16) ||
+       memcmp(declaration.asset_root,input_owner.installation.asset_root,32) ||
+       memcmp(declaration.execution_root,input_owner.installation.execution_root,32)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto failed;
+    }
+    if(live_input(e)!=0)goto failed;
+    if(rnr_stage0_bind_admission_inputs(&input_owner.installation,&input_owner.task,&declaration,&e->launch)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_CLOCK,e->launch.system_errno);goto failed;
+    }
+    if(live_input(e)!=0)goto failed;
+    for(int role=0;role<5;++role)if(recheck_input(role,e)!=0)goto failed;
+    if(live_input(e)!=0)goto failed;
+    expected=PREPARER_ADMISSION_ACQUIRING;
+    if(!atomic_compare_exchange_strong_explicit(&preparer_state,&expected,PREPARER_ADMISSION_INPUTS_HELD,
+            memory_order_release,memory_order_relaxed)){
+        reject_input(e,RNR_STAGE0_PREPARER_ATTEMPT,0);goto failed;
+    }
+    /* Borrowed task/ASCII views refer only to private original static bytes.
+     * The fixed wrapper must immediately abandon both inputs and gate, exit125. */
+    return 0;
+failed:
+    fence_inputs();drain_inputs(e);input_owner.original_error=*e;
+    expected=PREPARER_FENCED_ADMISSION_ACQUIRING;
+    (void)atomic_compare_exchange_strong_explicit(&preparer_state,&expected,PREPARER_FAILED_DRAINED,
+        memory_order_release,memory_order_relaxed);
+    return -1;
+}
+#endif
 int rnr_stage0_abandon_preparation_inputs(struct rnr_stage0_preparer_error *e)
 {
     if(e==NULL){fence_inputs();errno=EINVAL;return -1;}
@@ -455,7 +546,8 @@ int rnr_stage0_abandon_preparation_inputs(struct rnr_stage0_preparer_error *e)
     }
     int phase=atomic_load_explicit(&preparer_state,memory_order_acquire);
     for(;;){
-        if(phase!=PREPARER_INPUTS_HELD && phase!=PREPARER_FENCED_HELD &&
+        if(phase!=PREPARER_ADMISSION_INPUTS_HELD && phase!=PREPARER_FENCED_ADMISSION_HELD &&
+           phase!=PREPARER_INPUTS_HELD && phase!=PREPARER_FENCED_HELD &&
            phase!=PREPARER_VIEW_HELD && phase!=PREPARER_FENCED_VIEW_HELD &&
            phase!=PREPARER_JOURNAL_HELD && phase!=PREPARER_FENCED_JOURNAL_HELD &&
            phase!=PREPARER_RUNTIME_HELD && phase!=PREPARER_FENCED_RUNTIME_HELD &&
@@ -469,12 +561,13 @@ int rnr_stage0_abandon_preparation_inputs(struct rnr_stage0_preparer_error *e)
            phase!=PREPARER_FINAL_ROLES_HELD && phase!=PREPARER_FENCED_FINAL_ROLES_HELD){
             reject_input(e,RNR_STAGE0_PREPARER_ATTEMPT,0);fence_inputs();return -1;
         }
-        if(atomic_compare_exchange_weak_explicit(&preparer_state,&phase,PREPARER_ABANDONING,
+        int abandoning=admission_phase(phase)?PREPARER_ADMISSION_ABANDONING:PREPARER_ABANDONING;
+        if(atomic_compare_exchange_weak_explicit(&preparer_state,&phase,abandoning,
                 memory_order_acq_rel,memory_order_acquire))break;
     }
     e->claim_disposition=input_owner.claim_disposition;e->mkdir_errno=input_owner.mkdir_errno;
     fence_inputs();drain_inputs(e);input_owner.abandon_error=*e;
-    int expected=PREPARER_ABANDONING;
+    int expected=admission_phase(phase)?PREPARER_ADMISSION_ABANDONING:PREPARER_ABANDONING;
     (void)atomic_compare_exchange_strong_explicit(&preparer_state,&expected,PREPARER_ABANDONED,
             memory_order_release,memory_order_relaxed);
     return e->code==RNR_STAGE0_PREPARER_OK?0:-1;

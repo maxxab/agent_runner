@@ -4,6 +4,10 @@
  */
 #define _GNU_SOURCE
 #include "runtime_stage0_launch.h"
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+#include "runtime_stage0_preparer.h"
+#include "runtime_stage0_records.h"
+#endif
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -24,8 +28,9 @@
 
 enum { HEADER_BYTES=144, PREFIX_BYTES=16, MAX_PAYLOAD=65536, CHUNK_BYTES=32768 };
 enum launch_phase { LAUNCH_NEW, LAUNCH_PREPARING, LAUNCH_PREPARED, LAUNCH_CHECKING,
-                    LAUNCH_FINISHING, LAUNCH_FENCED };
-enum launch_mode { LAUNCH_VALIDATION, LAUNCH_OPERATIONAL };
+                    LAUNCH_FINISHING, LAUNCH_FENCED, LAUNCH_ADMISSION,
+                    LAUNCH_ADMISSION_CHECKING, LAUNCH_ADMISSION_BINDING };
+enum launch_mode { LAUNCH_VALIDATION, LAUNCH_OPERATIONAL, LAUNCH_HELD_INPUTS };
 static atomic_int launch_state = ATOMIC_VAR_INIT(LAUNCH_NEW);
 /* Published only after prepare succeeds; exclusively used by winning stages.
  * Losing callers touch neither this clock nor another caller's error buffer. */
@@ -377,3 +382,99 @@ int rnr_stage0_launch_validation(struct rnr_stage0_launch_error *error)
     if(rnr_stage0_prepare_validation(error)!=0)return -1;
     return rnr_stage0_finish_validation(error);
 }
+
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+/* Both retained objects have process lifetime; parent clock.c never borrows a
+ * stack clock/result. Neither result nor reader data escapes as authority. */
+static struct rnr_stage0_fork_result supervised_result;
+static struct rnr_stage0_preparer_error supervised_primary, supervised_cleanup;
+static int admission_binding_attempted;
+static int admission_check(struct rnr_stage0_launch_error *error,int binding,
+    const struct rnr_stage0_installation *installation,
+    const struct rnr_stage0_task *task,
+    const struct rnr_stage0_launch_declaration *declaration)
+{
+    int expected=LAUNCH_ADMISSION;
+    enum launch_phase phase=binding?LAUNCH_ADMISSION_BINDING:LAUNCH_ADMISSION_CHECKING;
+    if(error==NULL){atomic_store(&launch_state,LAUNCH_FENCED);errno=EINVAL;return -1;}
+    *error=(struct rnr_stage0_launch_error){0};
+    if(!atomic_compare_exchange_strong(&launch_state,&expected,phase)){
+        reject_launch(error,RNR_STAGE0_LAUNCH_ATTEMPT,0);goto failed;
+    }
+    if(prepared_mode!=LAUNCH_HELD_INPUTS){reject_launch(error,RNR_STAGE0_LAUNCH_ATTEMPT,0);goto failed;}
+    if(geteuid()!=0||getegid()!=0){reject_launch(error,RNR_STAGE0_LAUNCH_OWNER,0);goto failed;}
+    if(binding){
+        if(admission_binding_attempted){reject_launch(error,RNR_STAGE0_LAUNCH_ATTEMPT,0);goto failed;}
+        admission_binding_attempted=1;
+    }
+    if(rnr_stage0_clock_check_admission(&prepared_clock,&error->final)!=0){
+        reject_launch(error,RNR_STAGE0_LAUNCH_CLOCK,error->final.system_errno);goto failed;
+    }
+    if(binding){
+        if(!installation||!task||!declaration||installation->version!=2||declaration->version!=3||
+           memcmp(installation->boot_id,prepared_clock.boot_id,37)||
+           task->wall_cutoff_ns<=prepared_clock.sampled_wall_ns+60000000000LL||
+           task->wall_cutoff_ns>prepared_clock.wall_deadline_ns||
+           declaration->positive_wall_ns<=prepared_clock.last_wall_ns||
+           declaration->positive_wall_ns>prepared_clock.sampled_wall_ns+44000000000LL||
+           declaration->positive_wall_ns>task->wall_cutoff_ns){
+            reject_launch(error,RNR_STAGE0_LAUNCH_CONFIG,0);goto failed;
+        }
+        if(rnr_stage0_clock_bind_cutoff(&prepared_clock,task->wall_cutoff_ns,&error->final)!=0){
+            reject_launch(error,RNR_STAGE0_LAUNCH_CLOCK,error->final.system_errno);goto failed;
+        }
+        /* Binding samples again; Store deadline must remain strictly live. */
+        if(declaration->positive_wall_ns<=prepared_clock.last_wall_ns){
+            reject_launch(error,RNR_STAGE0_LAUNCH_CONFIG,0);goto failed;
+        }
+        prepared_cutoff=task->wall_cutoff_ns;
+    }
+    expected=phase;
+    if(!atomic_compare_exchange_strong(&launch_state,&expected,LAUNCH_ADMISSION)){
+        reject_launch(error,RNR_STAGE0_LAUNCH_ATTEMPT,0);goto failed;
+    }
+    return 0;
+failed:
+    atomic_store(&launch_state,LAUNCH_FENCED);return -1;
+}
+int rnr_stage0_check_admission_preparation(struct rnr_stage0_launch_error *error)
+{return admission_check(error,0,NULL,NULL,NULL);}
+int rnr_stage0_bind_admission_inputs(const struct rnr_stage0_installation *installation,
+    const struct rnr_stage0_task *task,const struct rnr_stage0_launch_declaration *declaration,
+    struct rnr_stage0_launch_error *error)
+{return admission_check(error,1,installation,task,declaration);}
+int rnr_stage0_supervised_inputs(struct rnr_stage0_preparer_error *error)
+{
+    int expected=LAUNCH_NEW;
+    if(error==NULL){atomic_store(&launch_state,LAUNCH_FENCED);errno=EINVAL;return -1;}
+    *error=(struct rnr_stage0_preparer_error){0};
+    if(!atomic_compare_exchange_strong(&launch_state,&expected,LAUNCH_PREPARING)){
+        atomic_store(&launch_state,LAUNCH_FENCED);error->code=RNR_STAGE0_PREPARER_ATTEMPT;return -1;
+    }
+    if(geteuid()!=0||getegid()!=0){error->code=RNR_STAGE0_PREPARER_OWNER;goto failed;}
+    if(rnr_stage0_clock_prepare(&prepared_clock,&error->launch.capture)!=0){
+        error->code=RNR_STAGE0_PREPARER_CLOCK;goto failed;
+    }
+    prepared_mode=LAUNCH_HELD_INPUTS;
+    int branch=rnr_stage0_clock_fork_admission(&prepared_clock,&supervised_result,&error->launch.final);
+    if(branch==0){
+        atomic_store(&launch_state,LAUNCH_ADMISSION);
+        int read_result=rnr_stage0_prepare_held_inputs(error);
+        if(read_result!=0&&error->code==RNR_STAGE0_PREPARER_OK)error->code=RNR_STAGE0_PREPARER_READ;
+        supervised_primary=*error;
+        (void)rnr_stage0_abandon_preparation_inputs(&supervised_cleanup);
+        (void)rnr_stage0_clock_abandon_admission(&prepared_clock,&supervised_result,
+                                                &supervised_primary.launch.gate_cleanup);
+        atomic_store(&launch_state,LAUNCH_FENCED);
+        _exit(125); /* BOTH reader outcomes: no return to ordinary caller. */
+    }
+    error->code=RNR_STAGE0_PREPARER_CLOCK;
+    supervised_primary=*error;
+    (void)rnr_stage0_clock_contain_original_child(&prepared_clock,&supervised_result,
+                                                &error->launch.containment);
+    (void)rnr_stage0_clock_abandon_admission(&prepared_clock,&supervised_result,
+                                           &error->launch.gate_cleanup);
+failed:
+    atomic_store(&launch_state,LAUNCH_FENCED);return -1;
+}
+#endif
