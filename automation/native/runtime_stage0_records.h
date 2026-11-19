@@ -21,6 +21,30 @@ struct rnr_stage0_installation {
     unsigned char configuration_digest[32], enrollment_digest[32];
     unsigned char startup_digest[32], execution_root[32], unit_policy_digest[32];
 };
+/* Borrowed ASCII views require the original immutable payload to stay alive. */
+struct rnr_stage0_text_view { const unsigned char *bytes; size_t length; };
+struct rnr_stage0_launch_file { unsigned char digest[32]; uint64_t bytes; };
+struct rnr_stage0_launch_declaration {
+    uint32_t version;
+    unsigned char allocation[16], asset_root[32], execution_root[32];
+    unsigned char tool_digest[32], manager_digest[32], daemon_digest[32];
+    int64_t positive_wall_ns;
+    uint64_t run_capacity, run_commands, run_turn_capacity, run_turns, queue_bound;
+    uint64_t input_bytes, item_text_bytes, turn_items;
+    uint64_t runtime_slots, reviewer_reserve, workload_slots;
+    uint64_t cpu_millis, memory_bytes, output_bytes, pids, scratch_bytes, swap_bytes;
+    struct rnr_stage0_text_view model, effort, run_id, supervisor_epoch;
+    struct rnr_stage0_launch_file files[7];
+    struct rnr_stage0_text_view unit_paths[32];
+    size_t unit_path_count;
+};
+/* DATA-only canonical v3 subset: unescaped printable ASCII strings and
+ * nonnegative signed64 integers. Closed schema/value checks, no origin/host/
+ * installation correlation, authentication or effect. Retain raw immutable
+ * bytes for all borrowed views. Exact rules in persistent-admission-contract.
+ * Reject overlap against the entire output and fail-clear on all rejection. */
+int rnr_stage0_decode_launch_declaration(const unsigned char *, size_t,
+                                        struct rnr_stage0_launch_declaration *);
 struct rnr_stage0_task {
     unsigned char task_id[16];
     int64_t wall_cutoff_ns;
