@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 
@@ -58,8 +59,54 @@ static int fd_number(const unsigned char *name, size_t length, int *result)
     return 0;
 }
 
-/* Only the two fixed wrappers below select a profile. No caller whitelist. */
-static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
+static int input_number(int index, int held_gate)
+{ return held_gate && index == 3 ? 4 : index; }
+
+static int held_gate_structure(const struct stat *expected,
+                                struct rnr_stage0_admission_error *error)
+{
+    struct stat current;
+    if (fstat(4, &current) != 0) {
+        reject(error, RNR_STAGE0_ADMISSION_INPUT, errno); return -1;
+    }
+    if (!S_ISSOCK(current.st_mode) || !same_identity(&current, expected)) {
+        reject(error, RNR_STAGE0_ADMISSION_IDENTITY, 0); return -1;
+    }
+    int descriptor = fcntl(4, F_GETFD);
+    if (descriptor < 0) {
+        reject(error, RNR_STAGE0_ADMISSION_INPUT, errno); return -1;
+    }
+    int status = fcntl(4, F_GETFL);
+    if (status < 0) {
+        reject(error, RNR_STAGE0_ADMISSION_INPUT, errno); return -1;
+    }
+    if (descriptor != FD_CLOEXEC || status != (O_RDWR | O_NONBLOCK)) {
+        reject(error, RNR_STAGE0_ADMISSION_INPUT, 0); return -1;
+    }
+    const int options[] = { SO_DOMAIN, SO_TYPE, SO_PROTOCOL, SO_ACCEPTCONN };
+    const int values[] = { AF_UNIX, SOCK_SEQPACKET, 0, 0 };
+    for (unsigned int i = 0; i < sizeof(options) / sizeof(options[0]); ++i) {
+        int actual = -1;
+        socklen_t length = sizeof(actual);
+        if (getsockopt(4, SOL_SOCKET, options[i], &actual, &length) != 0) {
+            reject(error, RNR_STAGE0_ADMISSION_INPUT, errno); return -1;
+        }
+        if (length != sizeof(actual) || actual != values[i]) {
+            reject(error, RNR_STAGE0_ADMISSION_INPUT, 0); return -1;
+        }
+    }
+    if (fstat(4, &current) != 0) {
+        reject(error, RNR_STAGE0_ADMISSION_INPUT, errno); return -1;
+    }
+    if (!same_identity(&current, expected)) {
+        reject(error, RNR_STAGE0_ADMISSION_IDENTITY, 0); return -1;
+    }
+    return 0;
+}
+
+/* Only fixed wrappers below select a role set. No caller whitelist. */
+static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count,
+                     int held_gate)
 {
     struct stat inputs[INPUTS], held, current, null_device;
     unsigned char buffer[BUFFER_BYTES];
@@ -76,11 +123,12 @@ static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
     }
     *error = (struct rnr_stage0_admission_error){RNR_STAGE0_ADMISSION_OK, 0, 0};
     for (int fd = 0; fd < inputs_count; ++fd) {
-        if (fstat(fd, &inputs[fd]) != 0) {
+        if (fstat(input_number(fd, held_gate), &inputs[fd]) != 0) {
             reject(error, RNR_STAGE0_ADMISSION_INPUT, errno);
             goto cleanup;
         }
     }
+    if (held_gate && held_gate_structure(&inputs[3], error) != 0) goto cleanup;
     if (stat("/dev/null", &null_device) != 0) {
         reject(error, RNR_STAGE0_ADMISSION_STDIO, errno);
         goto cleanup;
@@ -113,7 +161,7 @@ static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
         reject(error, RNR_STAGE0_ADMISSION_OPEN, errno);
         goto cleanup;
     }
-    if (directory < inputs_count) {
+    if (held_gate ? directory != 3 : directory < inputs_count) {
         reject(error, RNR_STAGE0_ADMISSION_DIRECTORY, 0);
         goto cleanup;
     }
@@ -178,7 +226,9 @@ static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
                 reject(error, RNR_STAGE0_ADMISSION_RECORD, 0);
                 goto cleanup;
             }
-            index = fd < inputs_count ? fd : (fd == directory ? inputs_count : -1);
+            index = fd == directory ? inputs_count : -1;
+            for (int role = 0; role < inputs_count; ++role)
+                if (fd == input_number(role, held_gate)) index = role;
             if (index < 0 || seen[index] || ++numbers > (unsigned int)entries_count) {
                 reject(error, RNR_STAGE0_ADMISSION_INVENTORY, 0);
                 goto cleanup;
@@ -199,7 +249,7 @@ static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
         goto cleanup;
     }
     for (int index = 0; index < entries_count; ++index) {
-        int fd = index < inputs_count ? index : directory;
+        int fd = index < inputs_count ? input_number(index, held_gate) : directory;
         if (!seen[index]) {
             reject(error, RNR_STAGE0_ADMISSION_INVENTORY, 0);
             goto cleanup;
@@ -213,6 +263,7 @@ static int admit_fds(struct rnr_stage0_admission_error *error, int inputs_count)
             goto cleanup;
         }
     }
+    if (held_gate) (void)held_gate_structure(&inputs[3], error);
 
 cleanup:
     if (directory >= 0) {
@@ -229,10 +280,17 @@ cleanup:
 
 int rnr_stage0_admit_initial_fds(struct rnr_stage0_admission_error *error)
 {
-    return admit_fds(error, 9);
+    return admit_fds(error, 9, 0);
 }
 
 int rnr_stage0_admit_preparation_fds(struct rnr_stage0_admission_error *error)
 {
-    return admit_fds(error, 3);
+    return admit_fds(error, 3, 0);
 }
+
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+int rnr_stage0_admit_held_fds(struct rnr_stage0_admission_error *error)
+{
+    return admit_fds(error, 4, 1);
+}
+#endif

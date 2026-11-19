@@ -128,7 +128,8 @@ static int capture_clock(struct rnr_stage0_clock *state, int64_t deadline, int p
     int64_t boot, wall, delta;
     if (state == NULL || error == NULL) { errno = EINVAL; return terminal(state); }
     *error = (struct rnr_stage0_clock_error){0};
-    if (state->phase != RNR_STAGE0_CLOCK_UNINITIALIZED || state->admission_attempted != 0 || state->fork_attempted != 0) {
+    if (state->phase != RNR_STAGE0_CLOCK_UNINITIALIZED || state->admission_attempted != 0 ||
+        state->fork_attempted != 0 || state->cutoff_bound != 0) {
         reject_clock(error, RNR_STAGE0_CLOCK_STATE, 0); return terminal(state);
     }
     /* Reserve capture irreversibly before fallible acquisition. */
@@ -158,6 +159,7 @@ static int capture_clock(struct rnr_stage0_clock *state, int64_t deadline, int p
     state->sampled_wall_ns = state->last_wall_ns = wall;
     state->wall_deadline_ns = deadline; state->deadline_boottime_ns = boot + delta;
     state->setup_end_ns = boot + (delta < SETUP ? delta : SETUP);
+    state->cutoff_bound = !preparing;
     state->phase = preparing ? RNR_STAGE0_CLOCK_PREPARING : RNR_STAGE0_CLOCK_ACTIVE;
     return 0;
 }
@@ -176,9 +178,16 @@ int rnr_stage0_clock_bind_cutoff(struct rnr_stage0_clock *state, int64_t deadlin
 {
     if (state == NULL || error == NULL) { errno = EINVAL; return terminal(state); }
     *error = (struct rnr_stage0_clock_error){0};
-    if (state->phase != RNR_STAGE0_CLOCK_PREPARING || state->admission_attempted != 0) {
+    if ((state->phase != RNR_STAGE0_CLOCK_PREPARING &&
+         state->phase != RNR_STAGE0_CLOCK_ADMISSION) ||
+        state->admission_attempted != 0 || state->cutoff_bound != 0) {
         reject_clock(error, RNR_STAGE0_CLOCK_STATE, 0); return terminal(state);
     }
+    int held = state->phase == RNR_STAGE0_CLOCK_ADMISSION;
+    /* Reserve the one narrowing before fallible sampling. Admission stays
+     * held even after successful binding; only verified placement/GO may
+     * eventually permit the fixed positive continuation. */
+    state->cutoff_bound = 1;
     if (rnr_stage0_clock_check_setup(state, error) != 0) return -1;
     if (deadline <= state->last_wall_ns || deadline > state->wall_deadline_ns) {
         reject_clock(error, RNR_STAGE0_CLOCK_RANGE, 0); return terminal(state);
@@ -187,11 +196,11 @@ int rnr_stage0_clock_bind_cutoff(struct rnr_stage0_clock *state, int64_t deadlin
     state->wall_deadline_ns = deadline;
     state->deadline_boottime_ns = state->captured_boottime_ns + delta;
     state->setup_end_ns = state->captured_boottime_ns + (delta < SETUP ? delta : SETUP);
-    state->phase = RNR_STAGE0_CLOCK_ACTIVE;
+    state->phase = held ? RNR_STAGE0_CLOCK_ADMISSION : RNR_STAGE0_CLOCK_ACTIVE;
     return rnr_stage0_clock_check_setup(state, error);
 }
-static int check_setup_samples(struct rnr_stage0_clock *state,
-                                struct rnr_stage0_clock_error *error)
+static int sample_owned_clock(struct rnr_stage0_clock *state,
+                               struct rnr_stage0_clock_error *error)
 {
     struct clock_identity first, last, expected;
     int64_t boot, wall;
@@ -210,12 +219,21 @@ static int check_setup_samples(struct rnr_stage0_clock *state,
     if (!same_clock_identity(&expected, &last)) {
         reject_clock(error, RNR_STAGE0_CLOCK_IDENTITY, 0); return terminal(state);
     }
-    if (boot < state->last_boottime_ns || wall < state->last_wall_ns ||
-        boot >= state->setup_end_ns || boot >= state->deadline_boottime_ns ||
-        wall >= state->wall_deadline_ns) {
+    if (boot < state->last_boottime_ns || wall < state->last_wall_ns) {
         reject_clock(error, RNR_STAGE0_CLOCK_CUTOFF, 0); return terminal(state);
     }
     state->last_boottime_ns = boot; state->last_wall_ns = wall;
+    return 0;
+}
+static int check_setup_samples(struct rnr_stage0_clock *state,
+                                struct rnr_stage0_clock_error *error)
+{
+    if (sample_owned_clock(state, error) != 0) return -1;
+    if (state->last_boottime_ns >= state->setup_end_ns ||
+        state->last_boottime_ns >= state->deadline_boottime_ns ||
+        state->last_wall_ns >= state->wall_deadline_ns) {
+        reject_clock(error, RNR_STAGE0_CLOCK_CUTOFF, 0); return terminal(state);
+    }
     return 0;
 }
 int rnr_stage0_clock_check_setup(struct rnr_stage0_clock *state,
@@ -223,7 +241,8 @@ int rnr_stage0_clock_check_setup(struct rnr_stage0_clock *state,
 {
     if (state == NULL || error == NULL) { errno = EINVAL; return terminal(state); }
     *error = (struct rnr_stage0_clock_error){0};
-    if (state->phase != RNR_STAGE0_CLOCK_ACTIVE && state->phase != RNR_STAGE0_CLOCK_PREPARING) {
+    if (state->phase != RNR_STAGE0_CLOCK_ACTIVE && state->phase != RNR_STAGE0_CLOCK_PREPARING &&
+        state->phase != RNR_STAGE0_CLOCK_ADMISSION) {
         reject_clock(error, RNR_STAGE0_CLOCK_STATE, 0); return terminal(state);
     }
     return check_setup_samples(state,error);
@@ -256,6 +275,78 @@ static int fork_parent_gate = -1;
 static pid_t fork_parent_pid;
 static struct rnr_stage0_clock *fork_parent_clock;
 static struct rnr_stage0_fork_result *fork_parent_result;
+
+static int keeper_owner(struct rnr_stage0_clock *state)
+{
+    return state == fork_parent_clock && state != NULL &&
+        state->phase == RNR_STAGE0_CLOCK_NEGATIVE &&
+        fork_parent_pid == getpid() && gettid() == getpid() &&
+        fork_parent_result != NULL && fork_parent_result->child_armed == 1 &&
+        fork_parent_result->child_pid > 0 && fork_parent_result->child_pidfd >= 3;
+}
+int rnr_stage0_clock_check_keeper(struct rnr_stage0_clock *state,
+                                 struct rnr_stage0_keeper_tick *tick,
+                                 struct rnr_stage0_clock_error *error)
+{
+    if (tick != NULL) *tick = (struct rnr_stage0_keeper_tick){0};
+    if (state == NULL || tick == NULL || error == NULL) {
+        errno = EINVAL; return terminal(state);
+    }
+    *error = (struct rnr_stage0_clock_error){0};
+    if (!keeper_owner(state)) {
+        reject_clock(error, RNR_STAGE0_CLOCK_OWNER, 0); return terminal(state);
+    }
+    if (state->captured_boottime_ns <= 0 ||
+        state->captured_boottime_ns > INT64_MAX - 90 * NS) {
+        reject_clock(error, RNR_STAGE0_CLOCK_RANGE, 0); return terminal(state);
+    }
+    tick->stop_ns = state->captured_boottime_ns + 90 * NS;
+    if (state->deadline_boottime_ns < tick->stop_ns)
+        tick->stop_ns = state->deadline_boottime_ns;
+    tick->trigger_ns = state->captured_boottime_ns + 60 * NS;
+    if (tick->trigger_ns > tick->stop_ns) tick->trigger_ns = tick->stop_ns;
+    if (sample_owned_clock(state, error) != 0) return -1;
+    if (state->last_boottime_ns >= tick->stop_ns ||
+        state->last_wall_ns >= state->wall_deadline_ns) {
+        reject_clock(error, RNR_STAGE0_CLOCK_CUTOFF, 0); return terminal(state);
+    }
+    tick->setup_expired = state->last_boottime_ns >= state->setup_end_ns;
+    tick->trigger_due = state->last_boottime_ns >= tick->trigger_ns;
+    return 0;
+}
+int rnr_stage0_clock_bind_keeper_cutoff(struct rnr_stage0_clock *state, int64_t cutoff,
+                                       struct rnr_stage0_clock_error *error)
+{
+    struct rnr_stage0_keeper_tick tick;
+    if (state == NULL || error == NULL) { errno = EINVAL; return terminal(state); }
+    *error = (struct rnr_stage0_clock_error){0};
+    if (!keeper_owner(state)) {
+        reject_clock(error, RNR_STAGE0_CLOCK_OWNER, 0); return terminal(state);
+    }
+    if (state->cutoff_bound) {
+        reject_clock(error, RNR_STAGE0_CLOCK_STATE, 0); return -1;
+    }
+    state->cutoff_bound = 1; /* consume before any sample or cutoff rejection */
+    if (cutoff <= state->sampled_wall_ns || cutoff > state->wall_deadline_ns) {
+        reject_clock(error, RNR_STAGE0_CLOCK_RANGE, 0); return -1;
+    }
+    int64_t delta = cutoff - state->sampled_wall_ns;
+    state->wall_deadline_ns = cutoff;
+    state->deadline_boottime_ns = state->captured_boottime_ns + delta;
+    state->setup_end_ns = state->captured_boottime_ns + (delta < SETUP ? delta : SETUP);
+    /* Never import the declaration's last samples: retain the keeper's floors. */
+    if (rnr_stage0_clock_check_keeper(state, &tick, error) != 0) return -1;
+    if (tick.setup_expired) {
+        reject_clock(error, RNR_STAGE0_CLOCK_CUTOFF, 0); return -1;
+    }
+    /* No admission without a strict original60..stop containment interval.
+     * Even a rejected short/late declaration retains its narrower bounds;
+     * failure containment can never regain the prior longer lease. */
+    if (tick.trigger_ns >= tick.stop_ns) {
+        reject_clock(error, RNR_STAGE0_CLOCK_RANGE, 0); return -1;
+    }
+    return 0;
+}
 
 static int fork_close(int *slot,struct rnr_stage0_fork_result *result,
                        struct rnr_stage0_clock_error *error)
@@ -349,6 +440,12 @@ int rnr_stage0_clock_fork(struct rnr_stage0_clock *state,
     if(rnr_stage0_clock_check_setup(state,error)!=0)goto failed;
     if(socketpair(AF_UNIX,SOCK_SEQPACKET|SOCK_CLOEXEC|SOCK_NONBLOCK,0,channels)!=0){
         reject_clock(error,RNR_STAGE0_CLOCK_GATE,errno);goto failed;
+    }
+    /* Exact0..2 was admitted before this allocation; the held child scanner
+     * relies on closing original endpoint3 and retaining original gate4.
+     * Unexpected allocation is rejected, never repaired or adopted. */
+    if(channels[0]!=3 || channels[1]!=4){
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);goto failed;
     }
     if(rnr_stage0_clock_check_setup(state,error)!=0)goto failed;
     pid_t parent=state->pid;

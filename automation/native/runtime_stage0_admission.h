@@ -39,4 +39,11 @@ int rnr_stage0_admit_initial_fds(struct rnr_stage0_admission_error *error);
  * FDs reject without consumption or repair. Same structural/TCB limitations. */
 int rnr_stage0_admit_preparation_fds(struct rnr_stage0_admission_error *error);
 
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+/* Fixed held child structure: stdio0..2, original socketpair gate4, scanner3.
+ * Caller supplies no FD/whitelist. Socket structure is NOT fork/peer authority;
+ * only the fixed original-clock fork owner may use this before input reads. */
+int rnr_stage0_admit_held_fds(struct rnr_stage0_admission_error *error);
+#endif
+
 #endif

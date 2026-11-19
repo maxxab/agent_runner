@@ -11,7 +11,9 @@ enum rnr_stage0_clock_phase {
     RNR_STAGE0_CLOCK_FAILED,
     RNR_STAGE0_CLOCK_PREPARING,
     RNR_STAGE0_CLOCK_HELD,
-    RNR_STAGE0_CLOCK_NEGATIVE
+    RNR_STAGE0_CLOCK_NEGATIVE,
+    /* Fixed held input reader only; cutoff binding never grants ACTIVE. */
+    RNR_STAGE0_CLOCK_ADMISSION
 };
 enum rnr_stage0_clock_code {
     RNR_STAGE0_CLOCK_OK = 0, RNR_STAGE0_CLOCK_STATE,
@@ -27,7 +29,7 @@ struct rnr_stage0_clock_error {
 };
 struct rnr_stage0_clock {
     enum rnr_stage0_clock_phase phase;
-    int admission_attempted, fork_attempted;
+    int admission_attempted, fork_attempted, cutoff_bound;
     pid_t pid, tid;
     char boot_id[37];
     uint64_t time_ns_device, time_ns_inode;
@@ -82,6 +84,25 @@ struct rnr_stage0_fork_result {
 int rnr_stage0_clock_fork(struct rnr_stage0_clock *,
                           struct rnr_stage0_fork_result *,
                           struct rnr_stage0_clock_error *);
+/* Original retained fork-parent only. This is negative timing DATA, not
+ * permission for an effect. Each eventual containment effect needs a fresh
+ * successful negative check; expiry/unknown timing permits no new write.
+ * Retained child/controls/original bounds survive errors for recovery. */
+struct rnr_stage0_keeper_tick {
+    int setup_expired, trigger_due;
+    int64_t trigger_ns, stop_ns;
+};
+int rnr_stage0_clock_check_keeper(struct rnr_stage0_clock *,
+                                 struct rnr_stage0_keeper_tick *,
+                                 struct rnr_stage0_clock_error *);
+/* Once-only declaration DATA narrowing before original setup expires. The
+ * fixed receiver must validate/consume the declaration first. Invalid or
+ * repeated binding fences that exchange, never renews the original clock.
+ * A binding/protocol error alone does not destroy a valid negative clock.
+ * A structurally valid narrowing survives short/late admission rejection.
+ * Admission requires a strict original60..stop negative interval. */
+int rnr_stage0_clock_bind_keeper_cutoff(struct rnr_stage0_clock *, int64_t,
+                                       struct rnr_stage0_clock_error *);
 /* Original negative parent ONLY; closes its held gate exactly once. Does not
  * signal/reap/close the retained pidfd, release resources or renew clocks. */
 int rnr_stage0_clock_abandon_gate(struct rnr_stage0_clock *,

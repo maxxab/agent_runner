@@ -83,7 +83,7 @@ static int fixture_open(const char *p,int flags)
 static ssize_t fixture_read(int fd,void *b,size_t n)
 {assert(fd==50);if(identity_reads++){assert(n==1);return 0;}assert(n==38);memcpy(b,"12345678-1234-1234-1234-123456789abc\n!",38);return 37;}
 static int fixture_stat(const char *p,struct stat *s)
-{assert(!strcmp(p,"/proc/thread-self/ns/time"));memset(s,0,sizeof(*s));s->st_dev=1;s->st_ino=gate_fault==28&&owner==101?3:2;return 0;}
+{assert(!strcmp(p,"/proc/thread-self/ns/time"));memset(s,0,sizeof(*s));s->st_dev=1;s->st_ino=(gate_fault==30||(gate_fault==28&&owner==101))?3:2;return 0;}
 static int fixture_time(clockid_t c,struct timespec *t)
 {int64_t n=c==CLOCK_BOOTTIME?boot:wall;t->tv_sec=n/1000000000;t->tv_nsec=n%1000000000;return 0;}
 static pid_t fixture_pid(void){return owner;}
@@ -102,7 +102,7 @@ static int gate_socketpair(int domain,int type,int protocol,int fds[2])
 {
     assert(domain==AF_UNIX&&type==(SOCK_SEQPACKET|SOCK_CLOEXEC|SOCK_NONBLOCK)&&protocol==0);
     assert(admitted==1);++sockets;
-    if(gate_fault==1){errno=EMFILE;return -1;}fds[0]=60;fds[1]=61;return 0;
+    if(gate_fault==1){errno=EMFILE;return -1;}fds[0]=gate_fault==31?60:3;fds[1]=gate_fault==31?61:4;return 0;
 }
 static int gate_sigaction(int sig,const struct sigaction *action,struct sigaction *old)
 {
@@ -134,7 +134,7 @@ static long gate_syscall(long call,...)
 }
 static int gate_poll(struct pollfd *fds,nfds_t count,int timeout)
 {
-    assert(count==1&&fds[0].fd==(side?61:60));assert(timeout>0&&timeout<=15000);++wait_calls;
+    assert(count==1&&fds[0].fd==(gate_fault==31?(side?61:60):(side?4:3)));assert(timeout>0&&timeout<=15000);++wait_calls;
     if(gate_fault==10){errno=EINTR;return -1;}
     if(gate_fault==11)return 0;
     fds[0].revents=gate_fault==12?POLLHUP:POLLIN;
@@ -143,7 +143,7 @@ static int gate_poll(struct pollfd *fds,nfds_t count,int timeout)
 }
 static ssize_t gate_send(int fd,const void *packet,size_t size,int flags)
 {
-    assert(side&&fd==61&&size==8&&flags==(MSG_DONTWAIT|MSG_NOSIGNAL));
+    assert(side&&fd==(gate_fault==31?61:4)&&size==8&&flags==(MSG_DONTWAIT|MSG_NOSIGNAL));
     assert(memcmp(packet,"RNRKARM1",8)==0);++sends;
     if(gate_fault==14){errno=EAGAIN;return -1;}
     if(gate_fault==15)return 7;
@@ -151,7 +151,7 @@ static ssize_t gate_send(int fd,const void *packet,size_t size,int flags)
 }
 static ssize_t gate_recvmsg(int fd,struct msghdr *msg,int flags)
 {
-    assert(fd==(side?61:60)&&msg->msg_iovlen==1&&msg->msg_iov[0].iov_len==8);
+    assert(fd==(gate_fault==31?(side?61:60):(side?4:3))&&msg->msg_iovlen==1&&msg->msg_iov[0].iov_len==8);
     assert(flags==(MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC));++receives;
     assert(msg->msg_control==NULL&&msg->msg_controllen==0);
     memcpy(msg->msg_iov[0].iov_base,side?"RNRKGO01":"RNRKARM1",8);
@@ -169,7 +169,7 @@ static int gate_admission(struct rnr_stage0_admission_error *e)
 static int gate_close(int fd)
 {
     if(fd==50)return 0;
-    assert(fd==60||fd==61);++gate_closes;
+    assert(fd==3||fd==4||fd==60||fd==61);++gate_closes;
     if(gate_fault==23){errno=EINTR;return -1;}return 0;
 }
 static _Noreturn void gate_exit(int code){exit_status=code;longjmp(exited,1);}
@@ -200,7 +200,7 @@ int main(void)
     assert(sends==1&&receives==1&&gate_closes==2);
     assert(rnr_stage0_clock_fork(&s,&result,&e)==-1&&attempts==1);
 
-    for(int fault=1;fault<=29;++fault){
+    for(int fault=1;fault<=31;++fault){
         for(int child=0;child<=1;++child){
             if((!child&&((fault>=6&&fault<=8)||fault==14||fault==15||(fault>=24&&fault<=28)))||(child&&fault==9))continue;
             gate_reset(child);s=prepared();gate_fault=fault;
@@ -210,6 +210,7 @@ int main(void)
                 if(child&&attempts==1&&fault!=5)assert(0); /* postfork child NEVER returns failure */
             }else{assert(child&&exit_status==125);}
             assert(s.fork_attempted==1);
+            if(fault==31)assert(sockets==1&&attempts==0);
             int before=attempts;
             assert(rnr_stage0_clock_fork(&s,&result,&e)==-1&&attempts==before);
         }
