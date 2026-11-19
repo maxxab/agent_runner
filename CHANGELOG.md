@@ -15,3 +15,4 @@
 ### Documentation
 
 - **runner:** save verified extraction continuation checkpoint ([ff61aaffbd99](https://github.com/maxxab/agent_runner/commit/ff61aaffbd9946003b1d8b89a8051ae88a4dc63b))
+- **runner:** record admission contracts and verified prerequisites ([f8024d6c7baa](https://github.com/maxxab/agent_runner/commit/f8024d6c7baa9a9ac83df2d88468804ed6bd67c4))
