@@ -25,3 +25,4 @@
 - **runner:** preserve first-release rollover and provider gap ([8ce9d922cefb](https://github.com/maxxab/agent_runner/commit/8ce9d922cefbbb8a0eca1508c0d1b265ae24e7a5))
 - **migration:** reconcile extraction ownership and runner setup ([15cb95530384](https://github.com/maxxab/agent_runner/commit/15cb95530384f00600f394a5992687a05d624979))
 - **release:** preserve reviewed components and remaining admission gates ([cc3f5ddffe63](https://github.com/maxxab/agent_runner/commit/cc3f5ddffe63e2fa50b0d8169231e818ba3d0fc2))
+- **native:** specify reviewed admission transport and project policy ([122f9fad9830](https://github.com/maxxab/agent_runner/commit/122f9fad983002540f2ac0c73111aa843beaf6d3))
