@@ -43,7 +43,7 @@ class ContainedObservationTests(unittest.TestCase):
     def test_matching_actual_manifest_and_fixed_home_yield_data_only(self):
         result = self.check()
         self.assertFalse(result['runtime_accepted'])
-        self.assertEqual(result['managed_features_disabled'],14)
+        self.assertEqual(result['managed_features_disabled'],15)
         self.assertEqual(len(result['config_view_digest']),64)
 
     def test_legacy_home_rejected_by_contained_entry(self):

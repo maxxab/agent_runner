@@ -36,8 +36,8 @@ class ManagedObservationTests(unittest.TestCase):
         for key in ('auth', 'aws', 'capabilities', 'credential_file', 'env_http_headers',
                     'env_key', 'env_key_instructions', 'experimental_bearer_token',
                     'gateway_oauth', 'http_headers', 'location', 'model_catalog_url',
-                    'project_id', 'query_params', 'request_max_retries',
-                    'stream_idle_timeout_ms', 'stream_max_retries', 'websocket_connect_timeout_ms'):
+                    'project_id', 'query_params',
+                    'stream_idle_timeout_ms', 'websocket_connect_timeout_ms'):
             self.provider[key] = None
         self.provider.update(supports_websockets=False, supports_standalone_web_search=False)
         config = copy.deepcopy(self.raw)
@@ -72,7 +72,7 @@ class ManagedObservationTests(unittest.TestCase):
     def test_exact_views_yield_only_digests_and_fixed_scope(self):
         result = self.check()
         self.assertEqual(result['kind'], 'rnr-managed-startup-views-v1')
-        self.assertEqual(result['managed_features_disabled'], 14)
+        self.assertEqual(result['managed_features_disabled'], 15)
         self.assertFalse(result['runtime_accepted'])
         self.assertNotIn('http://', json.dumps(result))
         self.assertEqual(result, self.check())
@@ -90,6 +90,24 @@ class ManagedObservationTests(unittest.TestCase):
             with self.subTest(mutate=mutate):
                 self.setUp(); mutate()
                 with self.assertRaises(ValueError): self.check()
+
+    def test_retry_controls_are_explicit_and_observed(self):
+        # A nullable/default retry policy cannot establish a finite profile.
+        self.assertIs(self.raw['features'].get('unbounded_connection_retries'), False)
+        for key, expected in (('request_max_retries', 0), ('stream_max_retries', 0),
+                              ('supports_websockets', False)):
+            self.assertEqual(self.raw['model_providers']['rnr_fixture'].get(key), expected)
+        self.check()
+        for key in ('request_max_retries', 'stream_max_retries'):
+            for value in (None, 1, False):
+                with self.subTest(key=key, value=value):
+                    self.setUp(); self.provider[key] = value
+                    with self.assertRaises(ValueError): self.check()
+        self.setUp()
+        self.config['config']['features']['unbounded_connection_retries'] = True
+        next(row for row in self.features['data']
+             if row['name'] == 'unbounded_connection_retries')['enabled'] = True
+        with self.assertRaises(ValueError): self.check()
 
     def test_unknown_changed_disabled_or_duplicate_layers_fail(self):
         for variant in ('unknown', 'config', 'disabled', 'duplicate', 'profile', 'missing'):

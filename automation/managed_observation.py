@@ -18,7 +18,7 @@ _PROVIDER_NULLS = (
     'auth', 'aws', 'capabilities', 'credential_file', 'env_http_headers', 'env_key',
     'env_key_instructions', 'experimental_bearer_token', 'gateway_oauth',
     'http_headers', 'location', 'model_catalog_url', 'project_id', 'query_params',
-    'request_max_retries', 'stream_idle_timeout_ms', 'stream_max_retries',
+    'stream_idle_timeout_ms',
     'websocket_connect_timeout_ms',
 )
 

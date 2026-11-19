@@ -16,7 +16,8 @@ CATALOG_SHA256 = 'a7bbc2218aec9d666a1ace35cf9ad07fe373abd727b2d26d36fdad27dbf957
 MAX_CATALOG_BYTES = 2 * 1024 * 1024
 FEATURES = ('apps', 'code_mode', 'code_mode_only', 'enable_request_compression',
             'goals', 'hooks', 'image_generation', 'memories', 'multi_agent',
-            'multi_agent_v2', 'plugins', 'shell_tool', 'unified_exec', 'view_image')
+            'multi_agent_v2', 'plugins', 'shell_tool', 'unbounded_connection_retries',
+            'unified_exec', 'view_image')
 _PROVIDER = '''model_provider = "rnr_fixture"
 model_catalog_json = "/rnr/catalog.json"
 '''
@@ -25,6 +26,9 @@ name = "RNR qualification fixture"
 base_url = "http://127.0.0.1:18765/v1"
 wire_api = "responses"
 requires_openai_auth = false
+request_max_retries = 0
+stream_max_retries = 0
+supports_websockets = false
 [features]
 ''' + ''.join(f'{key} = false\n' for key in FEATURES)
 _CONFIG = ('''approval_policy = "never"
