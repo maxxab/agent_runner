@@ -42,6 +42,20 @@ static int image(const unsigned char *root, const unsigned char *salt,
     out->data_blocks = data; out->hash_blocks = hashes;
     return 0;
 }
+static int boot_uuid(const unsigned char *raw)
+{
+    int nonzero = 0;
+    for (unsigned int i = 0; i < 36; ++i) {
+        if (i == 8 || i == 13 || i == 18 || i == 23) {
+            if (raw[i] != '-') return -1;
+        } else {
+            if (!((raw[i] >= '0' && raw[i] <= '9') ||
+                  (raw[i] >= 'a' && raw[i] <= 'f'))) return -1;
+            if (raw[i] != '0') nonzero = 1;
+        }
+    }
+    return nonzero ? 0 : -1;
+}
 int rnr_stage0_decode_installation(const unsigned char *raw, size_t bytes,
                                   struct rnr_stage0_installation *out)
 {
@@ -50,8 +64,33 @@ int rnr_stage0_decode_installation(const unsigned char *raw, size_t bytes,
     /* Reject overlap before clearing can destroy any bytes to be decoded. */
     int alias = raw != NULL && overlap(raw,bytes,out,sizeof(*out));
     memset(out,0,sizeof(*out));
-    if (raw == NULL || bytes != 128 || alias || !header(raw,"RNRI0001") ||
-        all_zero(raw+96,32) ||
+    if (raw == NULL || alias || (bytes != 128 && bytes != 448)) return -1;
+    if (bytes == 128) {
+        if (!header(raw,"RNRI0001")) return -1;
+        value.version = 1;
+    } else {
+        if (memcmp(raw,"RNRI0002",8) != 0 || little(raw+8,4) != 2 ||
+            little(raw+12,4) != 0 || !all_zero(raw+236,4) || !all_zero(raw+400,48) ||
+            all_zero(raw+128,32) || all_zero(raw+160,16) || little(raw+184,8) == 0 ||
+            boot_uuid(raw+200) != 0 || all_zero(raw+240,32) || all_zero(raw+272,32) ||
+            all_zero(raw+304,32) || all_zero(raw+336,32) || all_zero(raw+368,32))
+            return -1;
+        value.version = 2;
+        memcpy(value.project_id,raw+128,32);
+        memcpy(value.store_instance,raw+160,16);
+        value.store_device = little(raw+176,8);
+        value.store_inode = little(raw+184,8);
+        /* Explicit bit patterns; never cast host fsid_t or sign extend. */
+        value.filesystem_id[0] = (uint32_t)little(raw+192,4);
+        value.filesystem_id[1] = (uint32_t)little(raw+196,4);
+        memcpy(value.boot_id,raw+200,36);
+        memcpy(value.configuration_digest,raw+240,32);
+        memcpy(value.enrollment_digest,raw+272,32);
+        memcpy(value.startup_digest,raw+304,32);
+        memcpy(value.execution_root,raw+336,32);
+        memcpy(value.unit_policy_digest,raw+368,32);
+    }
+    if (all_zero(raw+96,32) ||
         image(raw+16,raw+48,little(raw+80,8),little(raw+88,8),131072,&value.runtime)!=0)
         return -1;
     memcpy(value.asset_root,raw+96,32);

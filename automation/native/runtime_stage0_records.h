@@ -11,6 +11,15 @@ struct rnr_stage0_image_record {
 struct rnr_stage0_installation {
     struct rnr_stage0_image_record runtime;
     unsigned char asset_root[32];
+    /* In-process decoded data, NOT a stable serialized ABI. Rebuild every
+     * consumer after changing this structure. v1 leaves extensions zero. */
+    uint32_t version;
+    unsigned char project_id[32], store_instance[16];
+    uint64_t store_device, store_inode;
+    uint32_t filesystem_id[2];
+    char boot_id[37];
+    unsigned char configuration_digest[32], enrollment_digest[32];
+    unsigned char startup_digest[32], execution_root[32], unit_policy_digest[32];
 };
 struct rnr_stage0_task {
     unsigned char task_id[16];
@@ -30,6 +39,9 @@ struct rnr_stage0_output {
  * Protected reader/installer trust and original T0 remain separate mandatory
  * gates. Output records cannot instantiate or resume a live preparer.
  */
+/* Installation accepts exact inert v1/128 or v2/448 framing. The current
+ * protected reader still reads v1 only. v2 adds DATA, never store identity
+ * authentication, filesystem durability, reboot reconciliation or admission. */
 int rnr_stage0_decode_installation(const unsigned char *, size_t,
                                   struct rnr_stage0_installation *);
 int rnr_stage0_decode_task(const unsigned char *, size_t, struct rnr_stage0_task *);
