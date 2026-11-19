@@ -7,6 +7,18 @@ Canonical workflow: /home/faris/development-standards/docs/development-document-
 Refines F1/F2/F5 in the selected143 admission review; all five release gates OPEN.
 Existing historical stores and attempts remain untouched at their original paths.
 
+Current contract map (latest direction wins over superseded proposal paragraphs):
+Revision B is implemented storage preparation ONLY, published5c423e7/97ae696, uninvoked.
+Candidate C defines direct PID1 framing, conditionally challenged/corrected by v5.
+Candidate D defines effective units plus permanent empty controller-demand anchor;
+its post-review Manager.UnitPath addition makes316total requests, not314/128.
+Correction E defines single-claim view and one-way producer handover direction.
+Candidate F defines proposed9728-byte protected policy and per-project input locator.
+C/D/E/F are NOT full source release. Still freeze/challenge complete policy semantic
+projection/renderer/bootstrap lineage, IPC and capsule byte/ACK/opcode inventory,
+all normal/failure FD peaks, and sole offline retirement/recovery evidence. No
+additional startup/provider/account/lifecycle action is accepted by these designs.
+
 ## F1: project identity and persistent consumption
 
 A separately authorized installation creates a fresh project-specific store only
@@ -172,11 +184,14 @@ thaw the surviving observer covers both the emergency target and workload ancest
 and keeper covers Main's preparation leaf plus that ancestor. Observer cannot be
 in Main's positive leaf when counted READY. No extra fallback process is proposed.
 
-A keeper death before READY kills Main via its original PDEATHSIG while the workload
-ancestor remains frozen; after READY the independent observer retains original
-negative ancestor authority. Main death during construction leaves no thaw. Lost
-READY/thaw ACK is fenced with no resend/replacement; held controls and durable latch
-remain. Kernel effects from already-armed PDEATHSIG do not introduce a new userspace
+Keeper death kills Main via its original PDEATHSIG. Before sole thaw the workload
+ancestor remains frozen. Between sole thaw and committed READY, the already
+PREPARED exact observer must detect death of its original held keeper pidfd and
+enter permanent negative containment; frozen state is NOT assumed in that interval.
+After READY the independent observer retains original negative ancestor authority.
+Main death during construction before sole thaw leaves no thaw; afterward keeper
+and the same observer retain negative coverage. Lost READY/thaw ACK is fenced
+with no resend/replacement; held controls and durable latch remain. Kernel effects from already-armed PDEATHSIG do not introduce a new userspace
 lease. Timed containment remains original60/90, no effects after expiry/unknown.
 Actual unit lifetime must preserve the observer, and every native helper's actual
 parent-death/resource path must be mapped before accepting this direction.
@@ -678,3 +693,566 @@ outside it. Full parent/Slice/ControlGroup/late-job attribution and observer-sib
 placement must be frozen together; no source shortcut is authorized by the storage
 checkpoint. Preserve both emergency target phases and exact original expected
 observer/new-connection authentication. Full intent opcodes remain unfrozen.
+
+## F2 direct-manager transport freeze candidate C — not released for source
+
+Reviewer v5 challenged the post-T0 actual unit/controller comparison requirement.
+A direct root/PID1 connection at /run/systemd/private is supported by systemd255's
+own bus-util.c. Both of its fallback-to-system-bus branches are forbidden here.
+No pre-T0 task work, new launcher, broker route or helper process is introduced.
+However, unmodified public sd-bus API bracketing is REJECTED for this boundary:
+start/process may perform several internal I/O calls after a late return without
+an intervening original setup check, and typed16KiB rejection after allocation
+does not impose a16KiB allocation bound. Patching all library I/O, authentication,
+allocation and queues is larger than a fixed read-only peer framer. This decision
+does not relax selected143 or release any general-purpose D-Bus implementation.
+Protected review-v5-f2-f5.md and native-source-research/ retain source evidence;
+follow-up transport verdict is preserved alongside. Downloaded matching development
+headers were extracted privately only; no system package or library was installed
+or executed, and no libsystemd dependency has been adopted into runner source.
+
+Candidate C is a CLOSED native wire implementation inside the eventual fixed F2
+policy owner, with no caller-selected endpoint, method/property, schema, FD,
+callback, clock or retry. No standalone codec or operational acceptance milestone.
+Source remains blocked until the whole property/policy/lineage/control comparison
+matrix below is complete and independently accepted. Reviewer v5 conditionally
+accepted this transport direction with the corrections recorded below; that is
+not full F2/F5 source release.
+
+Fixed transport and authentication:
+
+- Original held Main only, fixed setup15 check before/after each open/stat/read/
+  connect/poll/getsockopt/sendmsg/recvmsg boundary. Keeper never performs a blocking
+  manager/library call; it continues original negative polling while Main works.
+- Traverse /, run, systemd nofollow from retained genuine host root; protected
+  root:root ancestry, socket identity and root PID1 peer must be checked before
+  negotiation. Retain actual original PID1 pidfd/start/executable/boot/namespaces;
+  SO_PEERCRED must be PID1/root:root on the SAME connected socket and rechecked
+  around exchanges. Disconnect/reexec/changed identity fences without replacement.
+- One AF_UNIX SOCK_STREAM NONBLOCK/CLOEXEC socket; one fixed connect attempt and
+  bounded completion observation, no alternative address or environment helper.
+  Any connection uncertainty forbids authentication and later reads/effects.
+- Root EXTERNAL transcript only: send exactly NUL + AUTH EXTERNAL 30 + CRLF once;
+  accept only OK + space +32lowerhex GUID + CRLF (37bytes), then BEGIN + CRLF
+  once (7bytes). No challenge/DATA/REJECTED alternative, CANCEL, Hello, registration,
+  FD negotiation or service activation. Each send must return its full size;
+  short/error/EINTR fences, with no remainder send/resend/reconnect. All sends
+  use MSG_NOSIGNAL; no signal-disposition assumption substitutes for it.
+- Authentication receive uses fixed37-byte storage and forward-only accumulation;
+  at most37positive fragments and128bounded readiness polls. Stream fragmentation
+  is not logical replay. Each receive requests exactly the remaining transcript
+  length; no overread or general input queue. EOF/error/EINTR and extra/premature
+  bytes WHEN OBSERVED fence, with no dispatch/adoption. A37-byte receive does not
+  prove no additional bytes remain queued. The first binary header rejects an
+  observed trailing auth line; there is no speculative unbounded drain. Fixed
+  fresh-setup checks never renew the origin.
+
+Binary exchange and parser limits:
+
+- Exactly one outstanding read-only request. First Manager.GetUnitByPID(u original
+  keeper PID) binds its actual original launch unit; reply signature o must equal
+  the canonical project-specific installed unit object path. Then only the frozen
+  Properties.Get(ss interface/property) inventory is allowed. Object paths are
+  derived by D-Bus unit-name byte escaping, not merely replacing the final dot.
+- D-Bus protocol1, little-endian, method calls with NO_AUTO_START and without
+  interactive-authorization. Positive serials1..512 (Candidate D inventory supersedes128), consume each operation before
+  its one complete sendmsg. No retry on unknown send/reply; no mutation method,
+  introspection, signal subscription or arbitrary object/method name.
+- Receive fixed16-byte header FIRST, then validate body/header-array lengths and
+  checked eight-byte padding before receiving any variable bytes. Header fields
+  <=1024, body<=16384, complete message<=17424. All additions/alignment are checked
+  against those caps and fixed buffers. Reject unsupported endianness/version/
+  type/flags (method-return requires systemd255 NO_REPLY_EXPECTED=1 only),
+  zero serial, length overflow, duplicate header fields, invalid
+  terminators/signatures/padding and nonzero UNIX_FDS. Accept only exact correlated
+  method-return type2 and reply serial; method-error, signal, unsolicited or
+  wrong-phase messages fence rather than being dispatched.
+- Fixed typed reply forms only: o for unit lookup; v containing the independently
+  frozen property's exact s/b/u/t/as/ay/(uo)/a(sasbttttuii) type. Bound strings,
+  arrays, variants and nesting from their schema BEFORE copying/iterating. Closed
+  types, canonical boolean0/1, exact array ends and no trailing bytes. No generic
+  signature interpreter, recursive user-selected schema or heap allocation.
+- At most512positive recv fragments per binary reply,4096total transport receive
+  operations and4096readiness polls per attempt; each wait<=1ms and original
+  setup checks surround it. EINTR/EOF/timeout/protocol error fences. A bounded
+  incomplete stream only advances the current offset, never starts another call.
+- Freeze and read back SO_PASSCRED=0 and SO_PASSSEC=0 on the original socket;
+  ancillary credentials/security labels are never authority. SO_PEERCRED remains
+  mandatory. Receive with msg_control=NULL/msg_controllen=0, rejecting observed
+  MSG_CTRUNC/TRUNC before another protocol step. Linux automatically closes
+  excess/absent-buffer SCM_RIGHTS (unix(7)); no received FD becomes caller-owned.
+  This does NOT prove the sender supplied no credentials: disabled options can
+  suppress their delivery. The protected sacrificial socket test passed1/2/253
+  rights on kernel6.18.58.1 with unchanged original FD inventory; reviewer v5
+  reviewed, but did not rerun, that result. It is supporting kernel evidence,
+  not qualification of future native receive code or a PID1 exchange. All
+  normal/failure FD peaks count, including protocol rejection.
+
+Remaining complete F2 policy decisions (source still blocked):
+
+1. Exact protected policy/config/enrollment/startup bytes, section size caps,
+   original hash comparisons and actual immutable dependencies, with no nonzero
+   digest echo substituting for referenced trusted bytes. If policy closure exceeds
+   storage preparation's65536-byte policy cap, revise/version the uninvoked binding
+   explicitly; do not truncate or silently claim the current cap covers it.
+2. Full per-property table, expected signatures/values, actual launch-unit lookup,
+   PID/start/ns/original-clock correlations, retained control identities, kernel
+   controller/limit/membership comparison and observation lifetime. Compare runtime
+   image root to actual execution-generation root; duplicated pins need correlation.
+3. Two DISTINCT project branches: unfrozen control rnrc<Project64>.slice with
+   launch service rnrc<Project64>.service/keeper and later prep/negative leaves;
+   frozen workload rnrw<Project64>.slice with transient
+   rnrw<Project64>-<Task32>.slice. Exact full paths, root caps and ownership remain
+   to freeze. Service Slice must NEVER refer to the frozen workload branch.
+4. Candidate service Type=exec/ExitType=cgroup/Restart=no/KillMode=process/
+   SendSIGKILL=no/OOMPolicy=continue/MemoryOOMGroup=false/DelegateSubgroup=keeper,
+   no auxiliary Exec phases, no watchdog/runtime/failure/dependency stop trigger
+   that can invalidate observer survival. Effective readback and actual lifecycle
+   qualification mandatory; ExitType=cgroup is direction, not physical acceptance.
+5. Complete fixed opcode/operand/result/ACK table, same original expected observer,
+   both emergency phases, sole thaw/negative commitment and offline retirement.
+   Native leaves need core controls plus inherited caps; no per-attempt controller
+   enabling fallback. Workload-parent enabled controllers are installation-owned.
+
+Primary wire reference: https://dbus.freedesktop.org/doc/dbus-specification.html
+(v0.43), and systemd255 sources already retained privately. Parser risk requires
+malformed/duplicate/truncated/fragmented/oversized/ancillary/late fixtures against
+independently constructed wire expectations plus actual-module integration. No
+live connection/native artifact execution or whole release acceptance follows.
+
+### Candidate C reply framing corrections after v5 challenge
+
+These are proposed closed wire rules, not a general D-Bus compatibility promise.
+A direct peer reply has REQUIRED fields5(REPLY_SERIAL, variant u) and8(SIGNATURE,
+variant g), exactly once each, in either order. The signature is exactly o for
+GetUnitByPID, otherwise v. Fields1/2/3/4/6/7/9 and unknown codes are rejected.
+In particular, sender/destination are absent: calls omit destination/sender on this
+unregistered direct connection. systemd255 message_new_reply adds destination
+only when the call has sender; no bus-broker identity claim is accepted. Actual
+selected-manager reply compatibility still needs physical qualification; unexpected
+optional fields fence rather than broadening the contract at runtime.
+
+Offsets/alignment are relative to byte0 of the WHOLE message. Each header entry
+starts on its next eight-byte boundary and contains one code byte, exact variant
+signature (length byte01, one ASCII type byte, NUL), alignment for that type
+and its value. Field5 begins05 01 75 00; field8 begins08 01 67 00.
+Only required minimal padding is allowed; every padding byte must be zero. Header
+array size counts entry bytes/padding between entries, excludes the16-byte fixed
+header and final body-alignment padding. Body starts at align8(16+header_size).
+No trailing header padding may disguise another entry; no trailing body bytes.
+Binary recvmsg requests exactly16-header_received, then exactly the remaining
+validated header/body length; never a full-capacity speculative read. Each positive
+read advances only that phase's offset. A remaining-byte request cannot establish
+absence of further queued messages: any subsequently observed unsolicited byte
+fences and is never adopted as another logical reply.
+
+All strings are a little-endian u32 BYTE length, exact bytes and one NUL; no
+embedded NUL. Property strings in the first fixed profile use printable ASCII
+0x20..0x7e only; this is a valid strict UTF8 subset, not arbitrary UTF8 conversion.
+Object paths use ASCII / or /-separated nonempty [A-Za-z0-9_]+ components, no
+trailing / except root, at most255bytes; expected equality further narrows them.
+Signature values use one-byte length, exact fixed signature and NUL, no generic
+signature grammar. Array byte length excludes its own length and element-alignment
+padding; empty arrays still perform required element alignment. End offset must
+match exactly after at most the property's frozen element count. Booleans are
+u32exact0/1. Variant alignment is relative to the whole message, not its payload.
+Scalar/array/struct schemas must be derived from the final property table before
+code. No unsupported signed-i decoder or new composite is implied by this draft.
+
+Readiness is bounded progress observation only: each recvmsg gets one attempt;
+EAGAIN/EWOULDBLOCK consumes one original-budget poll<=1ms before another receive
+of the same remaining bytes. Every receive AND poll consumes its attempt-global
+counter, with before/after original setup checks; poll timeout, EINTR, EOF, HUP,
+ERR or NVAL fences. No polling after an uncertain send. NONBLOCK connect either
+succeeds or yields EINPROGRESS followed by one bounded POLLOUT observation and
+SO_ERROR=0; every other result fences. Request sendmsg gets ONE syscall; EAGAIN
+also fences. Authentication uses the same bounded receive rule and its stricter
+37-positive-fragment/128-poll ceilings. No counter resets per wait or reconnect.
+
+### F2/F5 effective-unit inventory candidate D — source still blocked
+
+Same direct PID1 connection, exact original keeper/Main lineage and original15.
+This candidate closes the property NAMES, INTERFACES and type choice for challenge;
+native policy acceptance, unit
+renderer and normal/failure FD inventory must still be completed. It cannot be
+implemented as a permissive optional-property probe. Missing/error/unsupported
+property fences. No property is selected by task data or a downloaded manifest.
+
+The fixed objects are launch service rnrc<Project64>.service, control slice
+rnrc<Project64>.slice, frozen workload slice rnrw<Project64>.slice and the
+installation-established empty demand anchor rnrw<Project64>-anchor.slice. Unit names
+are derived from the authenticated installation project, never caller strings.
+GetUnitByPID(original keeper PID) must identify exactly that service object; the
+other three object paths are fixed derivations and actual identity/state/cgroup
+comparisons are mandatory. Actual service MainPID must be original keeper, not
+Main child or a replacement process. InvocationID is retained as16actual bytes (reject an all-zero ID, not individual
+zero bytes),
+not supplied as authority by an environment variable. Original PID/start/held
+pidfd/proc/executable/namespace checks remain separate from these manager facts.
+
+| Interface/objects | Exact property inventory | Expected rule / finite type |
+| --- | --- | --- |
+| .Manager, manager | UnitPath | as<=32, each absolute canonical path<=248bytes; EXACT ORDER because lookup precedence matters; must equal both protected policy and task unit_paths |
+| .Unit, all4 | Id, Names | s exact derived unit; as exactly1same name, no aliases |
+| .Unit, all4 | LoadState, ActiveState, SubState | s loaded/active; running for service, active for slices |
+| .Unit, all4 | FragmentPath, SourcePath, DropInPaths | s exact /etc/systemd/system/unit, s empty, as empty; separately retain/hash actual fragment and inventory overlays/search paths |
+| .Unit, all4 | NeedDaemonReload, Transient, DefaultDependencies, RefuseManualStart, RefuseManualStop, IgnoreOnIsolate, StopWhenUnneeded | b respectively0/0/0/0/1/1/0 |
+| .Unit, all4 | CollectMode, InvocationID, Job | s inactive; ay exactly16actual bytes with all-zero ID rejected; (uo) exactly0 and / |
+| .Unit, all4 | Requires, Requisite, BindsTo, PartOf, ConsistsOf, Conflicts, ConflictedBy, Before, After, OnFailure, OnSuccess, PropagatesStopTo, StopPropagatedFrom, Triggers, TriggeredBy, RequiresMountsFor, Upholds, OnFailureOf, OnSuccessOf | as exact closed expected dependencies; automatic parent Requires/After and inverse edges must be accounted for, not assumed absent; all additional stop/failure/trigger/maintainer edges prohibited |
+| .Unit, all4 | JobTimeoutUSec, JobRunningTimeoutUSec | t UINT64_MAX; no queued job at admission |
+| .Unit, all4 | JobTimeoutAction, FailureAction, SuccessAction, StartLimitAction | s none |
+| .Service, service | Type, ExitType, Restart, RestartMode, OOMPolicy, NotifyAccess, PIDFile | s exec/cgroup/no/normal/continue/none/empty |
+| .Service, service | RuntimeMaxUSec, RuntimeRandomizedExtraUSec, WatchdogUSec | t UINT64_MAX/0/0 |
+| .Service, service | RemainAfterExit, MainPID, ControlPID, NRestarts, FileDescriptorStoreMax, NFileDescriptorStore | b0; u original keeper/0/0/0/0 |
+| .Service, service | TimeoutStartFailureMode, TimeoutStopFailureMode | s terminate/terminate; service already running with no pending control/start job |
+| .Service, service | RestartForceExitStatus | (aiai), both arrays empty; Restart=no alone is insufficient |
+| .Service, service | ExecStartEx | a(sasasttttuii), exactly1command, exact installed static native ELF path, argv exactly1same path, flags array empty; running command PID equals original keeper, end times/status fields zero |
+| .Service, service | ExecConditionEx, ExecStartPreEx, ExecStartPostEx, ExecReloadEx, ExecStopEx, ExecStopPostEx | same command-array type, exactly empty; do not omit ExecCondition or accept legacy flag-losing ExecStart |
+| .Service, service | User, Group, DynamicUser, RootDirectory, RootImage, WorkingDirectory | s root/root; b0; s empty/empty/empty (WorkingDirectory unset; actual original cwd must be host root) |
+| .Service, service | StandardInput, StandardOutput, StandardError, PAMName, BusName | s null/null/null/empty/empty; exclude journald socket and PAM/activation helpers; actual0..2 inventory still mandatory |
+| .Service, service | Environment, EnvironmentFiles, PassEnvironment, UnsetEnvironment | Environment/PassEnvironment/UnsetEnvironment as empty; EnvironmentFiles a(sb) empty; manager-injected environment is NOT proven absent by Environment alone; static entry must not consume loader/config/auth environment and all later exec environments remain fixed |
+| .Service, service | LimitNOFILE, LimitNOFILESoft, KillMode, SendSIGKILL, SendSIGHUP | t256/256; s process; b0/0 |
+| .Service or .Slice, respective objects | Slice, ControlGroup, ControlGroupId | s exact parent unit/canonical kernel path; t actual cgroup ID correlated with retained kernel metadata, never substitute for it |
+| .Service or .Slice, respective objects | Delegate, DelegateControllers, DelegateSubgroup | service b1/as exact cpu,memory,pids/s keeper; slices b0/as empty/s empty, subject to actual selected-manager support; a slice is not a delegated service |
+| .Service or .Slice, respective objects | CPUQuotaPerSecUSec, CPUQuotaPeriodUSec, MemoryMax, MemorySwapMax, TasksMax | t exact finite per-project installation policy; swap0; actual kernel values and inherited ancestors separately checked; no invented historical cap |
+| .Service or .Slice, respective objects | DisableControllers | as empty; no inherited cpu/memory/pids exclusion |
+| .Service or .Slice, respective objects | ManagedOOMSwap, ManagedOOMMemoryPressure | s auto/auto; no oomd action is assumed disabled merely from OOMPolicy |
+
+Compare dependency/name arrays as exact bounded SETS, rejecting duplicate and
+unexpected members without runtime sorting. DelegateControllers must match the
+fixed controller-enumeration order cpu,memory,pids. Singletons/empty arrays still
+require exact counts. Array wire order is not a new dependency identity.
+
+The .Unit interface gets generic unit properties ONLY. Actual v255 dbus.c481–497
+registers the unit-cgroup/cgroup vtables under .Service and .Slice, and exec/kill
+under .Service. Calling .Unit for ControlGroup/Slice/limits would be wrong despite
+the internal name bus_unit_cgroup_vtable. MemoryOOMGroup is NOT exported by v255;
+read actual memory.oom.group=0 at relevant kernel ancestors/leaves. Inspect
+manager-controlled oomd/dependency behavior and parent lifetime separately.
+
+Wire schema ceilings for this table: s<=512bytes (exact equality still required),
+as<=32elements each<=255bytes and<=8192encoded bytes; ay exactly16 for InvocationID;
+(uo) object path<=255; ExecStartEx command path<=512/argv1<=512/flags0/commandcount1;
+auxiliary command arrays and (aiai)/a(sb) are EMPTY ONLY. Explicitly decode the two
+signed32status words in ExecStartEx and require0; never permit declaration signed64
+rules to reject legitimate t infinity. All arrays enforce declared byte ends,
+alignment and exact trailing-byte exhaustion. No generic composite decoder.
+The largest positive expected reply must fit the16KiB body cap; validate that from
+the finalized expected arrays, not only from per-element caps. In particular an
+as array may not combine all individually permitted maximal strings if encoding
+would exceed its8192-byte cap. Unrecognized signatures/property replies reject.
+
+The final draft table contains275Properties.Get calls per snapshot: manager1,
+service103, control57, workload57 and anchor57, with no duplicate object/interface/property
+triples (protected candidate-d-flat-inventory.json). The first unit lookup adds1.
+The draft128serial cap is INSUFFICIENT and superseded by512totalserials, no resets.
+Immediately before durable claim, repeat GetUnitByPID and .Unit Id/LoadState/
+ActiveState/SubState/InvocationID/Job on all4objects, .Service MainPID/ControlPID,
+type-specific Slice/ControlGroup/ControlGroupId on all4objects, and Manager.UnitPath:
+40additional requests,316total including first lookup/snapshot. Every reply must match retained
+originals and final expected state. Recheck held kernel/path/clock observations
+as well; no new root/pidfd/object substitutes. This is finite arithmetic, not
+selected-manager compatibility or an atomic manager snapshot. Trusted exclusive
+installation/manager maintenance covers the entire attempt, including persistence.
+Unexpected queued job/autonomous action still fences; no logical retry/new pass.
+
+Fixed initial dependency arrays, now including the anchor:
+
+| Unit | Requires and After (each exact singleton) | Before | All other enumerated dependency arrays |
+| --- | --- | --- | --- |
+| launch service | control slice | empty | empty |
+| control slice | -.slice | launch service | empty |
+| workload slice | -.slice | anchor slice | empty |
+| anchor slice | workload slice | empty | empty |
+
+This derives from unit_add_slice_dependencies in retained systemd-v255-unit.c
+(lines1516–1535 in that downloaded file; provenance pins its bytes), including
+implicit parent Requires/After and inverse Before edges. Web-rendered line numbers
+may differ; function plus retained hash is the evidence locator. WorkingDirectory, RootDirectory/RootImage, directory-creation directives,
+RequiresMountsFor, journal stdio, sockets, PAM, notify/bus activation and all explicit
+dependencies are absent. Nondefault root mount/namespace dependencies reject rather
+than silently extending the matrix. Full exact unit bytes and all manager search/
+overlay/type/dash-prefix inventories must establish these absences; readback then
+checks actual effects. The selected Ubuntu build and actual installed unit must
+be qualified against these exact expected sets; upstream source alone is not proof.
+
+Reviewer v5 confirmed ordinary systemd reconciliation may REMOVE manually enabled
+subtree bits: a slice's children-enable mask comes from member demand, not its own
+accounting/limits. Freeze one permanent installation-owned empty active anchor
+slice, with explicit finite CPUQuota, MemoryMax and TasksMax demanding cpu/memory/
+pids under workload parent. No new process or watcher. Anchor has the same pinned
+no-stop/no-action/dependency policy above, no descendants/procs/threads, and exact
+parent/kernel identity/control files. Its local freeze request is0; effective
+frozen state before task admission comes from workload parent1. Static anchor name
+cannot collide with32hex TaskIDs. It is included in unit/drop-in and recovery
+inventories, but is never a per-task resource or automatically retired.
+
+Installation must establish/verify active anchor, all4unit identities, actual
+supported/enabled cpu/memory/pids at relevant ancestors and parent subtree_control
+before attempts; admission only reads/checks. No per-attempt enabling, repair,
+anchor start/recreation or fallback. Missing/replaced/inactive/changed anchor or
+kernel bits fences. Actual manager reconcile, no-process persistence, failure/
+keeper-death/OOM/stop and reboot/reconciliation cases require physical qualification.
+Configuration demand can fail to enable controllers while slice startup still
+succeeds, so active unit status alone is explicitly insufficient. Parent/sibling
+caps remain exact finite values from separate per-project owner installation;
+no historical numeric CPU/memory cap is invented by this design.
+
+Bootstrap trust remains explicit: root-owned protected installation policy is
+trusted because the opted-in owner/installer established it under exclusive
+maintenance, not because native code can hash its own current executable. Native
+must read/hash the actual referenced config/enrollment/startup/unit bytes and
+compare complete pins/identity with installation and task; a hash echo or nonzero
+field cannot replace that. Also require runtime image Merkle root to equal the
+execution-generation root actually used by _ExecutionRoot after the native root
+transition; current independent installation/task equality checks do NOT establish
+that relationship. Candidate F below proposes binary policy/layout and paths/size caps; acceptance
+of those bytes and provenance of owner-approved semantics remains OPEN. No arbitrary projection of config
+or enrollment, new approval, or current account material is authorized by this
+candidate. Full startup/member verification may occur in its explicitly named
+later authenticated phase; no untrusted helper/entry runs before its own closure.
+
+### Cross-exec durable producer correction E — coupled source remains blocked
+
+Main's source trace found that the storage-only C owner cannot supply late Python
+observer receipts through its current private globals/FDs. Current final transition
+drains preparation handles, retains exactly0..8, creates sealed origin/taskFD9,
+and execs Python; current _Context has no persistence handover. Reopening an arbitrary
+old claim, introducing another Store or silently adding finalFD10 is forbidden.
+This is an integration gap in unfinished admission, not a live storage incident.
+
+Same-task reviewer v5 recommends a narrower capability than a whole-project view:
+one RW bind of the exact already-durable claim file, no active/instance/other tasks
+or directory mutation exposure. Future appends need file fsync only because the
+claim entry and its consumed parent were already durable. Keep native persistence
+FDs inside native256 through GO and the necessary media/view construction. Close
+them once at the explicit final handover before unchanged final0..9 inventory.
+No persistence getter or generic pathname/reopen API is introduced.
+
+The fixed visible name is /run/rnr-native-<Task32>/admission.claim, located through
+existing authenticated finalFD3. It must be mounted IN THE ACTUAL prepared-root
+/run mount tree. Current preparer uses nonrecursive MS_BIND of /run; a submount
+made below host /run is not automatically cloned into that bind. Do not change
+/run to recursive bind or assume propagation. Create one exclusive root0600empty
+mountpoint file in the already-consumed0700native task directory within the
+prepared-root view; collision rejects. Mount the held claim, then separately
+remount that bind RW|nodev|nosuid|noexec. Plain MS_BIND ignores the extra flags.
+Each resource step needs its durable intent before entry; a partial/late bind or
+remount fences, with UNKNOWN retained and no replacement, unmount or cleanup claim.
+Verify same source file dev/ino/type/owner/mode/size, exact new mount ID, flags and
+all named/held ancestry. Later chroot and /run verification must retain that exact
+view. Source-store identity is authenticated natively before handover; the bound
+view has its OWN expected mount ID, not the old source mount ID. Native diagnostic
+journal under tmpfs remains distinct and is never called persistent consumption.
+
+Native-to-Python producer ownership is a consumed state transition:
+
+1. Native completes its last durable append, rereads/verifies the full committed
+   prefix under original setup15, and sends the SAME keeper a one-shot handover:
+   full binding/prefix digests and lengths, claim source and view identities,
+   last sequence/opcode and next fixed transition, project/instance/task, original
+   PID/start/credentials, original clock/namespace/boot and unit InvocationID.
+2. Keeper authenticates the exact original Main, consumes native producer closure
+   before ACK, retains these facts and permanently rejects further native-phase
+   receipts. Keeper NEVER reads the file or waits for a sync. ACK loss leaves no
+   Python authority; no resend/reconnect/alternate producer or native continuation.
+3. Native closes persistence/auth temporaries once, emits a VERSIONED sealed
+   context including that exact handover, and executes only the pinned immutable
+   Python entry with the fixed permitted credential transition. PID/start continuity
+   alone is insufficient: keeper also checks executable/namespace/credentials and
+   the expected native->Python stage. Existing RNRH0001 does not establish this;
+   preserve it as inert historical format, no silent ABI extension or mode switch.
+4. Python authenticates the same expected keeper and original entry, obtains its
+   sole initial writer grant, opens only the fixed view through finalFD3, and
+   verifies exact complete binding/committed prefix against the keeper's retained
+   length/digests/sequence. It must NOT discover a sequence from a tail, repair,
+   truncate, import an old clock or resume another invocation. Changed/trailing/
+   incomplete bytes reject before append; metadata/mount/source identities are
+   checked before/after each bounded read and one full pwrite/fsync.
+5. Python completes pre-fork target intents, then consumes INITIAL_WRITER_CLOSED,
+   closes EVERY storage/auth temporary before _PreforkInventory and inherits no
+   writable file into the observer. Parent-only postfork writer acquisition is
+   a SECOND DISTINCT fixed phase, allowed once for same original Main only.
+   Failure in either acquisition cannot retry/reopen that phase. Observer has no
+   writer API, store path action or receipt role. Closing inherited FDs is not a
+   pathname-access theorem: immutable observer code in the same namespace must
+   contain no storage path; restriction flags do not prevent root reads/writes.
+6. Last READY-related append closes the Python admission producer permanently.
+   Workload mount inventories must exclude the claim view and its parent path.
+   No producer, observer or broker can use this admission mechanism for arbitrary
+   later records; any separate turn/subrequest durability needs its own accepted
+   Store contract rather than silently enlarging this one.
+
+All these appends/reopen/readback/fsync steps use original SETUP15, not a newly
+captured session or Store44 allowance. Original keeper negative60/90 continues
+independently. Sealed FD9 currently carries original origin AND a native floor
+snapshot, but not producer metadata or the exact final post-seal floor. Freeze a
+complete versioned layout and original high-water transfer before source: a final
+native floor cannot be inferred merely from PID continuity or a later Python
+sample. A narrowly authored fixed exec-argument floor (pure encoding after the
+last native clock check) is a candidate, not a generic argv clock authority; it
+would need exact original-entry/keeper provenance and rejection of caller-created
+contexts. No reinitialization to a fresh high-water or T0 is allowed. Do not claim
+the existing structural decoder already solves this coupled boundary.
+
+Main's next byte/protocol freeze must include exact native->Python capsule,
+allowed executable/credential transition, fixed IPC endpoint/credential phases,
+producer sequences, per-operation intents and full normal/failure peaks. Native
+root transition, claim-view mountpoint/bind/remount, Python initial/pre-fork close/
+postfork acquisition and observer registration/arm/new-connection/placement each
+need explicit death/late/ACK-loss tests before changing the fail-closed wrapper.
+Reviewer v5 conditionally supports this single-file direction only; full acceptance
+and physical mount/producer qualification remain OPEN. No view or runtime created.
+
+### F2 protected policy bytes candidate F — needs whole-boundary challenge
+
+The unit table also requires Manager.UnitPath, exact ORDER matching task and
+protected policy; bounded sets are wrong for search precedence. This raises the
+final draft inventory to275snapshot+1lookup+40final=316requests, within512. Read and
+retain relevant path/overlay inventories; no optional fallback to default UnitPath.
+
+The following fixes the native policy representation without embedding the full
+1MiB execution manifest into the65536-byte persistent-policy field. Policy is
+exactly9728bytes, little-endian byte decoding, magic RNRPOL01/version1. It is read
+at fixed /etc/rnr/projects/<Project64>/admission-policy.bin through original
+retained protected ancestry (project locator direction below),
+root:root0400regular nlink1 with exact size and stable named/held dev/ino/mount/
+mtime/ctime. Its SHA256 must equal installation.unit_policy_digest. It is not an
+untrusted task parameter. Header1024, four128-byte unit records, then32fixed256-byte
+ordered UnitPath slots. All unused/reserved/padding bytes zero.
+
+| Header offset | Bytes | Exact data/comparison |
+| --- | --- | --- |
+| 0/8/12 | 8/4/4 | RNRPOL01 / version1 / total9728 |
+| 16/48/64 | 32/16/36 | project / store instance / canonical boot UUID, equal original installation |
+| 100 | 4 | flags exactly1: explicit per-project admission opt-in, no task/approval grant |
+| 104/136/168 | 32each | configuration/enrollment/startup digests, equal installation pins AND actual held referenced bytes |
+| 200/232/264 | 32each | native bootstrap ELF / actual PID1 ELF / permitted Python ELF hashes |
+| 296/328 | 32each | execution/runtime Merkle root / asset root; equal installation.runtime.root AND execution_root, and installation.asset_root respectively |
+| 360/392 | 32each | exact busctl tool / Docker daemon expected hashes, equal task declaration; actual closure/daemon verification remains required before their use |
+| 424/428 | 4/32 | approved Git object ID length20or32/raw bytes, unused tail zero, matching independently established owner base revision; raw SHA1 is an object identifier, not an authorization signature |
+| 460/464 | 4/256 | repository byte length1..256 / ASCII owner/project string, exact separately approved config/enrollment repository, unused tail zero |
+| 720/724 | 4/256 | runner_host byte length1..256 / ASCII exact owner-approved host and current uname nodename, unused tail zero |
+| 980/988/996 | 8each | exact positive native/PID1/Python ELF byte sizes; each<=32MiB |
+| 1004/1008/1012 | 4each | exact configuration/enrollment/startup byte sizes:1..131072/1..131072/1..1048576 |
+| 1016/1020 | 4/4 | UnitPath count1..32 / zero reserved |
+
+Each unit record, in fixed service/control/workload/anchor order at1024+128*i:
+fragmentSHA25632 at0; cpu_millis u64at32; memory_bytes at40; swap_bytes at48(always0);
+pids at56; CPUQuotaPeriodUSec at64(always100000);72..127zero. Values are exact
+finite separately approved per-project caps, not invented historical defaults.
+CPU divisible10, positive, and all arithmetic for quota/period/conversion checked;
+memory/pids positive in supported kernel ranges. Service caps do not exceed control
+caps, task quota does not exceed workload caps; anchor caps equal workload caps
+and demand all three controllers despite empty membership. Map per-second CPU
+to cpu_millis*1000microseconds and kernel100ms quota to cpu_millis*100, rejecting
+overflow. Full kernel limits/hierarchy/state must match; manager echoes alone do
+not establish them. Slot identities and native filenames are fixed derivations,
+not configurable path strings or dynamic record kinds.
+
+Each UnitPath slot at1536+256*i: u32length1..248 at0, zero4..7, exact canonical
+absolute ASCII path at8, zero remainder. No empty/dot/dotdot component, double/
+trailing slash, escape or NUL. Unused slots zero. The permitted order is installed,
+compared with actual PID1, and equal task unit_paths; the policy parser does not
+invent default paths or silently truncate declarations allowing larger strings.
+
+Read/hash exact referenced root:root0400regular nlink1 protected copies at
+/etc/rnr/projects/<Project64>/configuration.json, enrollment.json and
+startup-manifest.json. Original
+owner files/enrollment permissions/locations remain untouched; no links, credentials
+or other-project material are copied by an attempt. Read exact declared size in
+bounded32768-byte chunks, check original setup15 before/after every file operation,
+metadata/name recheck and computation chunk; require EOF and exact digest/size.
+No repair/reread/retry on short/changed/late input. Hash only actual retained bytes.
+Policy bytes themselves are the persistent binding's policy, not a digest echo.
+Config/enrollment/startup referenced bytes are authenticated by actual hash equality,
+not claimed to be embedded in that binding. This representation fits its existing
+65536-byte cap; no cap increase or truncate is proposed.
+
+Installer trust is a prerequisite, NOT a new runtime authorization shortcut. A
+separate explicitly opted-in owner installation must validate approved base Git
+config and exact private enrollment under existing schemas, host/repository/config
+binding and scope/expiry/dependency rules, preserve all original bytes and publish
+this reviewed native policy plus exact rendered unit fragments under exclusive
+maintenance. automation.config.load_context is currently ADVISORY ONLY and cannot
+by itself authorize execution; no implementation may relabel its result as a grant.
+Policy flags1 supplies only the separately established per-project native-admission
+opt-in. Issue/command approval and project product selection remain fully enforced
+before later workload effects. No installation or approval is created in this chat.
+The exact owner workflow/renderer and proof of approved semantic projection still
+need acceptance; native hash checks cannot prove human authorship or bootstrap trust.
+
+Before declaration, compare the actual original native executable (held proc magic
+link plus protected installed named file) with policy hash/size, original PID/start/
+root/credentials and immutable installed artifact. Actual PID1 executable/identity/
+peer must match manager hash, task manager_digest and retained kernel observations.
+The native bootstrap path is a fixed installation-derived content-addressed filename;
+freeze its exact grammar with the renderer before source. No root supplied by the
+current worktree becomes trusted merely by self-hashing. Native bootstrap must be
+separately established trusted code before T0. Static libmd Init/Update/Final is the
+conditionally preferred computation-only digest implementation, pending matching
+source/object/header/license and final static ELF/link-map closure acceptance.
+
+Actual Python, busctl, native media helper and imported/runtime members execute only
+from the later authenticated runtime verity root/complete startup closure. The
+native phase correlates all declared roots/hash pins and actual bootstrap/manager
+facts; it does not claim to have read every image member before mapping. Later
+native/Python phases must authenticate actual mappings/mounts, exact complete
+manifest/member and transitive-loader/config closure BEFORE the corresponding
+helper/entry/Store action. No deferred check may change a prior selector, grant
+resource authority retrospectively or replace a failed earlier comparison.
+
+#### Per-project input location correction — part of candidate F
+
+Existing held-input source uses singleton /etc/rnr/installation.bin and task.bin.
+That uninvoked fail-closed prerequisite is not a multi-project installation model.
+Do not implement project isolation by overwriting those files for each project,
+sharing policy/enrollment, or introducing a per-attempt argv/environment/path knob.
+Unit RootDirectory/BindPaths/PrivateMounts projection would also alter the original
+host namespace contract; no such workaround is proposed.
+
+Propose one fixed derived-location routine, AFTER original T0/fork/ARMED and BEFORE
+protected installation/task reads: read genuine /proc/self/cgroup bounded4096bytes,
+under typed proc/root/PID1/user/pid/cgroup/mount/time namespace checks. Require one
+canonical unified0:: entry with exact path
+/rnrc<Project64>.slice/rnrc<Project64>.service/keeper, repeating the same lowercase
+64hex project value. Native keeper and original child initially share this exact
+service keeper subgroup. Reject extra/malformed/hybrid/alternate/suffix paths.
+This kernel string is a LOCATION ONLY, never a grant. Read fixed nofollow
+/etc/rnr/projects/<Project64> inputs/policy/referenced copies; project directory
+root:root0700, file rules above. No fallback to singleton or another project's
+files. Exact installation/policy project must equal the locator, and authenticated
+actual PID1.GetUnitByPID(original keeper) must equal the same project service.
+Retain/recheck original kernel identity/membership before declaration; keeper also
+checks its own actual original cgroup against the declaration before resource
+effects without opening policy/store disk. Private project resource/identity/input
+scope thus follows actual trusted launch unit and explicit opt-in; no request path
+or another project's enrollment can choose it.
+
+This needs independent challenge and a fixed original bootstrap/proc trust stage;
+existing host-view API is currently INPUTS_HELD-only and cannot simply be called
+early. Do not capture a new clock or treat an untrusted proc string as identity.
+Before any authority, verify genuine host views against protected installed native
+code and actual root/PID1 peer/namespaces; unprivileged user-namespace root or
+forged proc/root must fail. Original v2 decode remains DATA only. The positive
+integration must update every input ancestry/retained-inventory fixture and reader
+coherently; current fail-closed /etc/rnr fixture path is historical and is not
+silently called project-isolated. No existing inputs/enrollments were read/moved.
+
+Policy/locator review refinements (v5): derive location once; compare BOTH original
+child and retained original keeper cgroup records before project reads and again
+before declaration/effects. Genuine-proc bootstrap must precede file access; two
+matching namespace links alone are not independent host-provenance proof. Do not
+reuse current later INPUTS_HELD-only host-view acquisition out of order. Deeper
+project ancestry changes retained input FD count/index mappings; source and every
+normal/failure inventory must be updated together, with no historical fallback.
+
+Installer validation permits only the explicitly opted-in per-project native
+admission/resource-preparation policy. Current issue/command/scope/expiry/dependency
+validity remains action-time mandatory before workload; an install-time expiry
+check does NOT satisfy it. Preserve exact historical referenced config/enrollment/
+startup/unit-policy bytes outside Git across any repinning/replacement so consumed
+claims' hashes remain interpretable. Publish per-project task.bin exclusively;
+never rewrite it while any invocation/pending/uncertain active binding exists.
+A new task publication is not a consumption reset or permission to retire active.
+No current owner data was read or materialized while designing these bytes.

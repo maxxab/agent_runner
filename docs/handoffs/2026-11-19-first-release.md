@@ -424,3 +424,81 @@ profile/closure and full finite qualification before conditional activation.
 No credential cache was inspected, model endpoint called, other project enrolled
 or live runtime activated. Actual publication HEAD/receipt follows in protected
 checkpoint.json; this source checkpoint does not itself assert publication.
+
+
+## Admission contract checkpoint after storage publication
+
+Same Main chat01a1f450-e4e8-78f2-83fe-42feae33aefa now has1confirmed compaction;
+predecessor1retained separately. First compaction alone did not trigger stopping.
+Main continues; one same-task reviewer v5 completed read-only transport/unit/
+controller/producer challenges, and policy/project-locator review complete (conditional direction only).
+No new reviewer/team/source writer was created. Source remains published97ae696;
+1443suite/build/consumer/strict-link evidence above still applies to unchanged C.
+All5release gates OPEN; extraction COMPLETE; no runtime/account/activation executed.
+
+Latest authoritative candidate sections C/D/E/F in persistent-admission-contract:
+
+- Unmodified sd-bus rejected for internal unchecked multi-I/O and allocation bounds.
+  Direct root/PID1 private peer with closed EXTERNAL/framer is conditionally viable;
+  exact5/8reply fields, message-relative zero padding, fixed buffers/counters,
+  per-syscall setup15, no broker fallback/retry/FD negotiation. Missing ancillary
+  buffer rejects observed truncation; cannot prove no sender credentials when
+  PASSCRED/PASSSEC disabled. Same-socket SO_PEERCRED remains authority.
+- Upstream v255 type-specific .Service/.Slice export cgroup properties; .Unit does
+  not. Require empty RestartForceExitStatus despite Restart=no, all auxiliary
+  Exec*Ex empty including ExecConditionEx, actual kernel memory.oom.group0.
+  Exact manager UnitPath must match ORDER. Current table275snapshot properties+
+  firstlookup1+final40=316requests; serial cap512 supersedes128. Protected flattened
+  table has unique triples/types checked against retained source, not actual PID1.
+- Ordinary manager reconciliation may remove manually installed subtree bits.
+  Permanent installation-owned empty rnrw<Project64>-anchor.slice supplies explicit
+  cpu/memory/pids demand without a process; actual enabling/active lifetime/identity
+  must be checked, never repaired per attempt. Generic parent Requires/After and
+  inverse Before tables are explicit. Current target paths/drop-in inventories
+  must change coherently for nested dash hierarchy, not keeper-only.
+- Cross-exec persistence gap: final0..9 drops C producer privateglobals/FDs. Prefer
+  one exact claim-file RWbind in ACTUAL prepared-root /run tree; current /run bind
+  is nonrecursive. Separate bind/remount flags and identity checks, native->Python
+  keeper-consumed producer handover, setup15 everywhere, initial writer close
+  beforeprefork then once-only parent-postfork acquisition; observer never writer.
+  Exact versioned capsule/final high-water transfer still unfrozen; existing FD9
+  structural decoding does not prove it. Whole-project view rejected as too broad.
+- Proposed native policy exactly9728bytes binds actual referenced configuration/
+  enrollment/startup bytes and unit fragments/ELFs/caps/ordered UnitPath to current
+  installation/task/host/kernel. Advisory load_context is NOT execution authority;
+  approved semantic projection/renderer/explicit per-project opt-in still required.
+  Existing singleton /etc/rnr input path is not project isolation. Candidate derives
+  LOCATION ONLY from genuine original kernel cgroup rnrc<Project64>.slice/
+  rnrc<Project64>.service/keeper, then fixed /etc/rnr/projects/<Project64> files,
+  before full actual PID1/policy correlation; bootstrap trust review pending.
+
+Protected evidence additions under release-admission-20261119: review-v5-transport-
+hash.md, review-v5-lifecycle.md, review-v5-producer-handover.md, candidate-d-flat-
+inventory.json and native-source-research provenance. Official upstream v255 source
+is NOT installed Ubuntu-patched binary qualification. Read-only host planning saw
+PID1systemd, uid1000, unified domain with cpu/memory/pids enabled at root and
+memory.oom.group0; this is not installed project or physical admission evidence.
+
+Static libmd SHA256 is conditionally preferred over libgcrypt/library init paths.
+Matching libmd-dev1.1.0-2build1.1 was privately extracted from verified signed apt
+binary metadata; sha2.o imports only memcpy/stack_chk_fail. Protected static pure
+hash fixture passed11vectors against hashlib; no native runner executed. Sacrificial
+UNIXsocketpair rights1/2/253 discard fixture passed on kernel6.18.58.1 with unchanged
+FDinventory; reviewer read, did not rerun, both fixtures. Matching libmd source
+archive retrieval from official Ubuntu HTTPS returned403; no source/binary match
+or final runner ELF qualification claimed. No SDK globally installed, library
+adopted or account/cache inspected. Preserve license/source/object/header/ELF
+closure as explicit remaining requirement before adoption.
+
+Next action: finish current v5policy/locator challenge, then freeze the complete
+IPC/capsule/intents/FD/retirement contract and implement the whole coupled boundary
+in Main. Reuse source-applicable verification; do not run the actual unsupervised
+qualification main. Do not repeat extraction audit or reconstruct historical agents.
+
+V5policy/locator review completed and saved review-v5-policy-project.md: conditional
+direction only. Require both original cgroup records and genuine proc bootstrap
+before project reads; locator consumed once/no fallback; deeper ancestry inventory
+updated together; action-time approval validity separate from installer admission
+policy; historical referenced bytes retained outside Git; never rewrite pending/
+uncertain task.bin. Main incorporated these points. All reviewer operations now
+finished, available only for same-task follow-up; source/docs/Git remain Main-owned.

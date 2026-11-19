@@ -91,7 +91,7 @@
     "baseline": "486172655342dad6d3c77dddd320baa663cb4645",
     "main_ownership_version": "UNKNOWN retained",
     "next_issue_lead_counter": "UNKNOWN retained",
-    "compactions": 0,
+    "compactions": 1,
     "tracking": "Distinct confirmed notices; advance visibility not guaranteed",
     "permissions": "Developer effective danger-full-access / approval never",
     "authorization": "Main implementation; at most one fresh reviewer until implementation ready. No new implementation team. Commits/normal pushes authorized. Activation only after whole actual acceptance; other projects separate opt-in.",
@@ -101,13 +101,14 @@
       "version": 5,
       "parent": "/root",
       "settings": "Full-fork inherited parent model/effort; no stronger override",
-      "scope": "Contract/source review and mocked QA/compile/link completed; no runtime/account/host/Git mutations/children"
+      "scope": "Storage source/mock QA and read-only transport/unit/anchor/producer/policy/locator challenges complete; no active operations/runtime/account/Git/host mutations/children"
     },
     "writers": "Main exclusively source/docs/Git after saved predecessor stop and ownership transfer",
     "predecessor_agents": "Historical only, not contacted",
     "evidence": "/home/faris/.local/state/agent-runner/release-admission-20261119",
     "implemented": "Uninvoked F1 protected ext4 latch/claim preparation; no append, receipt, GO, retirement or launch caller",
     "verification": "1443 tests OK191.241s/7skips; offline build and2consumers/3strict installed-native compile-only checks PASS; v5 independent storage source/mock QA PASS",
-    "release": "All five gates OPEN. F2/F5/provider/physical durability/actual integration/recovery remain unaccepted."
+    "release": "All five gates OPEN. F2/F5/provider/physical durability/actual integration/recovery remain unaccepted.",
+    "contract_progress": "C direct PID1 framing, D316request unit/anchor inventory, E singleclaim cross-exec producer direction, F9728byte protectedpolicy/per-project locator independently challenged; full IPC/capsule/opcodes/FD/recovery remains OPEN"
   }
 }
