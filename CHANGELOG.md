@@ -7,6 +7,11 @@
 - **native:** preserve keeper timing and validate held admission descriptors ([9fac1e4fb6de](https://github.com/maxxab/agent_runner/commit/9fac1e4fb6de9cef38ea9e0f73368e3fb874355e))
 - **native:** decode project-bound installation data ([fdbff7009fa7](https://github.com/maxxab/agent_runner/commit/fdbff7009fa734353ee837b8bd4d0d7831209553))
 - **native:** decode bounded canonical launch declarations ([bc58f30b7d3b](https://github.com/maxxab/agent_runner/commit/bc58f30b7d3b82b29ccfbe23130aefd02b77bcab))
+- **native:** supervise held-input admission without workload release ([e8a94016181f](https://github.com/maxxab/agent_runner/commit/e8a94016181f5dacbacd4be5f66cc0cbc87b2811))
+
+### Bug Fixes
+
+- **runtime:** require explicit finite provider retry controls ([6ce2f59d96c9](https://github.com/maxxab/agent_runner/commit/6ce2f59d96c98ef452facf271ea28a9940b82f23))
 
 ### Refactoring
 
@@ -18,3 +23,4 @@
 - **runner:** record admission contracts and verified prerequisites ([f8024d6c7baa](https://github.com/maxxab/agent_runner/commit/f8024d6c7baa9a9ac83df2d88468804ed6bd67c4))
 - **runner:** preserve first-release rollover and provider gap ([8ce9d922cefb](https://github.com/maxxab/agent_runner/commit/8ce9d922cefbbb8a0eca1508c0d1b265ae24e7a5))
 - **migration:** reconcile extraction ownership and runner setup ([15cb95530384](https://github.com/maxxab/agent_runner/commit/15cb95530384f00600f394a5992687a05d624979))
+- **release:** preserve reviewed components and remaining admission gates ([cc3f5ddffe63](https://github.com/maxxab/agent_runner/commit/cc3f5ddffe63e2fa50b0d8169231e818ba3d0fc2))
