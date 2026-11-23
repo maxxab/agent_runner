@@ -28,6 +28,8 @@ the checked native target; the installed package does not auto-build/activate th
 [handoff](docs/handoffs/2026-11-19-extraction.md),
 [accepted product plan](docs/superpowers/plans/2026-11-09-shared-ai-development-workflow.html),
 [advisory contracts](docs/automation.md), [incident history](TROUBLESHOOTING.md).
+The [requirements and release evidence index](docs/requirements.md) connects the
+product acceptance IDs, current contracts, environment prerequisites and owner flow.
 The product plan's historical placement/bootstrap instructions are superseded by
 this migration and the owner guide; its acceptance IDs and safety contracts remain.
 

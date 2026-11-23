@@ -19,6 +19,14 @@ projection/renderer/bootstrap lineage, IPC and capsule byte/ACK/opcode inventory
 all normal/failure FD peaks, and sole offline retirement/recovery evidence. No
 additional startup/provider/account/lifecycle action is accepted by these designs.
 
+The [requirements index](../../requirements.md) maps the product acceptance IDs
+and current evidence boundaries. Authorized prerequisites may be implemented in
+dependency order after their affected interface is challenged. The complete
+coupled contract remains mandatory before positive declaration/GO or activation.
+Earlier investigation of arbitrary dual-actor loss and post-capsule clock samples
+does not establish additional acceptance requirements or a current clock defect;
+the index records those corrections.
+
 ## F1: project identity and persistent consumption
 
 A separately authorized installation creates a fresh project-specific store only
