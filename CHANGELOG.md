@@ -14,6 +14,10 @@
 
 - **runtime:** require explicit finite provider retry controls ([6ce2f59d96c9](https://github.com/maxxab/agent_runner/commit/6ce2f59d96c98ef452facf271ea28a9940b82f23))
 
+### Security
+
+- **native:** authenticate the original admission fork packet ([35bbff3f5f50](https://github.com/maxxab/agent_runner/commit/35bbff3f5f50008ad6ce5ff3b497bbf99f5ad839))
+
 ### Refactoring
 
 - **runner:** extract standalone package and owner workflow ([ca7692b5dbfe](https://github.com/maxxab/agent_runner/commit/ca7692b5dbfe01d1252cc67aaa6e74d483c4ee3a))
@@ -27,3 +31,4 @@
 - **release:** preserve reviewed components and remaining admission gates ([cc3f5ddffe63](https://github.com/maxxab/agent_runner/commit/cc3f5ddffe63e2fa50b0d8169231e818ba3d0fc2))
 - **native:** specify reviewed admission transport and project policy ([122f9fad9830](https://github.com/maxxab/agent_runner/commit/122f9fad983002540f2ac0c73111aa843beaf6d3))
 - **release:** preserve admission continuation and ownership checkpoint ([8466723edf26](https://github.com/maxxab/agent_runner/commit/8466723edf26769886a409d718b0a7cb53038b8d))
+- **runner:** index product and operational release requirements ([25f81e951fb1](https://github.com/maxxab/agent_runner/commit/25f81e951fb12b44f05b1f96e5ab5644d5c35e04))
