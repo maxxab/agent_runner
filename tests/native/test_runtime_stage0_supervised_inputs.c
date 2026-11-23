@@ -28,6 +28,7 @@
 static int scenario, owner=100, forked, armed, read_index, status_index, scanner;
 static int scans, held_scans, opens, forks, signals, pidfds, sends, gate_closed;
 static int fd_live[32], fd_closed[32], signal_kind, exit_code, status_opens;
+static int passcred_mask;
 static int64_t boot=10000000000LL, wall=100000000000LL;
 static unsigned char installation[448], task[65600];static size_t task_size;
 static jmp_buf exited;
@@ -38,6 +39,8 @@ pid_t __wrap_gettid(void){return owner;}
 pid_t __wrap_getppid(void){return 100;}
 uid_t __wrap_geteuid(void){return 0;}
 gid_t __wrap_getegid(void){return 0;}
+uid_t __wrap_getuid(void){return 0;}
+gid_t __wrap_getgid(void){return 0;}
 int __wrap_clock_gettime(clockid_t c,struct timespec *t)
 {assert(c==CLOCK_BOOTTIME||c==CLOCK_REALTIME);int64_t n=c==CLOCK_BOOTTIME?boot:wall;t->tv_sec=n/1000000000;t->tv_nsec=n%1000000000;return 0;}
 int __wrap_stat(const char *p,struct stat *s)
@@ -77,7 +80,12 @@ int __wrap_fstat(int fd,struct stat *s)
 int __wrap_fcntl(int fd,int cmd,...)
 {if(fd<3){assert(cmd==F_GETFL);return O_RDWR;}assert(fd==4);if(cmd==F_GETFD)return FD_CLOEXEC;assert(cmd==F_GETFL);return O_RDWR|O_NONBLOCK;}
 int __wrap_getsockopt(int fd,int level,int option,void *value,socklen_t *length)
-{assert(fd==4&&level==SOL_SOCKET&&*length==sizeof(int));*(int *)value=option==SO_DOMAIN?AF_UNIX:option==SO_TYPE?SOCK_SEQPACKET:0;return 0;}
+{assert(level==SOL_SOCKET&&*length==sizeof(int));
+ if(option==SO_PASSCRED){assert((fd==3||fd==4)&&!forked);*(int *)value=(passcred_mask>>(fd-3))&1;return 0;}
+ assert(fd==4);*(int *)value=option==SO_DOMAIN?AF_UNIX:option==SO_TYPE?SOCK_SEQPACKET:0;return 0;}
+int __wrap_setsockopt(int fd,int level,int option,const void *value,socklen_t length)
+{assert(!forked&&(fd==3||fd==4)&&level==SOL_SOCKET&&option==SO_PASSCRED&&length==sizeof(int)&&*(const int *)value==1);
+ int bit=1<<(fd-3);assert(!(passcred_mask&bit));passcred_mask|=bit;return 0;}
 int __wrap_statx(int fd,const char *p,int flags,unsigned int mask,struct statx *s)
 {assert(fd_live[fd]&&!strcmp(p,"")&&flags==(AT_EMPTY_PATH|AT_SYMLINK_NOFOLLOW)&&mask==STATX_MNT_ID);memset(s,0,sizeof(*s));s->stx_mask=STATX_MNT_ID;s->stx_mnt_id=1000+fd%10;return 0;}
 int __wrap_fstatfs(int fd,struct statfs *s)
@@ -102,15 +110,20 @@ int __wrap_socketpair(int domain,int type,int protocol,int fds[2])
 int __wrap_sigaction(int sig,const struct sigaction *action,struct sigaction *old)
 {assert(sig==SIGCHLD&&!action&&old);memset(old,0,sizeof(*old));old->sa_handler=SIG_DFL;return 0;}
 pid_t __wrap_fork(void)
-{assert(status_opens==1&&!forked);++forks;forked=1;if(scenario<20){owner=101;return 0;}return 101;}
+{assert(status_opens==1&&!forked&&passcred_mask==3);++forks;forked=1;if(scenario<20){owner=101;return 0;}return 101;}
 int __wrap_prctl(int option,...)
 {va_list a;va_start(a,option);if(option==PR_SET_PDEATHSIG){assert(va_arg(a,unsigned long)==SIGKILL);armed=SIGKILL;}else{assert(option==PR_GET_PDEATHSIG);*va_arg(a,int *)=armed;}va_end(a);return 0;}
 ssize_t __wrap_send(int fd,const void *p,size_t n,int flags)
 {assert(owner==101&&fd==4&&n==8&&!memcmp(p,"RNRKARM1",8)&&flags==(MSG_DONTWAIT|MSG_NOSIGNAL));++sends;return 8;}
 int __wrap_poll(struct pollfd *p,nfds_t n,int timeout)
-{assert(owner==100&&p->fd==3&&n==1&&timeout>0&&timeout<=15000);if(scenario==21)return 0;if(scenario==22)boot=25000000000LL;if(scenario==25)boot=100000000000LL;p->revents=POLLIN;return 1;}
+{assert(owner==100);if(timeout==0){assert(n==1&&p->fd==62);return 0;}
+ assert(p->fd==3&&n==2&&p[1].fd==62&&timeout>0&&timeout<=15000);if(scenario==21)return 0;if(scenario==22)boot=25000000000LL;if(scenario==25)boot=100000000000LL;p->revents=POLLIN;return 1;}
 ssize_t __wrap_recvmsg(int fd,struct msghdr *m,int flags)
-{assert(fd==3&&m->msg_iovlen==1&&flags==(MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC));memcpy(m->msg_iov[0].iov_base,"RNRKARM1",8);return 8;}
+{assert(fd==3&&m->msg_iovlen==1&&flags==(MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC));
+ assert(m->msg_control&&m->msg_controllen==CMSG_SPACE(sizeof(struct ucred)));
+ struct cmsghdr *c=CMSG_FIRSTHDR(m);c->cmsg_level=SOL_SOCKET;c->cmsg_type=SCM_CREDENTIALS;c->cmsg_len=CMSG_LEN(sizeof(struct ucred));
+ struct ucred u={.pid=101,.uid=0,.gid=0};memcpy(CMSG_DATA(c),&u,sizeof(u));
+ memcpy(m->msg_iov[0].iov_base,"RNRKARM1",8);return 8;}
 long __wrap_syscall(long call,...)
 {
  va_list a;va_start(a,call);long result=0;

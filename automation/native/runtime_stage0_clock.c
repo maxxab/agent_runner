@@ -418,12 +418,12 @@ static int fork_close(int *slot,struct rnr_stage0_fork_result *result,
     int fd=*slot;*slot=-1;
     if(fd>=0 && close(fd)!=0){
         int failure=errno;
-        if(result->cleanup_count<2){
+        if(result->cleanup_count<6){
             int index=result->cleanup_count++;
             result->cleanup_errors[index].fd=fd;
             result->cleanup_errors[index].system_errno=failure;
         }
-        error->cleanup_errno=failure;
+        if(!error->cleanup_errno)error->cleanup_errno=failure;
         reject_clock(error,RNR_STAGE0_CLOCK_CLEANUP,failure);return -1;
     }
     return 0;
@@ -440,9 +440,124 @@ static int fork_parent_live(pid_t parent,struct rnr_stage0_clock_error *error)
     }
     return 0;
 }
+/* Initial admission packet only. Credentials bind the original direct fork
+ * sender under the fixed immutable/root/no-injection launch assumptions; they
+ * do not authenticate a declaration, executable or positive continuation. */
+static int admission_sample_after(struct rnr_stage0_clock *state,
+                                  struct rnr_stage0_fork_result *result,
+                                  struct rnr_stage0_clock_error *error)
+{
+    struct rnr_stage0_clock_error sampled={0};
+    int value=state->phase==RNR_STAGE0_CLOCK_NEGATIVE?
+        fork_setup_sample(state,&sampled):rnr_stage0_clock_check_setup(state,&sampled);
+    if(value!=0&&result->admission_clock.code==RNR_STAGE0_CLOCK_OK)
+        result->admission_clock=sampled;
+    if(error->code==RNR_STAGE0_CLOCK_OK)*error=sampled;
+    else if(!error->cleanup_errno)error->cleanup_errno=sampled.cleanup_errno;
+    return value!=0||error->code!=RNR_STAGE0_CLOCK_OK?-1:0;
+}
+static int admission_passcred(int fd,struct rnr_stage0_clock *state,
+                              struct rnr_stage0_fork_result *result,
+                              struct rnr_stage0_clock_error *error)
+{
+    int enabled=1,observed=0;socklen_t length=sizeof(observed);
+    if(rnr_stage0_clock_check_setup(state,error)!=0)return -1;
+    int value=setsockopt(fd,SOL_SOCKET,SO_PASSCRED,&enabled,sizeof(enabled));
+    int failure=value<0?errno:0;
+    if(value!=0)reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    if(admission_sample_after(state,result,error)!=0)return -1;
+    value=getsockopt(fd,SOL_SOCKET,SO_PASSCRED,&observed,&length);
+    failure=value<0?errno:0;
+    if(value!=0||length!=sizeof(observed)||observed!=1){
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    }
+    return admission_sample_after(state,result,error);
+}
+static int admission_armed(int fd,struct rnr_stage0_clock *state,
+                           struct rnr_stage0_clock_error *error)
+{
+    _Static_assert(sizeof(struct ucred)==12&&sizeof(struct cmsghdr)==16&&
+                   CMSG_SPACE(sizeof(struct ucred))==32&&sizeof(int)==4,
+                   "Fixed Linux x86-64 ancillary layout required");
+    unsigned char raw[8];
+    union {struct cmsghdr alignment;unsigned char bytes[32];} control={0};
+    struct rnr_stage0_fork_result *result=fork_parent_result;
+    if(!result||result->child_pid<=0||result->child_pidfd<3||fd!=fork_parent_gate){
+        reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);return -1;
+    }
+    if(fork_setup_sample(state,error)!=0)return -1;
+    int64_t remaining=state->setup_end_ns-state->last_boottime_ns;
+    int64_t wall_remaining=state->wall_deadline_ns-state->last_wall_ns;
+    if(wall_remaining<remaining)remaining=wall_remaining;
+    struct pollfd ready[2]={{.fd=fd,.events=POLLIN},
+                           {.fd=result->child_pidfd,.events=POLLIN}};
+    int value=poll(ready,2,(int)((remaining+999999)/1000000));
+    int failure=value<0?errno:0;
+    if(value!=1||ready[1].revents||ready[0].revents!=POLLIN){
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    }
+    if(admission_sample_after(state,result,error)!=0)return -1;
+    struct iovec vector={.iov_base=raw,.iov_len=sizeof(raw)};
+    struct msghdr message={.msg_iov=&vector,.msg_iovlen=1,
+        .msg_control=control.bytes,.msg_controllen=sizeof(control.bytes)};
+    ssize_t amount=recvmsg(fd,&message,MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC);
+    failure=amount<0?errno:0;
+    if(amount<0)reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    /* Adopt/dispose installed rights before any clock or liveness call. The
+     * trusted kernel normalizes cmsg headers; never index beyond returned bytes. */
+    size_t bytes=message.msg_controllen;
+    if(bytes>sizeof(control.bytes)){
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);bytes=sizeof(control.bytes);
+    }
+    unsigned int credentials=0;
+    for(size_t offset=0;offset<bytes;){
+        if(bytes-offset<sizeof(struct cmsghdr)){
+            reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);break;
+        }
+        struct cmsghdr header;memcpy(&header,control.bytes+offset,sizeof(header));
+        if(header.cmsg_len<CMSG_LEN(0)||header.cmsg_len>bytes-offset){
+            reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);break;
+        }
+        size_t count=header.cmsg_len-CMSG_LEN(0);
+        const unsigned char *data=control.bytes+offset+CMSG_LEN(0);
+        if(header.cmsg_level==SOL_SOCKET&&header.cmsg_type==SCM_RIGHTS){
+            reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);
+            for(size_t at=0;at+sizeof(int)<=count;at+=sizeof(int)){
+                int owned;memcpy(&owned,data+at,sizeof(owned));
+                if(owned<0||owned==fd||owned==result->child_pidfd){
+                    reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);continue;
+                }
+                (void)fork_close(&owned,result,error);
+            }
+        }else if(header.cmsg_level==SOL_SOCKET&&header.cmsg_type==SCM_CREDENTIALS&&
+                 count==sizeof(struct ucred)){
+            struct ucred sender;memcpy(&sender,data,sizeof(sender));++credentials;
+            if(credentials!=1||sender.pid!=result->child_pid||sender.uid||sender.gid)
+                reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);
+        }else reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);
+        size_t next=CMSG_ALIGN(header.cmsg_len);
+        if(next>bytes-offset){
+            if(header.cmsg_len!=bytes-offset)reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);
+            break;
+        }
+        offset+=next;
+    }
+    if(amount!=8||message.msg_flags&~MSG_CMSG_CLOEXEC||credentials!=1||
+       (amount==8&&memcmp(raw,"RNRKARM1",8)))
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    /* Clock helpers initialize their output. Preserve the initiating protocol
+     * and cleanup capsule while independently checking negative identity/time. */
+    if(admission_sample_after(state,result,error)!=0)return -1;
+    struct pollfd alive={.fd=result->child_pidfd,.events=POLLIN};
+    value=poll(&alive,1,0);failure=value<0?errno:0;
+    if(value!=0||alive.revents)reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    return admission_sample_after(state,result,error);
+}
 static int fork_packet(int fd,const char wanted[8],struct rnr_stage0_clock *state,
                          struct rnr_stage0_clock_error *error)
 {
+    if(fork_admission_route&&state==fork_parent_clock)
+        return admission_armed(fd,state,error);
     unsigned char raw[8];
     if(fork_setup_sample(state,error)!=0)return -1;
     int64_t remaining=state->setup_end_ns-state->last_boottime_ns;
@@ -505,6 +620,9 @@ static int fork_clock(struct rnr_stage0_clock *state,
         reject_clock(error,RNR_STAGE0_CLOCK_FORK,0);goto failed;
     }
     if(admission_route){
+        if(getuid()!=0||geteuid()!=0||getgid()!=0||getegid()!=0){
+            reject_clock(error,RNR_STAGE0_CLOCK_OWNER,0);goto failed;
+        }
         if(admission_single_owner(error)!=0)goto failed;
         fork_single_owner=1;
     }
@@ -519,6 +637,8 @@ static int fork_clock(struct rnr_stage0_clock *state,
         reject_clock(error,RNR_STAGE0_CLOCK_GATE,0);goto failed;
     }
     if(rnr_stage0_clock_check_setup(state,error)!=0)goto failed;
+    if(admission_route&&(admission_passcred(channels[0],state,result,error)!=0||
+                         admission_passcred(channels[1],state,result,error)!=0))goto failed;
     pid_t parent=state->pid;
     result->fork_entered=1;
     pid_t child=fork();

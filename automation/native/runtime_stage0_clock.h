@@ -80,8 +80,11 @@ struct rnr_stage0_fork_result {
     int child_pidfd, fork_entered, fork_returned, child_armed;
     int signal_attempted, signal_result, signal_errno;
     struct rnr_stage0_clock_error primary;
+    /* Independent post-syscall clock failure, without replacing primary. */
+    struct rnr_stage0_clock_error admission_clock;
     int cleanup_count;
-    struct { int fd, system_errno; } cleanup_errors[2];
+    /* Two socket ends plus at most four installed ancillary rights. */
+    struct { int fd, system_errno; } cleanup_errors[6];
 };
 /* Fail-closed held reader route, sharing the physical one-shot fork. Trusted
  * immutable native launch must contain no thread creation, callbacks, signal
