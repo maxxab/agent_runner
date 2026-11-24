@@ -151,3 +151,36 @@ compile-only builds, no native artifact execution. Wheel SHA256:
 Logs: protected `root-binding-*`, `guarded-create-*`, `policy-*` files under the
 same evidence root above. Policy structural source/limits are documented in the
 coupled contract. These are component/package results, not operational acceptance.
+
+## Follow-up: make the private artifact use supervised admission
+
+The old private qualification main called the legacy unsupervised input/host-view/
+claim/loop/mapping/mount/final-exec chain. It now requires the private compile flag,
+calls the existing fixed `rnr_stage0_supervised_inputs` once, and unconditionally
+exits125 on every return. The child already abandons inputs/gate and exits125;
+main adds no duplicate cleanup. The parent wrapper attempts original-child
+containment and closes its gate. Neither signal/close success nor this routing
+proves reaping, physical containment or a whole operational lifecycle. The
+separate validation entry is unchanged. The artifact remains NEVER RUN.
+
+The same sole reviewer challenged the interface before source and found no
+blocking issue in the integrated diff afterward, without executing tests. The
+updated C fixture substitutes supervision and exit, forbids every former stage,
+and checks returning -1/0/1/125 plus a child exit inside supervision. Its new
+unittest driver audits undefined imports before running only that fixture. RED
+observed the old entry attempt unsupervised preparation; focused GREEN covered
+entry, actual-module supervised inputs, supervised clock and held reader:
+4tests in11.011s. This is source/fixture evidence, not invocation of the artifact.
+The original T0/fork/input ownership belongs to the separately tested supervisor.
+
+Final entry-change checks: default suite1445tests in232.870s passed,7skipped;
+the seven opt-in credential-free POSIX worker tests all passed separately in2.726s
+(real pipes, bounded transfers, timeout signals/reaping and child-only core limit).
+These are disposable test-owned Python processes, not a Codex/provider/native
+qualification or operational activation. Missing/zero private compile flags reject;
+flag1 strictly compiles. Offline wheel/sdist build and2isolated installed consumers/
+3strict actual native compile-only builds passed. Wheel SHA256:
+`bc3e65b621039e9975c55b91c819359cd96b20fb73e0d71d09cef14678783ea8`.
+Protected `supervised-entry-*` and `posix-qualification-20261124.log` retain results
+and reviewer snapshot; actual native artifacts remain unexecuted. All five
+operational release gates remain open.

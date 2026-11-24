@@ -63,7 +63,8 @@ struct rnr_stage0_installation;
 struct rnr_stage0_task;
 struct rnr_stage0_launch_declaration;
 /* Fixed held-input boundary only; every returning parent path fails and every
- * child reader outcome abandons descriptors and _exit(125). No GO/main route. */
+ * child reader outcome abandons descriptors and _exit(125). The private main
+ * routes here only to fail closed; no GO or operational continuation. */
 int rnr_stage0_supervised_inputs(struct rnr_stage0_preparer_error *);
 int rnr_stage0_check_admission_preparation(struct rnr_stage0_launch_error *);
 int rnr_stage0_bind_admission_inputs(const struct rnr_stage0_installation *,
