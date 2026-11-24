@@ -20,6 +20,7 @@
 - **native:** authenticate the original admission fork packet ([35bbff3f5f50](https://github.com/maxxab/agent_runner/commit/35bbff3f5f50008ad6ce5ff3b497bbf99f5ad839))
 - **native:** bind execution to the runtime image root ([4414afe768dc](https://github.com/maxxab/agent_runner/commit/4414afe768dc474175b3fd5b4577d2cfef1aa1f7))
 - **native:** route private entry through supervised admission ([4af30885d656](https://github.com/maxxab/agent_runner/commit/4af30885d6562f5ab80804fe712d6225cbe50033))
+- **runner:** guard original admission bootstrap privilege ([5b2050c77eb9](https://github.com/maxxab/agent_runner/commit/5b2050c77eb903cf1a09c25cce2b7e751696adb9))
 
 ### Refactoring
 
