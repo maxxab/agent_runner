@@ -87,6 +87,7 @@ static int binding(const unsigned char *raw,size_t size)
        memcmp(declaration.allocation,task.task_id,16)||
        memcmp(declaration.asset_root,i->asset_root,32)||
        memcmp(declaration.execution_root,i->execution_root,32)||
+       memcmp(i->runtime.root,i->execution_root,32)||
        le(raw+160,8)!=(uint64_t)task.wall_cutoff_ns)return -1;
     hex(persistence.project,i->project_id,32);hex(persistence.task,task.task_id,16);
     return 0;

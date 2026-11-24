@@ -156,8 +156,10 @@ int main(int argc,char **argv)
  assert(argc==2);scenario=atoi(argv[1]);size_t payload=fread(task+64,1,65536,stdin);assert(payload&&payload<65536);task_size=payload+64;
  memcpy(task,"RNRT0001",8);task[8]=1;memset(task+16,0xaa,16);le(task+32,scenario==2?160000000000LL:190000000000LL,8);le(task+40,payload,4);
  memcpy(installation,"RNRI0002",8);installation[8]=2;installation[16]=1;installation[48]=2;le(installation+80,129,8);le(installation+88,3,8);memset(installation+96,0xff,32);memset(installation+128,1,272);memset(installation+400,0,48);memcpy(installation+200,"11111111-1111-1111-1111-111111111111",36);memset(installation+236,0,4);memset(installation+336,0x11,32);
+ memset(installation+16,0x11,32);
  if(scenario==1)installation[200]='2';
  if(scenario==5)installation[96]^=1;
+ if(scenario==9)installation[16]^=1;
  static struct rnr_stage0_preparer_error error;
  if(scenario<20){
   if(!setjmp(exited)){(void)rnr_stage0_supervised_inputs(&error);assert(0);}
@@ -166,6 +168,7 @@ int main(int argc,char **argv)
   for(int fd=10;fd<25;++fd)assert(!fd_live[fd]&&fd_closed[fd]<=1);
   if(scenario==0){assert(error.code==RNR_STAGE0_PREPARER_OK&&opens==10);}
   else assert(error.code!=RNR_STAGE0_PREPARER_OK);
+  if(scenario==9)assert(error.code==RNR_STAGE0_PREPARER_IDENTITY);
   if(scenario==7)assert(opens==0); /* held inventory before first input open */
   int before=opens;struct rnr_stage0_preparer_error ordinary;
   assert(rnr_stage0_prepare_host_view(&ordinary)==-1&&opens==before);

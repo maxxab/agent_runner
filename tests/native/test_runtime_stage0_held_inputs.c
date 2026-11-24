@@ -104,6 +104,7 @@ static void reset(void)
     memset(install_raw+128,1,272);memset(install_raw+400,0,48);
     memcpy(install_raw+200,"11111111-1111-1111-1111-111111111111",36);memset(install_raw+236,0,4);
     memset(install_raw+96,0xff,32);memset(install_raw+336,0x11,32);
+    memset(install_raw+16,0x11,32);
     memset(task_raw+16,0xaa,16);le(task_raw+40,payload_size,4);
     task_size=64+payload_size;memcpy(task_raw+64,payload,payload_size);
     memset(live,0,sizeof(live));memset(closes,0,sizeof(closes));
@@ -303,6 +304,12 @@ int main(void)
     reset();task_raw[16]^=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && e.code==RNR_STAGE0_PREPARER_IDENTITY && !held_binds);drained();
     reset();install_raw[96]^=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && !held_binds);drained();
     reset();install_raw[336]^=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && !held_binds);drained();
+    /* Matching task/install execution pins cannot conceal a different image. */
+    for(int byte=0;byte<32;++byte){
+        reset();install_raw[16+byte]^=1;
+        assert(rnr_stage0_prepare_held_inputs(&e)==-1&&e.code==RNR_STAGE0_PREPARER_IDENTITY&&!held_binds);
+        drained();
+    }
     reset();close_bad=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && e.cleanup_count==6);drained();
     reset();assert(rnr_stage0_prepare_held_inputs(&e)==0);close_bad=1;
     assert(rnr_stage0_abandon_preparation_inputs(&e)==-1 && e.cleanup_count==5);drained();

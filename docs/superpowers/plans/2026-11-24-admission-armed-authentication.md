@@ -121,3 +121,19 @@ open. Actual public service startup and a real private provider session are abse
 Whole runtime/profile/provider/closure/recovery and new-project operational
 acceptance remain open. Ordinary doctored data or a successful first packet grants
 no persistence, task resource, Store or workload authority.
+
+## Follow-up: correlate runtime and execution roots
+
+The held admission reader previously compared the declaration's execution root
+with the installation's execution root, but omitted comparison with the runtime
+image root. The persistent binding validator independently had the same omission.
+Both now require all three roots to match before input binding/cutoff or any
+persistence I/O. Legacy inert record decoders remain unchanged. Equality does not
+prove an actual dm-verity mapping, host provenance or trusted policy.
+
+The held-reader and persistence fixtures reject a mismatch at every one of the
+32 runtime-root bytes; persistence rejection makes no I/O or record creation.
+The actual-module supervised fixture checks the exact identity error and exit125.
+All three regressions failed before the guards were added, then passed the focused
+run (3 tests,10.183s). The same sole reviewer found no blocking issue and suggested
+the exact-error assertion now included. Full-suite/package results follow below.

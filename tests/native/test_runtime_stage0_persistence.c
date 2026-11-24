@@ -97,6 +97,7 @@ static void setup(void)
     encode(i+80,129,8);encode(i+88,3,8);memset(i+96,0xff,32);
     memcpy(i+128,raw+16,32);memcpy(i+160,raw+48,16);
     encode(i+176,11,8);encode(i+184,106,8);encode(i+192,12,4);encode(i+196,13,4);
+    memset(i+16,0x11,32);
     memcpy(i+200,raw+184,36);memset(i+240,4,96);memset(i+336,0x11,32);memset(i+368,6,32);
     unsigned char *t=raw+704;
     memcpy(t,"RNRT0001",8);encode(t+8,1,4);memcpy(t+16,raw+64,16);
@@ -278,6 +279,10 @@ int main(void)
     setup();assert(rnr_stage0_prepare_persistent_claim(raw,raw_size,&e)==0);
     close_fail=1;assert(rnr_stage0_abandon_persistent_claim(&e)==-1);all_closed();assert(e.cleanup_count==10);
     prior_close=close_calls;assert(rnr_stage0_abandon_persistent_claim(&e)==-1);assert(close_calls==prior_close);
+    for(int byte=0;byte<32;++byte){
+        setup();raw[256+16+byte]^=1;rejected();
+        assert(io_calls==0&&create_count[0]==0&&create_count[1]==0);
+    }
     setup();raw[16]^=1;rejected();assert(io_calls==0);
     setup();raw[232]=1;rejected();assert(io_calls==0);
     setup();encode(raw+224,65601,4);rejected();assert(io_calls==0);

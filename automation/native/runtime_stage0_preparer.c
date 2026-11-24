@@ -509,7 +509,8 @@ int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *e)
     if(input_owner.installation.version!=2 ||
        memcmp(declaration.allocation,input_owner.task.task_id,16) ||
        memcmp(declaration.asset_root,input_owner.installation.asset_root,32) ||
-       memcmp(declaration.execution_root,input_owner.installation.execution_root,32)){
+       memcmp(declaration.execution_root,input_owner.installation.execution_root,32) ||
+       memcmp(input_owner.installation.runtime.root,input_owner.installation.execution_root,32)){
         reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto failed;
     }
     if(live_input(e)!=0)goto failed;
