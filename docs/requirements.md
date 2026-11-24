@@ -1,7 +1,8 @@
 # Runner requirements and release evidence
 
 This is the navigation and traceability index for the existing product requirements.
-It does not replace their detailed contracts or create another backlog. The current
+It does not replace their detailed contracts or create another backlog. Latest
+checkpoint: [24 November release progress](handoffs/2026-11-24-release-progress.md). The current
 package is advisory; operational acceptance remains incomplete.
 
 ## Authoritative sources

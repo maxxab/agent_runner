@@ -539,3 +539,13 @@ outside Git. All5release gates remain OPEN; extraction COMPLETE. Nothing activat
 Current native persistence remains uninvoked and the qualification main unsafe to
 run unsupervised. Continue in successor Main, at most one fresh reviewer for remaining
 work; never contact historical v5/v4/old owners or reconstruct completed teams.
+
+
+## Current successor checkpoint — 24 November
+
+Continue from [2026-11-24 release progress](2026-11-24-release-progress.md). It
+records admission fixes, supervised private entry, final passing source checks,
+bootstrap review and current service/continuation limits. Earlier operational
+readiness remains unproven; all five gates are open. The old unsupervised main
+warning above is historical: current main routes supervised admission and exits125,
+and actual native artifacts still have not been run. Preserve earlier evidence.
