@@ -1319,3 +1319,24 @@ passed the policy fixture separately. Full regression/package outcomes are recor
 in the[2026-11-24 admission checkpoint](2026-11-24-admission-armed-authentication.md):
 1444tests passed,7skips; wheel/sdist and2installedconsumers/3compile-onlynative
 builds passed. No actual native entry ran. All five operational gates remain open.
+
+#### SHA-256 dependency source audit checkpoint (2026-11-24)
+
+The matching libmd1.1.0-2build1.1 source is now available. The configured Ubuntu
+noble-updates InRelease signature was verified against the installed archive
+keyring; its SHA256-pinned Sources index binds the exact upstream archive, Debian
+source metadata and Debian archive. All three downloaded hashes/sizes match.
+No Debian patch series is present. The upstream sha2.h is byte-identical to the
+previously verified/extracted SDK header. The packaged sha2.o and a strict GCC13
+compile of matching sha2.c import only memcpy and __stack_chk_fail and have no
+constructor sections. Different compiler flags mean byte-equivalent objects are
+NOT claimed. Existing computation-only vector evidence remains separate.
+
+Protected source, license text, signed payload/index, hashes and object/import/
+section audit are retained at
+/home/faris/.local/state/agent-runner/release-admission-20261119/libmd-source/
+(source-object-audit.json). This clears the earlier missing-source obstacle. It
+does not adopt/link a dependency, install global SDK packages, run a native entry
+or close final static ELF/link-map/transitive startup closure acceptance. Retain
+the source/header copyright, BSD-3-clause conditions and disclaimer with any future
+distribution that uses the corresponding code.

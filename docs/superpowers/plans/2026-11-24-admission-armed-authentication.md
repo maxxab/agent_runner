@@ -137,3 +137,17 @@ The actual-module supervised fixture checks the exact identity error and exit125
 All three regressions failed before the guards were added, then passed the focused
 run (3 tests,10.183s). The same sole reviewer found no blocking issue and suggested
 the exact-error assertion now included. Full-suite/package results follow below.
+
+Final combined verification:1444tests passed in226.724s,7skips. The first full
+root-binding run had one existing synthetic malformed-response test expire its
+150ms Store/IPC budget; it passed alone. That parser-focused test now uses a1s
+budget, while production and deadline-focused tests remain unchanged. Its14-test
+module passed in1.438s and the combined full rerun passed. The sole reviewer also
+reviewed this narrow test adjustment without executing tests.
+
+Offline wheel/sdist and installed checks passed:2isolated consumers,3strict native
+compile-only builds, no native artifact execution. Wheel SHA256:
+`0f7e689a7b6e1d929422217ae615ce7aa26095d61a40b31a8f48bd2e173bc6d9`.
+Logs: protected `root-binding-*`, `guarded-create-*`, `policy-*` files under the
+same evidence root above. Policy structural source/limits are documented in the
+coupled contract. These are component/package results, not operational acceptance.

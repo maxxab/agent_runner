@@ -76,6 +76,9 @@ The package requires Python >=3.12 and Git, has no ordinary Python runtime
 dependencies, and uses a reviewed wheel with a project-local environment. Native
 source verification targets Linux x86_64/GCC13. Actual Codex, Docker, systemd,
 cgroup, immutable storage and provider behavior require separate runtime evidence.
+No project-local `.env` is required by the current package. The shared standards
+`.env.local` provides GitHub tooling authentication only; it does not supply runner
+configuration, enrollment or a runtime grant. Do not copy it into consumer projects.
 Installed versions alone are insufficient. [Experiment setup](experiment-setup.md)
 retains historical SDK/profile pins and is not a current activation runbook.
 
