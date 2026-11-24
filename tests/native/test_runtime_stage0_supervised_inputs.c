@@ -9,6 +9,9 @@
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <linux/nsfs.h>
+#include <sched.h>
+#include <sys/ioctl.h>
 #include <poll.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -28,8 +31,39 @@
 static int scenario, owner=100, forked, armed, read_index, status_index, scanner;
 static int scans, held_scans, opens, forks, signals, pidfds, sends, gate_closed;
 static int fd_live[32], fd_closed[32], signal_kind, exit_code, status_opens;
-static int passcred_mask;
 static int64_t boot=10000000000LL, wall=100000000000LL;
+static int passcred_mask;
+/* Independent fixed proc model for actual bootstrap.c, never host proc. */
+static int guard_live[10],guard_role[10],guard_count,guard_done,guard_namespace;
+static int guard_open(int role)
+{
+ assert(held_scans==1&&!guard_done);int i;
+ for(i=0;i<10&&guard_live[i];++i){}assert(i<10);
+ guard_live[i]=1;guard_role[i]=role;++guard_count;return 70+i;
+}
+static int guard_stat(int fd,struct stat *s)
+{
+ assert(fd>=70&&fd<80&&guard_live[fd-70]);int role=guard_role[fd-70];
+ memset(s,0,sizeof(*s));s->st_dev=role==0?1:role==8?3:2;
+ s->st_ino=role==1?1:role==8?UINT64_C(0xeffffffd):(uint64_t)(100+role);
+ s->st_mode=role==2||role==7?S_IFLNK|0777:role==8?S_IFREG|0444:S_IFDIR|0555;
+ s->st_nlink=1;s->st_size=role==2?12:role==7?17:0;
+ if(scenario==12&&role==8)++s->st_ino;
+ return 0;
+}
+ssize_t __wrap_readlinkat(int fd,const char *p,char *b,size_t n)
+{
+ assert(fd>=70&&fd<80&&guard_live[fd-70]&&!strcmp(p,"")&&n==32);
+ int role=guard_role[fd-70];assert(role==2||role==7);
+ const char *value=role==2?(scenario==10?"102/task/101":"101/task/101"):"user:[4026531837]";
+ size_t count=strlen(value);memcpy(b,value,count);return (ssize_t)count;
+}
+int __wrap_ioctl(int fd,unsigned long request,...)
+{
+ assert(fd>=70&&fd<80&&guard_live[fd-70]&&guard_role[fd-70]==8&&request==NS_GET_NSTYPE);
+ guard_namespace=1;if(scenario==11)boot=25000000000LL;
+ return CLONE_NEWUSER;
+}
 static unsigned char installation[448], task[65600];static size_t task_size;
 static jmp_buf exited;
 static void le(unsigned char *p,uint64_t v,int n)
@@ -54,7 +88,9 @@ int __wrap_open(const char *p,int flags,...)
  if(!strcmp(p,"/proc/sys/kernel/random/boot_id")){assert(flags==(O_RDONLY|O_NOFOLLOW|O_CLOEXEC));read_index=0;return 50;}
  if(!strcmp(p,"/proc/self/status")){assert(!forked);++status_opens;status_index=0;return 51;}
  if(!strcmp(p,"/proc/self/fd")){assert(!scanner);scanner=1;++scans;if(forked){assert(owner==101);++held_scans;}return 3;}
- assert(!strcmp(p,"/")&&flags==(O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC));return input_open(0);
+ assert(!strcmp(p,"/")&&flags==(O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC));
+ if(!guard_done)return guard_open(0);
+ return input_open(0);
 }
 ssize_t __wrap_read(int fd,void *p,size_t n)
 {
@@ -63,6 +99,16 @@ ssize_t __wrap_read(int fd,void *p,size_t n)
 }
 int __wrap_openat(int parent,const char *p,int flags,...)
 {
+ if(parent>=70&&parent<80){
+  assert(guard_live[parent-70]);int r=guard_role[parent-70],role=-1;
+  if(r==0){assert(!strcmp(p,"proc"));role=1;}
+  else if(r==1){if(!strcmp(p,"thread-self"))role=2;else{assert(!strcmp(p,"101"));role=3;}}
+  else if(r==3){assert(!strcmp(p,"task"));role=4;}
+  else if(r==4){assert(!strcmp(p,"101"));role=5;}
+  else if(r==5){assert(!strcmp(p,"ns"));role=6;}
+  else if(r==6){assert(!strcmp(p,"user"));role=flags&O_NOFOLLOW?7:8;}
+  assert(role>=0);return guard_open(role);
+ }
  int role;if(parent==10){assert(!strcmp(p,"etc"));role=1;}
  else if(parent==11){assert(!strcmp(p,"rnr"));role=2;}
  else {assert(parent==12);role=!strcmp(p,"installation.bin")?3:4;assert(role==3||!strcmp(p,"task.bin"));}
@@ -70,6 +116,7 @@ int __wrap_openat(int parent,const char *p,int flags,...)
 }
 int __wrap_fstat(int fd,struct stat *s)
 {
+ if(fd>=70&&fd<80)return guard_stat(fd,s);
  memset(s,0,sizeof(*s));s->st_dev=1;s->st_ino=100+fd;
  if(fd<3){s->st_mode=S_IFCHR;s->st_rdev=9;return 0;}
  if(fd==3&&scanner){s->st_mode=S_IFDIR|0500;return 0;}
@@ -87,9 +134,13 @@ int __wrap_setsockopt(int fd,int level,int option,const void *value,socklen_t le
 {assert(!forked&&(fd==3||fd==4)&&level==SOL_SOCKET&&option==SO_PASSCRED&&length==sizeof(int)&&*(const int *)value==1);
  int bit=1<<(fd-3);assert(!(passcred_mask&bit));passcred_mask|=bit;return 0;}
 int __wrap_statx(int fd,const char *p,int flags,unsigned int mask,struct statx *s)
-{assert(fd_live[fd]&&!strcmp(p,"")&&flags==(AT_EMPTY_PATH|AT_SYMLINK_NOFOLLOW)&&mask==STATX_MNT_ID);memset(s,0,sizeof(*s));s->stx_mask=STATX_MNT_ID;s->stx_mnt_id=1000+fd%10;return 0;}
+{if(fd>=70&&fd<80){assert(guard_live[fd-70]);memset(s,0,sizeof(*s));s->stx_mask=STATX_MNT_ID;
+ int role=guard_role[fd-70];s->stx_mnt_id=role==0?10:role==8?30:20;return 0;}
+ assert(fd_live[fd]&&!strcmp(p,"")&&flags==(AT_EMPTY_PATH|AT_SYMLINK_NOFOLLOW)&&mask==STATX_MNT_ID);memset(s,0,sizeof(*s));s->stx_mask=STATX_MNT_ID;s->stx_mnt_id=1000+fd%10;return 0;}
 int __wrap_fstatfs(int fd,struct statfs *s)
-{assert(fd_live[fd]);memset(s,0,sizeof(*s));s->f_type=0xef53;return 0;}
+{if(fd>=70&&fd<80){assert(guard_live[fd-70]);memset(s,0,sizeof(*s));int role=guard_role[fd-70];
+ s->f_type=role==0?0xef53:role==8?0x6e736673:0x9fa0;return 0;}
+ assert(fd_live[fd]);memset(s,0,sizeof(*s));s->f_type=0xef53;return 0;}
 ssize_t __wrap_pread(int fd,void *p,size_t n,off_t offset)
 {
  assert((fd==13||fd==14)&&fd_live[fd]);if(scenario==6){errno=EIO;return -1;}
@@ -100,6 +151,9 @@ ssize_t __wrap_pread(int fd,void *p,size_t n,off_t offset)
 }
 int __wrap_close(int fd)
 {
+ if(fd>=70&&fd<80){assert(guard_live[fd-70]);guard_live[fd-70]=0;--guard_count;
+ if(!guard_count)guard_done=1;
+ return 0;}
  if(fd==50||fd==51)return 0;
  if(fd==3&&scanner){scanner=0;return 0;}
  if(fd==3||fd==4){++gate_closed;return 0;}
@@ -149,7 +203,7 @@ ssize_t __wrap___pread_chk(int fd,void *p,size_t n,off_t off,size_t size)
 #define DENY(name) _Noreturn void __wrap_##name(void){assert(!"unexpected host boundary: " #name);abort();}
 DENY(chdir) DENY(chroot) DENY(dup2) DENY(dup3) DENY(execve) DENY(fchdir)
 DENY(fchmod) DENY(fstatat) DENY(fstatvfs) DENY(fsync) DENY(ftruncate)
-DENY(getrandom) DENY(ioctl) DENY(memfd_create) DENY(mkdirat) DENY(mount)
+DENY(getrandom) DENY(memfd_create) DENY(mkdirat) DENY(mount)
 DENY(pipe2) DENY(pwrite) DENY(umask) DENY(waitpid)
 int main(int argc,char **argv)
 {
@@ -169,6 +223,10 @@ int main(int argc,char **argv)
   if(scenario==0){assert(error.code==RNR_STAGE0_PREPARER_OK&&opens==10);}
   else assert(error.code!=RNR_STAGE0_PREPARER_OK);
   if(scenario==9)assert(error.code==RNR_STAGE0_PREPARER_IDENTITY);
+  if(scenario>=10&&scenario<=12){
+   assert(error.code==RNR_STAGE0_PREPARER_BOOTSTRAP&&opens==0&&guard_count==0);
+   if(scenario==11)assert(error.bootstrap.code==RNR_STAGE0_BOOTSTRAP_CLOCK&&guard_namespace);
+  }
   if(scenario==7)assert(opens==0); /* held inventory before first input open */
   int before=opens;struct rnr_stage0_preparer_error ordinary;
   assert(rnr_stage0_prepare_host_view(&ordinary)==-1&&opens==before);

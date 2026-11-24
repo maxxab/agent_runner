@@ -1340,3 +1340,24 @@ does not adopt/link a dependency, install global SDK packages, run a native entr
 or close final static ELF/link-map/transitive startup closure acceptance. Retain
 the source/header copyright, BSD-3-clause conditions and disclaimer with any future
 distribution that uses the corresponding code.
+
+
+#### Bootstrap trust-order correction and integrated negative guard (24 November)
+
+The installer-established immutable original bootstrap, launch and root context is
+a prerequisite; protected files discovered through an arbitrary current root cannot
+establish that prerequisite by hashing themselves. Candidate F's earlier ordering
+must not be read as circularly authenticating a root against policy first learned
+from that root. Initial-user-namespace/root IDs alone do not identify the chosen
+host, PID1, manager, cgroup root or project. Dynamic WSL PID/mount namespaces remain
+allowed under the fixed qualified context; no initial PID/mount namespace rule.
+
+The [original-child guard plan](2026-11-24-bootstrap-privilege-guard.md) now has
+an integrated private negative check before historical singleton input reads.
+It rejects mapped-user-namespace/proc substitutions under its explicit bootstrap/
+kernel/stable-namespace/no-privileged-injection premises. It returns no retained
+root, project selector or authority. The supervised wrapper still abandons and
+exits125. No per-project reader, declaration, persistence, GO, producer handover
+or operational path is released by that check. Both-original-cgroup comparison,
+actual host/PID1/policy authentication and the complete C/D/E/F coupled contract
+remain mandatory. Do not relabel the singleton inputs as project-isolated.

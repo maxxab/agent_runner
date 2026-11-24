@@ -22,7 +22,7 @@ def main():
         assert 'automation/control_runtime_root_entry.py' in names
         assert 'tools/runner_idle_notifications.py' in names
         native = [n for n in names if n.startswith('automation/native/')]
-        assert len(native) == 15, native
+        assert len(native) == 17, native
         assert not any(n.endswith(('.so', '.o', '.pyc')) for n in names)
         assert not any('/.env' in n or '/state/' in n for n in names)
     with tempfile.TemporaryDirectory(prefix='agent-runner-consumers-') as temporary:
@@ -123,7 +123,7 @@ import automation.control_runtime_operational, tools.runner_idle_notifications
                               'import automation; print(automation.__path__[0])']).strip()) / 'native'
         common = ['runtime_stage0_launch.c','runtime_stage0_clock.c','runtime_stage0_admission.c']
         for private, files in ((False,['runtime_stage0_validate_main.c']+common),
-                               (True,['runtime_stage0_qualification_main.c','runtime_stage0_preparer.c','runtime_stage0_records.c','runtime_stage0_persistence.c']+common)):
+                               (True,['runtime_stage0_qualification_main.c','runtime_stage0_preparer.c','runtime_stage0_records.c','runtime_stage0_persistence.c','runtime_stage0_bootstrap.c']+common)):
             command = [compiler,'-std=c11','-Wall','-Wextra','-Werror','-O2']
             if private: command += ['-DRNR_STAGE0_PRIVATE_QUALIFICATION=1']
             run(command + [installed/name for name in files] + ['-o',root/('private' if private else 'validate')])

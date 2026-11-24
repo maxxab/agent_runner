@@ -17,6 +17,11 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 #include "../../automation/native/runtime_stage0_preparer.h"
+#include "../../automation/native/runtime_stage0_bootstrap.h"
+static int bootstrap_calls,bootstrap_bad;
+static int __attribute__((used)) fake_bootstrap(struct rnr_stage0_bootstrap_error *e)
+{++bootstrap_calls;memset(e,0,sizeof(*e));if(bootstrap_bad){e->code=RNR_STAGE0_BOOTSTRAP_IDENTITY;return -1;}return 0;}
+#define rnr_stage0_check_bootstrap(e) fake_bootstrap(e)
 #include "../../automation/native/runtime_stage0_records.h"
 
 static int fake_open(const char *,int);
@@ -99,6 +104,7 @@ static void reset(void)
     le(install_raw+80,129,8);le(install_raw+88,3,8);
     memset(task_raw,0,66);memcpy(task_raw,"RNRT0001",8);task_raw[8]=1;
     task_raw[16]=4;le(task_raw+32,123456789,8);task_raw[40]=2;memcpy(task_raw+64,"{}",2);
+    bootstrap_calls=bootstrap_bad=0;
     held_mode=1;held_checks=held_admits=held_binds=0;
     memcpy(install_raw,"RNRI0002",8);install_raw[8]=2;
     memset(install_raw+128,1,272);memset(install_raw+400,0,48);
@@ -128,6 +134,7 @@ static void attempt_abandon(void)
 static int opened(int role)
 {
     ++opens;
+    if(held_mode)assert(bootstrap_calls==1);
     assert(held_mode?(prepare_calls==0 && held_admits==1):(prepare_calls==1 && admit_calls==1));
     if(opens==open_bad_at){errno=ELOOP;return -1;}
     int fd=role+10;
@@ -280,6 +287,7 @@ int main(void)
     assert(rnr_stage0_prepare_inputs(&e)==-1 && !prepare_calls);drained();
     reset();foreign=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && !opens && !held_admits);drained();
     reset();admit_bad=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && !opens);drained();
+    reset();bootstrap_bad=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && !opens && !held_binds && bootstrap_calls==1);drained();
     reset();bind_bad=1;assert(rnr_stage0_prepare_held_inputs(&e)==-1 && held_binds==1);drained();
     for(int n=1;n<=checks;++n){
         reset();clock_bad_at=n;assert(rnr_stage0_prepare_held_inputs(&e)==-1);drained();

@@ -2,6 +2,9 @@
 #ifndef RNR_RUNTIME_STAGE0_PREPARER_H
 #define RNR_RUNTIME_STAGE0_PREPARER_H
 #include "runtime_stage0_launch.h"
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+#include "runtime_stage0_bootstrap.h"
+#endif
 enum rnr_stage0_preparer_code {
     RNR_STAGE0_PREPARER_OK, RNR_STAGE0_PREPARER_ATTEMPT,
     RNR_STAGE0_PREPARER_OWNER, RNR_STAGE0_PREPARER_CLOCK,
@@ -12,7 +15,7 @@ enum rnr_stage0_preparer_code {
     RNR_STAGE0_PREPARER_TASKS, RNR_STAGE0_PREPARER_PID1,
     RNR_STAGE0_PREPARER_CLAIM, RNR_STAGE0_PREPARER_JOURNAL,
     RNR_STAGE0_PREPARER_LOOP, RNR_STAGE0_PREPARER_DM, RNR_STAGE0_PREPARER_MOUNT, RNR_STAGE0_PREPARER_MEDIA,
-    RNR_STAGE0_PREPARER_ROOT, RNR_STAGE0_PREPARER_FINAL
+    RNR_STAGE0_PREPARER_ROOT, RNR_STAGE0_PREPARER_FINAL, RNR_STAGE0_PREPARER_BOOTSTRAP
 };
 enum rnr_stage0_claim_disposition { RNR_STAGE0_CLAIM_NOT_ATTEMPTED,
     RNR_STAGE0_CLAIM_UNKNOWN, RNR_STAGE0_CLAIM_CREATED, RNR_STAGE0_CLAIM_COLLISION };
@@ -26,6 +29,9 @@ struct rnr_stage0_preparer_error {
     int mkdir_errno;
     struct rnr_stage0_launch_error launch;
     struct rnr_stage0_admission_error admission;
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    struct rnr_stage0_bootstrap_error bootstrap;
+#endif
 };
 /* ONE attempt: captures original operational T0 first, admits ONLY0..2, reads
  * fixed protected installation/task paths, retains private data+5 original FDs.

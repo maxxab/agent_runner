@@ -501,6 +501,10 @@ int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *e)
     if(rnr_stage0_admit_held_fds(&e->admission)!=0){
         reject_input(e,RNR_STAGE0_PREPARER_ADMISSION,e->admission.system_errno);goto failed;
     }
+    if(live_input(e)!=0)goto failed;
+    if(rnr_stage0_check_bootstrap(&e->bootstrap)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->bootstrap.system_errno);goto failed;
+    }
     if(live_input(e)!=0 || read_fixed_inputs(448,e)!=0)goto failed;
     struct rnr_stage0_launch_declaration declaration;
     if(rnr_stage0_decode_launch_declaration(input_owner.task.payload,input_owner.task.payload_bytes,&declaration)!=0){

@@ -18,9 +18,9 @@ class SupervisedInputsTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory(prefix='rnr-supervised-inputs-', dir=os.environ.get('RNR_NATIVE_TEST_OUTPUT_DIR'))
         self.addCleanup(temporary.cleanup)
         output = Path(temporary.name) / 'mocked-fixture'
-        boundary = ('getpid gettid getppid getuid getgid geteuid getegid clock_gettime stat open read openat fstat fcntl getsockopt setsockopt statx fstatfs pread close socketpair sigaction fork prctl send poll recvmsg syscall _exit __open_2 __openat_2 __pread_chk chdir chroot dup2 dup3 execve fchdir fchmod fstatat fstatvfs fsync ftruncate getrandom ioctl memfd_create mkdirat mount pipe2 pwrite umask waitpid').split()
+        boundary = ('readlinkat getpid gettid getppid getuid getgid geteuid getegid clock_gettime stat open read openat fstat fcntl getsockopt setsockopt statx fstatfs pread close socketpair sigaction fork prctl send poll recvmsg syscall _exit __open_2 __openat_2 __pread_chk chdir chroot dup2 dup3 execve fchdir fchmod fstatat fstatvfs fsync ftruncate getrandom ioctl memfd_create mkdirat mount pipe2 pwrite umask waitpid').split()
         command = [cc, '-std=c11', '-Wall', '-Wextra', '-Werror', '-O2', '-DRNR_STAGE0_PRIVATE_QUALIFICATION=1', str(ROOT / 'tests/native/test_runtime_stage0_supervised_inputs.c')]
-        command += [str(ROOT / f'automation/native/runtime_stage0_{name}.c') for name in ('clock', 'launch', 'preparer', 'records', 'admission')]
+        command += [str(ROOT / f'automation/native/runtime_stage0_{name}.c') for name in ('clock', 'launch', 'preparer', 'records', 'admission', 'bootstrap')]
         command += [f'-Wl,--wrap={name}' for name in boundary] + ['-o', str(output)]
         built = subprocess.run(command, capture_output=True, timeout=30)
         self.assertEqual(built.returncode, 0, built.stderr.decode())
@@ -40,7 +40,7 @@ class SupervisedInputsTests(unittest.TestCase):
                    'strcmp', 'strlen'}
         self.assertFalse(symbols - allowed, f'unmocked fixture imports: {sorted(symbols - allowed)}')
         fixture = declaration_fixture.NativeDeclarationTests();fixture.setUp()
-        for scenario in list(range(10)) + list(range(20, 27)):
+        for scenario in list(range(13)) + list(range(20, 27)):
             with self.subTest(scenario=scenario):
                 fixture.setUp()
                 if scenario == 3:
