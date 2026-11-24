@@ -9,6 +9,10 @@ Project-owner workflows require explicit per-project opt-in; do not share state 
 enrollment across projects. Runtime stores, consumed records and evidence stay at
 protected external paths, never in Git. Preserve unrelated edits.
 
+## Simplicity is a strict requirement
+
+Always choose the simplest common, reliable approach that fully meets the authorized requirements. Reuse established mechanisms. Avoid speculative abstractions, extra protocols or custom machinery when a simpler supported solution fits. Add complexity only for a demonstrated requirement, explain why it is necessary, and reconsider designs that repeatedly obstruct implementation. This user instruction applies to ongoing and future work in this project.
+
 <!-- development-standards:start -->
 Development standards version: 1.3.0
 

@@ -158,3 +158,57 @@ source. Native artifacts/provider/live activation remain NEVER RUN.
 The permission blocker is resolved. Main continues scoped publication and the
 remaining coupled F1/F2/F5 contract. Final source/remote/clean receipts belong in
 the protected evidence root; do not infer publication from a document self-hash.
+
+
+## Published correction and coupled-contract continuation
+
+This section supersedes historical pending-copy/publication/permission paragraphs
+above. Actual source commit5b2050c77eb903cf1a09c25cce2b7e751696adb9 and separate
+changelog8bbef700ee3972e663d5500c8eb3fc07a97180b5 were pushed normally over the
+authorized SSH route; observed remote main equaled8bbef70 with clean worktree.
+Protected `bootstrap-successor-01a20b1c/publication.json` retains that evidence.
+The full-access1446-test PASS and package/consumer/native-compile checks remain
+source-applicable; no executable changed during the contract work below.
+
+The user explicitly approved the narrow observer lifetime amendment: keep its
+one existing authenticated keeper connection/pidfd through preparation and
+commitment, close before final original parent-channel READY/Store. Exact approval
+is retained in protected `observer-closure-authorization.json`; do not ask again.
+No reconnect, descriptor/deadline increase or readiness substitution is authorized.
+
+Latest integrated candidate G in the canonical persistent-admission contract is
+now the implementation contract after the same replacement reviewer's contract-
+only PASS. Protected `coupled-g-contract-review.md` and `coupled-g-freeze.json`
+retain outcome/hash and limits. Closed findings cover70/75 exec/fork producer
+crossings; terminal85 append before closure;78reserve/79send arm-token order;
+legacy56/helper substeps and full DM identities; closed keeper opcode/fact/ACK
+states; typed socket/pidfd identities; prospective normal/error FD bounds; ordinary
+protected JSON/file offline retirement. It replaces redundant peer namespace
+handles with one original own reference set and serial comparisons, matching the
+existing proc-check approach. The operational native proc view is14roles; old22
+is historical DATA/test scope, no operational fallback. Source implementation,
+complete syscall/role traces, integrated review and physical qualification remain
+required. Contract-only PASS does not close any of the five operational gates.
+
+The user additionally made simplicity a strict rule: always use the simplest
+common, reliable approach that meets the requirements. This is retained in
+AGENTS.md. Prefer reuse of existing binding, typed proc checks, parent channel and
+finite keeper sessions; do not add another readiness service/metadata layer or
+speculative machinery. Memory save was rejected because this working directory
+is not authorized by that service; no save or authorization change is claimed.
+
+First confirmed compaction in resumed chat01a20b29 is now1, recorded externally in
+`compaction-1.json`; the interruption/thread change was not a compaction. Main
+continues normally, sole writer, numeric ownership/next Issue Lead counter UNKNOWN.
+No other agent was created. Before a second compaction would be needed, checkpoint
+and transfer under canonical policy; first compaction alone is not a rollover.
+
+Next implementation is the actual pre-GO trusted bootstrap/project-input boundary
+from G1 using original clock/parent/kernel-derived project identity, protected per-
+project inputs/policy/references and actual PID1/unit/kernel correlation. Reuse
+reviewed contracts and existing primitives; do not publish another inert decoder
+as operational completion. Then complete G2-G6 end-to-end producers, keeper,
+observer and native-to-Python handover and whole lifecycle/provider/recovery/two-
+project acceptance. Wrapper remains unconditional abandon/exit125 until the whole
+positive boundary is source-complete, reviewed and safely qualified. No service,
+account, SDK, provider, actual native artifact or project activation happened here.

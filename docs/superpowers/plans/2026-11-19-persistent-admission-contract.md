@@ -1361,3 +1361,796 @@ exits125. No per-project reader, declaration, persistence, GO, producer handover
 or operational path is released by that check. Both-original-cgroup comparison,
 actual host/PID1/policy authentication and the complete C/D/E/F coupled contract
 remain mandatory. Do not relabel the singleton inputs as project-isolated.
+
+### Proposed explicit selected143 authentication-lifetime amendment
+
+Status: the user explicitly answered “Allow this scoped amendment” on24November.
+The selected143 closure point is superseded ONLY for the two roles below; all
+other constraints remain. Complete byte/FD/death contracts and independent review
+still precede dependent observer/positive source. Same Main implements;
+existing sole replacement reviewer challenges the same RNR-D00 coupled contract.
+
+Selected143 currently says `placementACK -> close all auth temporaries -> original
+Observer factory/READY`. Later sole-thaw serialization supersedes READY-before-thaw,
+but does not explicitly supersede that descriptor-closure point. Current factory
+contains on rejection and `arm` sends READY immediately; neither is PREPARED.
+Closing the only original keeper connection before PREPARED leaves no accepted
+transport for PREPARED/NEGATIVE_COMMIT/committed READY. Reconnect is not a repair.
+
+Proposed narrow exception: in the independently placed original observer ONLY,
+retain its one already-authenticated original keeper session socket and original
+keeper-death pidfd through PREPARED/sole-thaw/negative commitment. No new connection,
+actor, retry, selected FD, extra allowance or extended clock is introduced. Close
+all authentication scratch handles before PREPARED. Keep Main's storage/auth closure
+before prefork exactly unchanged, including53+5+2=60. Observer remains <=64 and
+keeper/native <=256; the complete role inventory is still a source-release gate.
+
+Exact progression to be frozen in byte/protocol tables:
+
+1. Original Main registers the exact original observer PID/start/pidfd, receives
+   registration ACK and delivers one arm token on the original parent channel.
+2. That observer makes its sole NEW keeper connection; same keeper authenticates
+   expected PID/start/parent/thread/credentials, consumes negative placement and
+   sends placement ACK. No peer learned from the first arbitrary connection.
+3. Close temporary namespace/proc/executable authentication handles. Keep the same
+   session socket and keeper-death pidfd; construct PREPARED with both emergency
+   target and frozen workload-ancestor controls and original clocks.
+4. PREPARED cannot write workload-ancestor controls while keeper is live, including
+   factory/arm/parent-channel/close/clock-failure paths. It fences/reports/exits on
+   own failure. Exact keeper pidfd death is the sole precommit negative takeover;
+   no clock/identity failure creates a fresh lease or permits an expired write.
+5. Keeper accepts PREPARED for that same live original observer; consumes durable
+   sole-thaw intent, performs its one thaw, checks original observer/controls,
+   irrevocably enters NO_MORE_THAW, then sends NEGATIVE_COMMIT once.
+6. Observer consumes commit, permanently enables negative containment, sends its
+   committed-ready fact on the same authenticated keeper session and receives a
+   terminal ACK. ACK loss fences; no resend/replacement. Keeper can contain but
+   can never thaw again. Precommit keeper-death takeover remains permanent.
+7. Observer once-closes that session/pidfd and all remaining auth temporaries,
+   then emits the final READY on its existing original parent channel. Any cleanup
+   uncertainty prevents this final READY; permanent negative authority remains.
+8. Main accepts that exact SCM_CREDENTIALS-authenticated original-observer final
+   READY. Main's later one-shot report to keeper means only: Main received that
+   exact final original-parent-channel READY after keeper's committed-ready ACK.
+   It is not an observer packet synthesized by Main. The fixed report must bind
+   original observer, prior commit sequence and the already-kept target identities;
+   loss/mismatch/late report or ACK forbids Store, never replacement/replay.
+9. Final durable READY-related producer append/closure and original setup checks
+   precede Store. Observer owns no claim writer and Store cannot inherit the view.
+
+Observer local role proposal, not whole-budget acceptance: after the fixed child
+exclusion there are stdio3 + original parent channel/pidfd2 + cgroup-root/target2
+=7. Add the original keeper session/pidfd2 and exact workload-ancestor directory1
+=10 persistent roles through commit. Authentication/identity/scanner/control-file
+opens must be serialized and explicitly mapped before source; no temporary is
+hidden in the10. After terminal close the2 keeper-session roles disappear before
+final parent-channel READY. Parent prefork receives neither new role. Existing
+all-phase observer64/native256 limits are not relaxed by this exception.
+
+This proposal preserves both emergency-target intent/acquisition exchanges, exact
+expected observer lineage and negative placement, initially frozen workload and
+sole-thaw/NO_MORE_THAW/NEGATIVE_COMMIT order. Actual manager service survival and
+integrated failure/late/death/ACK-loss/cleanup checks remain mandatory. It is not
+whole F1/F2/F5 acceptance, physical containment evidence or live activation.
+
+## Integrated coupled freeze candidate G — challenge before positive source
+
+Candidate G received a contract-only independent review PASS on2026-11-24 after
+closing the recorded producer/fork/terminal, arm-token, helper, full-DM-operand,
+namespace/view and typed-identity findings. It is the implementation contract;
+source proofs, integrated review and physical acceptance remain required. This is
+not source release, positive-wrapper acceptance or operational acceptance.
+It retains C/D's direct PID1 transport and316requests, F's exact9728-byte policy,
+original T0/setup15/positive44/negative60–90, separate project opt-in/store, both
+emergency phases, and the user-authorized observer-lifetime amendment above.
+It supersedes A's unimplemented64x256 intent proposal ONLY where explicitly stated.
+Revision B's implemented initial binding/claim preparation remains unchanged and
+uninvoked until its fixed authenticating caller and whole protocol are reviewed.
+No additional inert codec-only implementation milestone is proposed.
+
+### G1: bootstrap premise, location and actual authority in order
+
+The opted-in installer establishes the immutable static native bootstrap, original
+launch/root/namespace context and exclusive host maintenance before T0. Runtime
+must not derive this trust from a project worktree or from newly discovered files.
+The installed bootstrap name is fixed `/usr/lib/rnr/bootstraps/<NativeSHA64>/rnr-stage0`;
+NativeSHA64 is lower-case full ELF SHA256 and must equal protected policy200..231.
+This is a comparison/name derivation, not self-authentication. Shared immutable
+code bytes are allowed; project identity/enrollment/consumption/state never shared.
+Final static startup/environment/import/init/link closure is mandatory before any
+actual artifact is qualified; static linking alone is not proof of that closure.
+
+Original child after ARMED/held-inventory/negative guard acquires one retained
+bootstrap view. No existing INPUTS_HELD-only API is moved earlier or recaptures T0.
+The fixed owner reads original getppid between original admission-clock checks;
+that clock's retained fork-parent/PDEATHSIG check must match before/after every
+observation. Parent PID is not learned from a packet or environment. Read its
+start from genuine retained proc once, while exact parent identity remains live;
+retain original keeper pidfd/start plus PID1 pidfd/start and original child start.
+No reaping/thread/disposition/namespace/credential/privileged replacement permitted.
+
+Every proc component is separately nofollow/mount/type checked, with typed followed
+NSFS handles and retained named/held rechecks. Reuse the existing `_ProcView` pattern:
+retain ONE original own8 namespace reference set and compare keeper/PID1 serially
+through one temporary typed handle; never refresh the reference. Separate original
+pidfds/start and before/after named/held checks bind each peer. Sixteen duplicate
+peer handles add no equality proof under the unchanged stable-namespace premise
+and are omitted. Compare own/keeper/PID1 user,pid,mnt,
+cgroup,time,net,uts,ipc namespace dev/inode/type; own pid_for_children and
+ time_for_children must match own current pid/time. Root user namespace required;
+dynamic actual WSL pid/mnt/cgroup namespaces allowed. Require actual proc PID view
+matches syscall PID view. Compare original boot/time namespace/status samples with
+this view, retaining original T0 and high-water; mismatch fences, never resamples
+an origin. Clock values come from actual kernel clock calls, not proc text.
+
+Read bounded original child AND original keeper `cgroup` files through their
+retained genuine proc directories: one unified canonical0:: record,4096-byte cap,
+exact `/rnrc<Project64>.slice/rnrc<Project64>.service/keeper` plus newline, same
+lowercase64hex value repeated, no extra/hybrid/suffix record. Derive Project64
+ONCE, retain both original files/identities/bytes, and compare before project reads
+and again before declaration/effects. This chooses location only. Typed namespaces,
+root premise, current PID1/private peer, manager unit and actual cgroup controls
+remain independent gates; a matching string or namespace pair grants nothing.
+
+Traverse retained `/`, `etc`, `rnr`, `projects`, Project64 separately nofollow.
+Root/ancestors root:root protected directories; project0700. Operational installation
+and task are root:root0400regular nlink1, installation exactly448/v2, task65..65600.
+Their project/task/roots/boot/configuration/enrollment/closure/policy/instance facts
+must match the original location, policy and declaration. Legacy0444/singleton
+reader stays historical only; there is no fallback or overwrite for another project.
+Policy/referenced files retain F's0400 modes and bounded exact size/hash/EOF checks.
+
+Before declaration, hash actual original native/keeper executable handles and their
+protected installed name, actual PID1 executable and `/usr/lib/systemd/systemd`,
+actual four installed unit fragments and referenced configuration/enrollment/startup
+bytes; compare exact lengths and F pins. Check executable headers/file metadata,
+no setuid/setgid/file capabilities, stable named/held identities and readback. The
+native phase pins Python and later immutable members but cannot execute them until
+actual verity root/member/dependency checks pass in the named later phase.
+
+Installer validates owner base revision/config/enrollment under existing schemas,
+repository/host/digest/expiry/scope/dependency rules and separately acknowledged
+native-admission/resource-preparation opt-in. It does not manufacture command or
+issue approval. Publish protected reviewed copies and exact static unit bytes under
+exclusive maintenance only; keep all historical referenced bytes content-addressed
+outside Git before repinning. No runtime installer, task publication, epoch repin,
+unit creation/repair or controller enabling precedes this admission. Per-project
+config/enrollment/install identity is mandatory for every consumer.
+
+C/D then authenticate root/PID1 private peer and actual effective units/kernel
+hierarchy with the unchanged closed316-request matrix, actual manager build and
+full overlay/UnitPath inventory. Actual service MainPID is original keeper, all
+original PID/start/exe/namespace/root facts correlate. Kernel cgroup mount has
+canonical namespace-root `/` at `/sys/fs/cgroup`; actual service/keeper path,
+ControlGroup/ControlGroupId and held kernel identities match. Read exact controls,
+limits, subtree bits, singleton memberships, frozen workload/empty active anchor.
+No manager-echo/nonzero-digest substitute; final40-request/path/identity sweep
+immediately precedes the initial latch/claim. Exclusive maintenance persists.
+
+### G2: finite original-keeper transport
+
+Original ARMED remains exactly8bytes with its already-reviewed credential parser.
+Before fork, both original endpoints additionally set/read back SO_SNDBUF and
+SO_RCVBUF requested131072/readback262144, under original setup checks. Unsupported
+readback rejects before fork; no fallback. This fixed buffer choice must be
+physically qualified for the maximum packet on the selected kernel before use.
+No dependency on default/sysctl queue capacity is claimed. One outstanding request
+per producer and exact ACK prevent a producer from queuing an arbitrary backlog.
+
+Remaining messages use AF_UNIX SEQPACKET/NONBLOCK/CLOEXEC, SO_PASSCRED1 enabled and
+read back BEFORE sends; one complete sendmsg/recvmsg attempt per logical packet,
+no stream splitting/reassembly, retry, reconnect, resend, FD negotiation or heap.
+Send MSG_NOSIGNAL; receive MSG_DONTWAIT|MSG_TRUNC|MSG_CMSG_CLOEXEC. Fixed aligned
+32-byte ancillary buffer, exactly one original expected SCM_CREDENTIALS, no rights/
+unknown/duplicate/truncated controls. Reuse reviewed bounded parsing/once-disposal
+of up to4 installed rights before any clock/identity check; preserve initiating
+errno, separate clock capsule and all cleanup errors. SO_PEERCRED of inherited
+socketpair is not original child authority. C's separate stream/NULL-control rule
+is unchanged and cannot be substituted here.
+
+Packet =1024-byte header + exact bounded body. Maximum body131840, packet132864.
+One fixed receive buffer132864; short/oversize/EOF/wrong phase or observed extra
+packet fences. Header integers little-endian, no C struct layout:
+
+| Offset | Bytes | Exact field |
+| --- | --- | --- |
+| 0/8/12 | 8/4/4 | RNRIPC02 / version2 / total packet bytes |
+| 16/20 | 4/4 | closed opcode / connection phase0native,1Python-initial,2Python-parent,3observer |
+| 24/32 | 8/8 | sender monotonic request sequence / ACK-of sequence (zero on request) |
+| 40/72/88 | 32/16/16 | project / instance / TaskID |
+| 104/112/120/128 | 8each | original keeper PID/start, original Main PID/start |
+| 136/144 | 8each | registered original observer PID/start, zero before registration |
+| 152/184 | 32each | complete initial binding SHA256 / exact committed claim-prefix SHA256; prefix zero only before initial claim durability |
+| 216/224 | 8each | original actor high-water boot/wall; monotonic, no new origin |
+| 232/236 | 4/4 | body bytes / exact expected frame kind, zero when no frame |
+| 240 | 96 | four fixed object dev/inode/mount triples, role-specific, unused zero |
+| 336/340 | 4/4 | exact protocol state / flags0 |
+| 344 | 32 | exact body SHA256 (SHA256 empty bytes for empty body) |
+| 376 | 648 | reserved zero |
+
+DECL body is the complete existing binding: header256+installation448+original task
+bytes+policy9728, maximum76032 for actual route. The old structural cap131840 remains
+a hard upper bound, not permission to accept other operational policy sizes. Keeper
+compares original clock/fork/credentials/cgroups, full structural/semantic identity
+and correlated cutoff/root/binding before one irreversible declaration accept and
+cutoff narrowing/ACK. Child authenticates keeper original PID/start/root/namespace/
+exe and packets; no receipt from an arbitrary root peer. No persistence before ACK.
+
+INTENT/RESULT body is exactly one1024-byte G3 record; keeper compares its full body
+and fixed next transition before ACK. Native handover body is exact G4 header2048;
+Python grants/observer phase facts have no arbitrary JSON/type/FD schema. All fixed
+states/opcodes/targets are compiled code, not task-selected protocol selectors.
+ACK means only the named consumed transition/held acquisition, never readiness or
+physical absence. Unknown ACK disposition fences and retains consumption/controls.
+
+After durable claim, an explicit durable endpoint-bind intent precedes keeper's
+one bind/listen. Abstract name exactly NUL+`rnrk.`+Project64+`.`+Task32 =103bytes,
+backlog3, no filesystem path or mode knob. Keeper retains original gate until native
+producer handover. Exactly three later accepted sessions, in fixed phases: original
+Main after native->Python exec, same original Main parent after observer fork,
+registered original observer. Unexpected/duplicate/wrong-order client fences; no
+replacement accept. Endpoint possession is not identity. Per-session peer pidfd,
+SO_PEERCRED and every SCM_CREDENTIALS must match previously retained expected
+PID/start/UID/GID/parent/thread/executable/namespace stage. Credentials stay root;
+no exec transition except the explicitly pinned native->Python original Main stage.
+
+Main's monotonic request counter survives exec and the two distinct writer phases;
+cap384, no reset. Observer starts its own distinct actor counter1, maximum4requests.
+Keeper reply counters do not reset across sessions, cap389 including one unsolicited
+NEGATIVE_COMMIT at its exact expected phase. Attempt total packet cap1024. These
+caps bound rejection too; no optional transaction discovered from traffic. One
+negative poll iteration waits <=10ms and original remaining stop, capped16384waits;
+actual scheduling/progress is qualified, not guaranteed by the arithmetic. Check
+original clock before/after each syscall; every negative effect has its own fresh
+negative check. Setup expiry fences positive protocol while original negative
+containment remains allowed only until original stop. No userspace watch/effect
+at/after original90 or on unknown time/identity; retain UNKNOWN and all holds.
+
+#### G2 closed requests and forwarding on the same sessions
+
+Use eight compiled request opcodes; do not add a second event bus, connection,
+receipt service or generic RPC. ACK opcode is request|0x80000000, exact ACK-of
+request sequence, empty body except where this table fixes another body. Main's
+single outstanding request can wait while keeper services observer/pidfd/control
+readiness under the SAME negative poll loop; waiting never suspends containment.
+
+| Opcode | Sender / exact body / required predecessor / ACK |
+| --- | --- |
+| 1 DECL | native on original gate / full binding / original ARMED only / exact unchanged binding256-byte header, keeper independently narrows its own cutoffs; binding bytes never rewritten |
+| 2 CLAIM | native / empty / DECL accepted and original latch+claim fully durable / original held claim dev/inode/mount in fixed triple0, full binding/prefix digests matched |
+| 3 FRAME | current sole Main producer / exact G3 INTENT or RESULT1024 / exact next ordinal+kind and expected producer / empty; consumes that exact frame once |
+| 4 HANDOVER | original Main / G4 header2048 for70, empty for75 / durable INTENT70 or75 respectively, exact prefix / empty; permanently fences outgoing producer before ACK |
+| 5 AUTH | same Main phase1 or2 / empty / exactly one consumed handover70 or75 / empty; one grant for RESULT70 or75, respectively |
+| 6 FACT | current Main / empty / one outstanding durable INTENT79,80,83 or84 / exact next G3 RESULT1024 assembled from keeper's own authenticated observation; no additional resource grant |
+| 7 TERMINAL | Main phase2 / empty / durable RESULT85 / empty; consumes permanent producer fence before ACK |
+| 8 OBSERVER | original registered observer / empty / its exact next local step1..4 / empty; each ACK released only at the fixed point below |
+
+Protocol state is0ARMED,1DECL accepted/await CLAIM, then CLAIM ACK advances
+directly to2 (expected INTENT1). There is no separate claim-accepted waiting state.
+Frame state is `2+2*(ordinal-1)+(kind-1)` for expected next frame (ordinal1..85, kind1INTENT/2RESULT).
+After RESULT85 it is172 (await terminal), then173 (permanently fenced). Frame ACK
+advances state by one; requests carry current state, ACK carries resulting state.
+HANDOVER/AUTH change only the compiled producer phase at the open70/75 INTENT;
+no second frame/operation may interleave. Before declaration unknown binding/claim
+fields are zero as applicable; CLAIM initializes prefix. Main's sequence persists
+in G4 and keeper state across both transitions. Any out-of-order fact/extra packet
+or unknown disposition permanently fences; no alternate continuation state.
+
+Observer's four steps are:1authenticated connection/negative placement,
+2PREPARED,3committed-ready,4terminal close. Main starts79INTENT before it permits
+observer connection through original arm token. Keeper authenticates the expected
+observer, performs/observes its one exact negative-leaf placement and holds its
+step1 ACK. Main FACT79 obtains the exact result and durably records it. Only after
+Main INTENT80 is durable does keeper release step1 ACK, permitting the observer's
+construction/PREPARED work. Observer sends step2 after exact target+ancestor
+verification and scratch closure. Main FACT80 obtains that fact; keeper releases
+step2 ACK only after Main RESULT80 is durable, then the observer waits prepared.
+
+The original native GO remains exactly one8-byte `RNRKGO01` packet. FRAME INTENT5
+ACK first grants the one expected receive; keeper then sends that token once on
+the original gate. Native checks the original credentials/keeper/clock, consumes
+it once, and appends RESULT5 only after that checked receive. No preparation
+starts before RESULT5 durability/ACK. The admission-only child already returns
+HELD before GO in `runtime_stage0_clock.c`; do not adopt the legacy unsupervised
+branch or treat a general packet ACK as GO. Lost/extra/wrong-order GO fences.
+
+Main INTENT81 authorizes the sole thaw; keeper performs it and supplies the actual
+result in that FRAME ACK's fixed object triples (not a new arbitrary body).
+INTENT82 irreversibly consumes NO_MORE_THAW/NEGATIVE_COMMIT internally. Main records
+RESULT82. Only after durable INTENT83 does keeper send one unsolicited opcode
+0x40000008, empty body and exact new keeper sequence/ACK-of0, to that prepared
+observer. It is the only unsolicited packet. Observer step3 reports committed-ready
+on the same session. Main FACT83 records that authenticated fact. Only after durable
+INTENT84 does keeper release step3 ACK, allowing step4. Keeper's step4 terminal ACK
+and keeper-end once-close are the exact FACT84 evidence. RESULT84 does NOT assert
+observer-local close; observer once-closes its own session/pidfd before final READY,
+and Main's original parent-channel READY observation in85 establishes that ordering.
+No Main packet may stand in for the actual original observer's parent-channel READY.
+
+For keeper-owned effects1..4,81..82 and registration77, FRAME-INTENT ACK
+contains the exact successful syscall/acquisition facts in the fixed header roles;
+Main writes the corresponding RESULT only from those authenticated facts, with full
+identity readback. No failure/late/unknown ACK can be converted into a RESULT. Native/
+Python-owned effects produce their local RESULT after exact checked success.
+78 is Main-local token preparation; its send is the first substep of79 AFTER that
+INTENT is durable, so strict pair ordering cannot send the token prematurely.
+Observer is neither append producer nor storage/receipt authority. The four FACT
+requests are finite same-session queries, not reconnect/retry or repeated polling.
+At most170 FRAME requests plus DECL/CLAIM/two HANDOVER/two AUTH/four FACT/TERMINAL
+=181Main requests; observer4 and keeper186 replies including unsolicited commit,
+371G packets plus exactly one original ARMED and one GO =373packets total.
+Rejection caps384/389/1024 remain independent hard limits.
+
+Header object roles are fixed, not caller-defined: DECL/HANDOVER/AUTH/TERMINAL
+and observer requests leave all four triples zero; CLAIM uses triple0=claim,
+1=instance file,2=consumed directory,3=active latch, with remaining project/store
+ancestors already bound by the immutable binding and native persistence owner.
+FRAME request triples mirror G3's primary target (160) and three extra identities
+(752); no independent values. Non-effect FRAME ACK mirrors those exact identities.
+For keeper effects, FRAME-INTENT ACK supplies the successful effect identities:
+1primary=listener socket;2primary=prep directory;3primary=negative directory;
+4primary=prep directory and extra0=original Main proc directory;
+77primary=expected original observer pidfd and extra0=observer proc directory;
+81/82primary=original workload ancestor directory. Other extras are zero. FACT ACK
+triples mirror the returned G3 RESULT. Filesystem object roles use kernel dev/inode/mount triples. The op1 listener
+socket uses fstat device/inode and mount0; op77 observer pidfd uses its fstat
+device/inode and mount0, with its original PID/start, pidfdinfo and death/liveness
+checks providing process correlation. Do not manufacture a filesystem mount proof
+for sockets/pidfds. PID/start remain fixed header fields and G3's typed fields.
+No digest, ordinal or socket name replaces an actual held/readback identity.
+
+A successful G3 RESULT's errno is0 and flags3. For G8..63 its signed result exactly
+copies full legacy record offset48 and must satisfy that existing fixed opcode's
+success predicate: loop candidates G8/10/27/29 are distinct0..1048575; helper
+G21/23 returns original child PID>1 with exact start/pidfd and reaped exit0;
+G20/22 returns the original successful open FD>=3 with exact held object metadata,
+never uses that integer as cross-process authority; every other zero-return effect
+is0. Exact substep writes/syncs/waits must also satisfy their existing predicates). Other G operations use result0 only; acquired
+objects/PIDs/job IDs are recorded in their typed identity fields, not generic
+nonnegative-success tests. Failed/late/short operations never produce a RESULT.
+INTENT result/errno/flags and unavailable identities stay0. Canonical unused header
+and frame roles are zero, including mirrored roles before acquisition. Keeper's
+phase/fact state validates all four triples and exact result predicate against
+the single expected operation, never merely accepts nonzero identity values.
+
+### G3: complete persistent effect progression and byte frames
+
+Replace the unimplemented64x256 proposal with at most256 x1024-byte append frames
+(262144bytes); bound initial binding131840+append262144=393984bytes. No retry/repair/
+truncate/adopt/resume. Every effect consumes one INTENT before its sole effect and
+one successful RESULT before any next effect; incomplete/unknown effect has no
+new RESULT/next grant. Keeper never reads/writes/fsyncs claim storage. Main is sole
+producer; full original binding and trusted immutable producer establish sync-before-
+receipt. Each full pwrite/fsync/readback and any computation chunk uses original
+setup15 before/after. Kernel-negative containment never waits for a new append.
+
+Frames exactly1024bytes, little-endian, all unused/tails/reserved zero:
+
+| Offset | Bytes | Exact field |
+| --- | --- | --- |
+| 0/8/12 | 8/4/4 | RNRINT02 / version2 / kind1INTENT or2RESULT |
+| 16/24 | 8/8 | monotonic sequence1..256 / previous sequence (zero on first) |
+| 32/36 | 4/4 | closed operation ordinal / producer stage1native,2Python-initial,3parent |
+| 40/72/88 | 32/16/16 | original project/instance/task |
+| 104/112/120/128 | 8each | original keeper PID/start, original Main PID/start |
+| 136/144 | 8each | unchanged original T0 boot/wall |
+| 152/156 | 4/4 | fixed target kind / role |
+| 160 | 24 | held target dev/inode/mount, zero before acquisition |
+| 184/192/200/208 | 8each | original observer PID/start, exact helper PID/start; unused zero |
+| 216/220 | 4/4 | original manager job ID or0 / reserved0 |
+| 224/232/236 | 8/4/4 | successful result signed64 / errno0 / entered-returned flags (0INTENT,3RESULT) |
+| 240/272 | 32each | full binding SHA256 / previous full frame SHA256 (binding SHA256 on first) |
+| 304/308 | 4/4 | legacy-native operand bytes0or256 / fixed operand-kind constant |
+| 312 | 256 | full existing native diagnostic intent/result frame for operations8..63, otherwise zero |
+| 568/576 | 8each | actor original high-water boot/wall |
+| 584 | 32 | exact fixed resource/policy operand digest, zero if none |
+| 616/620 | 4/128 | exact derived unit-name byte count<=128/name, zero tail; no pathname selection |
+| 748 | 4 | reserved0 |
+| 752 | 72 | three additional fixed-role object dev/inode/mount triples, unused zero |
+| 824 | 32 | SHA256 of preceding committed prefix; never hash current frame into itself |
+| 856 | 168 | reserved0 |
+
+The frame contains exact operands/results, not arbitrary diagnostic text. Task-
+derived names are fixed derivations; body fields cannot select a target, helper,
+path, opcode or next state. Before acquisition all unavailable identity/PID/job
+fields are zero; after acquisition exact original held identities are required.
+Result permits only that opcode's exact success form; failed/short/late syscall,
+failed sync, clock/identity uncertainty or lost ACK fences without a completion.
+Once-only close evidence has separate bounded error capsules, not repair appends.
+
+Closed operation order (one pair per ordinal, except the explicit exec/fork producer crossings70/75):
+
+| Ordinal | Exact operation and owner |
+| --- | --- |
+| 1 | original keeper endpoint bind/listen after durable claim |
+| 2/3 | keeper positive-prep and singleton negative-observer leaf create/acquire; collision/recreation rejects |
+| 4/5 | exact original Main placement/readback, then final native GO consumed once |
+| 6/7 | native fixed task directory mkdir; diagnostic journal exclusive init/full write/file+parent sync (finite init substeps) |
+| 8..63 | the existing56 native operations, in exact old journal intent/result order1..112; every full256-byte old record retained as operand, exact opcode/role/payload checked against immutable existing stage, not generalized logging |
+| 64/65/66 | claim-view mountpoint exclusive create, held-file bind IN actual prepared-root/run, separate RW/nodev/nosuid/noexec remount/readback |
+| 67/68/69 | original root transition chdir/chroot/final fchdir, each consumed before syscall |
+| 70 | native producer closure and single pinned Python exec; INTENT native, RESULT Python-initial only after exact initial grant/prefix verification |
+| 71/72/73 | emergency phase1 intent/late tracking, fixed manager creation/job result, phase2 held acquisition; no prefork/Store on uncertainty |
+| 74 | initial prefix sealed/verified for the one planned producer release; does NOT assert closed descriptors |
+| 75 | initial producer closure, exact prefork inventory, sole original observer fork, and same-parent phase2 writer grant; INTENT initial writer, RESULT original parent only after exact prefix verification |
+| 76 | confirmation of already-held phase2 producer state; no second acquisition |
+| 77/78 | expected observer registration then preparation/reservation of the exact original arm token; no send yet |
+| 79 | Main sends reserved original arm token once, then sole NEW expected observer connection/authenticated negative placement/readback |
+| 80 | exact PREPARED observation with target+ancestor held controls; no precommit ancestor writes while keeper lives |
+| 81/82 | sole keeper thaw then irreversible NO_MORE_THAW/NEGATIVE_COMMIT |
+| 83/84 | original observer committed-ready session fact, terminal ACK/session+auth closure before original parent READY |
+| 85 | Main's authenticated final-parent-READY observation and final successful append; terminal keeper fence/ACK and local producer closure follow, before sole Store |
+
+85pairs=170frames, with70split across exec and75across fork;256frame ceiling leaves no selectable
+additional operation. Any reserved capacity stays unused. Decl/claim ACK, fixed
+connection authentication/grant and capsule sealing are finite substeps of the
+named transitions, never permission for an unenumerated resource. Native helper
+fork/exec and its fixed output mutations belong to its exact existing legacy
+operation with closed immutable argv/output paths and original parent-death/leaf
+containment; no arbitrary helper/descendant API. Every helper's actual transitive
+behavior still needs immutable closure and physical qualification before execution.
+
+The fixed legacy mapping is explicit: G8..11 runtime loop candidate/configure
+pairs;12..14 runtime DM create/load/resume;15..18 runtime root mkdir/mount and run
+bind/remount;19..26 launch-source mkdir/write, squash helper, padding, verity helper,
+two seals and output record;27..30 launch loop pairs;31..33 launch DM create/load/
+resume;34..35 launch mkdir/mount;36..63 the fourteen bind/remount pairs. This is56
+operations, not56 arbitrary slots. Helper ordinals21/23 include the existing two
+pipes, sole fork, child PDEATHSIG/parent checks/root and FD transitions, exact output
+creates/mutations, parent pidfd acquisition, bounded collect/wait and six once-close
+slots. Child has no positive clock owner and never returns into Main. Parent clocks
+bracket the launch/collection/retirement boundary; do not falsely claim that every
+helper-internal syscall is bracketed by Main's clock. Original capped/contained prep leaf outside the frozen workload ancestor,
+keeper's independent negative controls, child PDEATHSIG and immutable helper/no-
+credential-change/no-escape closure together must physically qualify the helper
+boundary. An unaudited helper/descendant is a blocking premise, never permission
+for execution or a new watcher after90.
+
+New project-qualified DM names/UUIDs exceed legacy CREATE operand copies48/64.
+Preserve those full old256-byte records as diagnostic evidence, but never treat
+their truncated name fields as the operational identity. For DM CREATE operations
+12/31, G3 operandkind1 and resourceSHA = SHA256(exact128-byte zero-padded ioctl name
+||exact129-byte zero-padded UUID). Both full fields must fit without truncation,
+be deterministically derived from original project/task/fixed runtime-or-launch
+role, and compare in full against actual CREATE/request/readback/held device.
+The frame's unit-name slot remains zero here. Other operations use operandkind0
+and zero resourceSHA unless their already-fixed record explicitly supplies a
+content digest. No generic new operand serialization or caller-selected digest.
+
+The original diagnostic journal remains tmpfs evidence, never durability. Persistent
+intent must precede its diagnostic intent and actual named resource syscall; result
+must be durable before next operation. Diagnostic errors cannot repair a persistent
+tail or bypass keeper receipt/ACK. New claim view and root-transition intents are
+explicit additions, not falsely counted inside old56. Whole source trace must map
+every effect to these fixed substeps; an uncovered effect blocks positive source.
+
+### G4: native->Python capsule and final clock floor
+
+Keep final descriptors0..9 unchanged. No FD10, generic reopen/path/clock/phase API
+or caller callback. Native keeps storage inside native256 until exact claim view
+and operation70INTENT are durable and prefix fully reread/hashed. It sends G2's
+handover with this exact header, prefix digest/length and expected RESULT70; keeper
+consumes native producer closure BEFORE ACK. Lost ACK fences permanently. Native
+then closes storage/auth/gate once and creates the one sealed context FD9 as part
+of the already-durable operation70. Existing RNRH0001 remains historical inert
+format; actual route exclusively requires RNRH0002, no format/profile fallback.
+
+Capsule = exact header2048 + complete unchanged original binding bytes, <=133888.
+Header integers little-endian; magic RNRH0002, version2. Exact header table:
+
+| Offset | Bytes | Exact field |
+| --- | --- | --- |
+| 0/8/12/16/20 | 8/4/4/4/4 | magic/version2/header2048/total/binding bytes |
+| 24/32/40/44 | 8/8/4/4 | committed prefix bytes/next sequence/operation70/next kindRESULT2 |
+| 48/80/112 | 32each | original binding SHA256/prefix SHA256/project |
+| 144/160 | 16each | instance/task |
+| 176/184/192/200 | 8each | original keeper PID/start, original Main PID/start |
+| 208/244 | 36/4 | original boot UUID/reserved0 |
+| 248/256 | 8each | original time namespace dev/inode |
+| 264/272/280/288/296/304/312 | 8each | original T0 boot/wall/setup/positive/trigger/stop/outer-wall cutoffs |
+| 320/328 | 8each | final sealed native floor A boot/wall, not falsely called post-seal final floor |
+| 336 | 16 | actual original service InvocationID |
+| 352/360/368 | 8each | original source claim dev/inode/mount |
+| 376/384/392 | 8each | actual claim-view dev/inode/NEW mount ID |
+| 400/432/464/496 | 32each | actual protected policy/native/Python/manager hashes |
+| 528/532 | 4/4 | frame ceiling256 / endpoint bytes103 |
+| 536 | 108 | exact103-byte abstract endpoint including initial NUL, tail zero |
+| 644/648/656 | 4/8/8 | flags0/native ELF bytes/Python ELF bytes |
+| 664/668 | 4each | expected root UID/GID0; no credential transition |
+| 672/680/688/696/704/712/720/728 | 8each | original pid/mnt/cgroup/user namespace dev/inode pairs |
+| 736 | 4 | final floor argument bytes48 |
+| 740/744 | 4/8 | reserved0 / next original Main IPC request sequence (no reset across exec) |
+| 752/760/768 | 8each | actual verified Python ELF dev/inode/mount |
+| 776/784/792 | 8each | actual immutable execution-root dev/inode/mount |
+| 800/808/816 | 8each | actual immutable asset-root dev/inode/mount |
+| 824/832/840 | 8each | original keeper/native ELF dev/inode/mount |
+| 848 | 1200 | reserved0 |
+
+Sealed context contains floor A. After all sealing/metadata/FD checks, the last
+native original-clock check yields floor B >=A in both clocks. Pure fixed encoding
+then constructs exactly one48-byte argv argument `--rnr-floor-v2=` +16lowerhex boot
++`:`+16lowerhex wall; no syscall/format selection/clock capture between that check
+and the sole execve. Exec failure is terminal exit125 with retained UNKNOWN; no
+fallback or new native append. Successful exec has no returning post-check.
+
+Exec is the exact pinned immutable root Python3.12 with fixed `-I -S -B -c` program
+calling the single private qualification entry and the one fixed floor argument;
+no other argv/env/config import. Native/Python real/effective/saved IDs stay root0,
+no setuid/file-cap transition or executable replacement. Complete interpreter,
+loader/import/config/transitive startup closure must be checked BEFORE this exec;
+G's hashes alone do not establish it. No caller-created capsule/argv is authority.
+
+Python's fixed entry structurally consumes FD9 once, validates seals/metadata/size/
+exact full binding and floor B>=A/range, closes FD9 once, and authenticates the SAME
+original keeper and expected original PID/start/native->Python executable/namespace
+phase before any claim open or writer grant. Authentication observes actual clocks
+but captures no T0; retain every Python authentication high-water above B. Only the
+fixed authenticated entry may bind original origin and greatest already-observed
+floor, never overwrite it with a new sample/origin. An arbitrary capsule/argv or
+wrong expected exec phase fails before storage/effects; no generic origin importer.
+Keeper's independent original negative clock remains in force during these reads.
+
+Keeper retains the last native packet high-water; Python's authenticated floor
+must also be >=that floor, not merely sealed A. Native verifies the actual Python
+ELF/member hash and held identity before handover. Keeper correlates the new
+original Main proc-exe object with that already-authenticated exact identity; it
+does not perform blocking executable content hashing in its negative polling loop.
+The old Main native proc-exe handle is once-replaced in this one compiled exec
+phase, keeping one held slot plus one acquisition temporary; no arbitrary refresh.
+After chroot, native persistence rechecks its original external ancestry through
+retained original root descriptor `.`; it must never reopen new-root `/` and treat
+it as the original store root. No final namespace/root transition reauthenticates
+or changes the original source store.
+
+Initial Python writer grant is once-only for expected original Main after exec.
+Open fixed claim view through finalFD3, check exact source/view identity and flags,
+verify complete binding and committed prefix <=393984 in bounded32768-byte reads,
+EOF/digest/chain/last-sequence/expected RESULT70 against keeper's retained facts.
+No tail discovery/repair/truncation/adoption. First append is RESULT70 only. Observer inherits no storage/auth handles. Operation75INTENT is the last initial-writer append. Keeper consumes the exact
+prefix and irreversible phase1 producer closure before ACK; Main then once-closes
+all writer/auth handles and performs exact prefork inventory and sole fork. Only
+the same original parent acquires phase2 once, verifies that exact prefix ending
+in INTENT75, and first appends RESULT75. Its grant cannot depend on that result.
+76 confirms already-held state. Any close/inventory/fork/grant/prefix failure leaves
+75 incomplete; neither phase retries. Observer has no claim path/API/receipt role.
+After RESULT85 is durable and ACKed, keeper consumes the permanent terminal producer
+fence and ACKs; Main once-closes writer/auth handles. Store requires both terminal
+ACK and successful local closure. A close/ACK failure forbids Store, retains UNKNOWN
+and cannot append a repair or retry. RESULT85 does not assert future closure.
+Workload mount inventory excludes claim view and its parent path.
+
+### G5: normal/failure descriptor accounting to challenge
+
+All counts include live roles, unexpected rights and unwind retention, not only
+successful final inventories. No alias is silently counted once unless ownership
+is explicitly one role. Every acquired FD is registered before post-call checks;
+all closes invalidate before one attempt and preserve all errors. All native held
+role sets must be statically closed, not a generic256-slot authority allowance.
+
+- Existing first fork/ARMED and negative guard retain their reviewed local peaks6/
+  9received-rights/15guard. No new frame buffer grants an FD.
+- Proposed child pre-GO bootstrap: root/proc/thread-self/own pid-task-tid-ns/keeper
+  pid-ns/PID1pid-ns =11; original own8 typed namespace handles8; own child
+  pid/time namespace handles2; keeper/PID1pidfds2; original own/keeper/PID1ELFs3;
+  original own/keeper cgroup files2:28roles. Protected input ancestry adds4dirs
+  plus installation/task/policy3=7; references3; unit fragments4; native named ELF
+  plus usr/lib/rnr/bootstraps/hash directories6; manager named ELF/systemd dir2;
+  retained cgroup sys/fs/root/control/service/keeper/workload/anchor8:58roles.
+  Original stdio/gate4 + storage preparation10 + manager socket1 + one named
+  temporary + one clock temporary + at most4bad rights =79. Do not retain a
+  second named/digest input temporary outside this list.
+- Before ordinary preparation, close authentication/reference/manager extras and
+  map the exact retained subset to a fixed14-role operational proc view without
+  reacquisition: proc root/own pid directory/PID1 pid directory/PID1 pidfd4,
+  original own8 namespace references and original own child2 handles. PID1
+  namespace comparisons use one serial typed temporary against those original
+  references. New-route rechecks/handover must use14, not pretend to fill legacy22
+  or reacquire eight duplicates. The old22-role DATA/test seam is historical only;
+  no operational fallback/call to legacy hostview. Preserve7project input roles instead of old5. Existing
+  fixed-binds fixture proves78preparation roles at its largest legacy graph;
+  the smaller14-role route does not yet have runtime/source evidence. Conservatively
+  retain78 as an upper bound and add2input ancestors to give80, plus original stdio3/gate1/storage10/claim-view
+  mountpoint1/walk2/clock1/bad-rights4 =102. Helpers and final-role creation must
+  have their own smaller phase trace;102 is the listed overlapping upper bound,
+  not permission to hide another descriptor. Close all extras before final0..9.
+- Native final-role construction can retain the conservative old80 graph bound while acquiring six
+  final roles; include one sealed FD9 conservatively even though its actual phase
+  follows closure. Union bound80+6+stdio3/gate1+storage10+claim-view mountpoint1+
+  walk2+clock1+bad-rights4+FD9one=109, still below native256. Parent helper pipe4,
+  helper ELF1 and helper pidfd1 already belong to the existing media12 array in
+  that old graph, not six unlisted extras. Copied helper initially inherits the
+  current graph (<109), then dup/close_range leaves exact0..3 before exec; failed
+  child setup exits127 and parent retains unknown intent. Native cleanup capsules
+  must cover the expanded closed roles (proposed96 preparation entries plus the
+  separate11 storage and10 bootstrap entries); the source trace must demonstrate
+  no acquisition temporary escapes those owners.
+- Keeper fixed kernel-view27 roles are the mirrored28-role kernel view above with
+  original Main pidfd owned by its negative clock, borrowed here and counted once
+  separately. The own task/tid slots refer to original keeper; Main and PID1 have
+  their separately retained pid/ns directories. Fixed cgroup23 roles: root/control/
+  service/keeper directories4; prep dir+freeze+kill+events+procs5; negative leaf
+  dir+events+procs3; workload dir+freeze+kill+events4; emergency target dir+freeze+
+  kill+events4; anchor dir+events+procs3. Original stdio3/Main pidfd1/gate1/listener1/
+  observer pidfd1/Main+observer sessions2 adds9: conservative union59. Gate closes
+  at native handover before observer/session roles coexist; no extra keeper input,
+  hash or journal descriptors remain in the negative loop. One named/file temporary
+  plus one clock temporary gives61; receive with <=4rights gives63 only after both
+  temporary slots are empty. All rights close before clock/auth work. Cleanup has
+  fixed64 entries with explicit role tags; no heap/generic FD list authority.
+- Python prefork remains exact53+5+2=60, with no producer/auth handles. Copied child
+  initially inherits58 and its path-based proc scan adds one=59; close inherited
+  extras once before new authentication. Original observer starts7roles:stdio3,
+  parent socket/pidfd2, cgroup root/target2. Add keeper socket/pidfd2+ancestor1=10
+  through commit. Authentication scratch18: proc root1; own/Main/keeper pid dirs3;
+  their ns dirs3; original own8 namespace reference handles8; their exe handles3.
+  Compare peer namespaces and own child namespaces serially to that reference,
+  never recapture a reference. Thus held28 + one proc/control temporary + one clock
+  temporary =30. All temporary
+  file/clock slots are empty during receive; <=4rights then gives32, closed before
+  auth. Scan after closing scratch (10+one=11), not during28-role authentication.
+  All18 scratch roles close before PREPARED. Thereafter control1+clock1 gives12;
+  after terminal keeper socket/pidfd close,8held+control1+clock1 gives10. Root/target/
+  ancestor form ONE negative-control owner with3 FD slots; do not alias root across
+  independent owners. All construction failures close/retain once under these bounds.
+- Main parent after fork retains original53, parent observer socket/pidfd2 and two
+  recovery root/target duplicates2 =57. Phase2 claim1+keeper socket/pidfd2 gives60.
+  Reuse proc16+witness2, never recapture18 scratch roles. Open keeper pid directory
+  relative to retained proc root1; retain it while serially opening ONE namespace,
+  exe, status/stat or fdinfo record1; clock temporary1 gives63. Each object closes
+  before opening the next. Existing `_ProcView` check/read nesting must fit this
+  same three-temporary bound, not count the keeper directory as magically free.
+  Close the keeper directory and file/clock temporaries BEFORE packet receive:
+  60+<=4rights=64, then dispose all rights before another check. No new allowance.
+  Descriptor scans occur with no authentication directory/file held (60+2=62).
+
+These are closed prospective upper bounds, not actual kernel qualification. Full
+source traces must map exact role reuse, every acquisition, nested failure/unwind,
+helper/final creation and once-close before a positive entry is enabled. Neither
+native256 nor observer64 is a general authority to acquire arbitrary descriptors.
+
+### G6: sole offline retirement and retained uncertainty
+
+There is no online retirement/cleanup/reset/unlink route. Current active remains on
+all outcomes. Proposed sole positive retirement is an explicitly authorized,
+exclusive per-project OFFLINE maintenance session, with admission disabled and
+all original actors stopped/expired. It uses a fresh maintenance observation budget
+only for inspection, never adopts/resumes an old attempt clock or action grant.
+
+Require exact valid original installation/store/instance/active binding and matching
+claim/prefix; inspect every finite intended target/helper/media alias/mount/manager
+job from that attempt and all originals referenced by its prefix. Prove no live,
+queued, stopped-but-recreatable, externally held or uncertain resource remains.
+Service/anchor/project closure and exact manager job identity are checked, not just
+PID absence or an empty cgroup. Permanent immutable installer/bootstrap files,
+project configuration/state, historical consumed claims, and the fixed demand
+anchor are retained and checked against expected installed identities, not erased
+or falsely required absent. The absence predicate covers attempt-specific resources
+and any job/process/alias capable of recreating them. No online removal of the
+permanent anchor or installed project service is introduced. Missing/torn/corrupt active/claim, lost durability,
+changed mount/store/boot or incomplete attribution stays quarantined UNKNOWN; no
+automatic new store or consumption reset. A changed boot requires explicit owner
+repinning only AFTER reconciled absence; a new boot ID is not evidence of absence.
+
+The finite resource table derives ONLY from original binding, fixed G opcodes and
+recorded results, with no directory-wide adoption of unrelated objects:
+
+| G source | Closed recovery observations |
+| --- | --- |
+| 1..5 | Original keeper/Main identities and listener lifetime; original prep/negative/control/workload paths and exact memberships; sole GO disposition |
+| 6..7 | Project+Task native task directory and diagnostic journal original identities |
+| 8..18,27..35 | Four exact loop candidate/backing/tag identities, two DM full names/UUIDs/device/event/tables/openers, runtime/launch root mounts and run bind/remount |
+| 19..26 | Fixed launch source dir/file, data/hash/root/output files, both exact helper PID/start/pidfd/status and inherited/output aliases |
+| 36..63 | Each of fourteen fixed source/target bind mount IDs and remount state, including every original target alias |
+| 64..70 | Exact claim-view mountpoint/bind/remount, original root transitions and original Main exec continuity; exclude persistent consumed source from deletion |
+| 71..76 | Emergency unit/target, exact manager job and settled/no-queued result, parent/child fork identities, producer closure; no untracked late job |
+| 77..85 | Original observer identity/negative leaf, original arm channel, workload ancestor, sole thaw/commit and final readiness; no remaining negative/positive actor or producer |
+
+Every multi-resource row expands to its fixed role/substep observations (<=256),
+not one aggregate "done" bit. Existing immutable no-escape/no-FD-passing closure
+and complete kernel descendant/mount/device inventory must prove no unobserved
+holder can retain/recreate a named resource. A missing record, extra alias, unknown
+holder, unsettled job, unsupported inventory or bound overflow blocks closure.
+Receipt records actual physical observations, never merely planned syscalls or
+inferred success from clock expiry. This route only retires an already-reconciled
+active latch; it does not authorize deleting mounts/devices/units or modifying
+unrelated services. Any required cleanup outside original actor rights needs its
+own specifically authorized fresh offline procedure before absence can be claimed.
+
+Reuse ordinary protected files, bounded JSON and no-overwrite rename for offline
+receipts; no new binary codec or runtime receipt service. Runtime never treats a
+receipt as approval or resumes an old attempt. The trusted maintenance operator is
+subject to the same exclusive-host/installer premise as initial provisioning.
+
+Exact successful retirement order, every syscall under the fresh maintenance
+budget and once-close/error rules:
+
+1. Exclusively create project-state `maintenance.lock` root0600/nlink1, O_EXCL,
+   nofollow. Its bounded UTF-8 JSON (<=4096bytes) names version1, original project/
+   instance/task/binding SHA, current boot and explicit scoped owner maintenance
+   acknowledgement reference. File fsync then project-directory fsync MUST finish
+   before any retirement change. Admission checks this exact fixed lock name and
+   refuses if present, malformed or uncertain; it is never a runtime repair target.
+2. Validate exact original active/claim and perform the complete closed absence
+   inspection above. Do not retire torn/partial/corrupt records. Exclusively create
+   history directory `.retiring-<Task32>` root0700 on the SAME protected ext4 store.
+   Collision means UNKNOWN. Copy the exact original committed claim prefix into
+   `claim.bin` root0400/nlink1 (<=393984bytes), retaining all original binding bytes;
+   reread size/EOF/hash and fsync it. No re-encoding of original records.
+3. Create `receipt.json` root0400/nlink1, <=196608bytes, UTF-8 JSON, duplicate keys/
+   unknown fields rejected. Fixed top-level keys: version(1), project64, instance32,
+   task32, binding_sha256, prefix_sha256, prefix_bytes, original_boot_uuid,
+   observed_boot_uuid, store_identity(dev/inode/mount), stop_bounds(original boot/
+   wall/trigger/stop), owner_ack_reference, observations, outcome("ABSENCE_VERIFIED").
+   observations is an ordinal/role/substep-sorted list of at most256 objects with exact
+   keys ordinal, target_role, substep, identity, absent, detail. Each is <=512 encoded bytes;
+   identity contains only the fixed resource device/inode/mount/PID/start/job ID
+   appropriate to that compiled opcode; detail is a closed absence result enum,
+   never commands or arbitrary authority. Every intended resource/substep/alias
+   must be accounted for by its compiled ordinal/role/substep; reserved list capacity
+   is not a selectable resource interface. Incomplete/multiple/uncertain attribution
+   blocks retirement, not a dropped row. Zero targets are explicitly NONE; absent
+   must be true for every resource. Reference hashes/full original binding retain
+   old configuration/enrollment/startup bytes in protected content-addressed history.
+   Serialize once using standard JSON, validate/reread the exact bytes and fsync.
+4. fsync `.retiring-Task`, no-overwrite rename it to `retired-Task`, then fsync
+   history. Only after that durable verified receipt exists, rename original
+   `active` to `retired-Task/active` with RENAME_NOREPLACE. Retain exact old bytes;
+   fsync both source project-state and destination receipt directories. Never
+   unlink/truncate consumed Task files, reset the store or reuse TaskID.
+5. A boot/pin change is a separate explicitly acknowledged trusted installer step,
+   still under the durable maintenance lock. Preserve old installation/policy/
+   instance/reference bytes in protected immutable history; publish coherent reviewed
+   replacement0400 files by ordinary same-directory temporary+atomic rename, sync
+   each file and parent. No auth/SDK/global project change, automatic opt-in, or
+   automatic epoch/boot adoption. No lock release if any new pin is unqualified.
+6. Recheck absence and all durable identities/published files. Rename the exact
+   maintenance.lock into `retired-Task/maintenance.lock` with RENAME_NOREPLACE,
+   then fsync both parents. This is last, after ALL receipt/active/pin syncs. No
+   admission during maintenance or on any uncertain sync/rename outcome. Completed
+   offline retirement permits a different fresh Task through ordinary admission;
+   O_EXCL on retained consumed files still permanently rejects the old Task.
+
+A crash before last lock retirement leaves the admission lock and blocks entry.
+If the last rename is observed after a crash, every earlier required sync already
+succeeded; if it did not persist, the lock still blocks. Runtime must inspect lock
+and active through the SAME protected project directory, with stable named/held
+checks and installer exclusion; absence of a random pathname is not closure proof.
+Unexpected missing/corrupt lock, active or history during maintenance stays UNKNOWN;
+no automatic roll-forward, rollback, receipt adoption or deletion. An interrupted
+retirement needs a new explicitly scoped offline reconciliation, not a retry of
+old live action rights. Old boot/clock expiry alone never authorizes retirement.
+
+The fixed JSON receipt is evidence for offline review, not a new acceptance source.
+An owner acknowledgement alone does not prove the observed closure. Physical
+recovery acceptance must show successful closed retirement AND blocking of torn,
+lost, replaced, partially synced and ambiguous cases. No general administrator
+cleanup command or post90 watcher is implied.
+
+#### G1 project-scoped temporary/media identity correction
+
+The existing uninvoked native directory/DM/loop tags use TaskID alone. Two different
+opted-in projects may legitimately have the same TaskID; a global TaskID collision
+must never select or expose another project's state. For the new operational route,
+all native mutable names bind BOTH authenticated Project64 and Task32, with no old
+fallback. This refines the user-required separate state; historical DATA fixtures
+and existing consumed objects are not renamed/adopted.
+
+Fixed native basename `rnr-native-<Project64>-<Task32>` is108bytes; path under `/run/`
+is113bytes. Claim view is exactly that prepared-root path plus `/admission.claim`
+(total129bytes). This explicitly supersedes E/G's old Task-only visible name for
+operational source. Update every derived media/mount/output/helper/final-root path
+and buffer bound coherently; filename/path buffers are fixed256bytes, no truncation,
+heap or generic path parameter. Root/runtime/launch readonly content-addressed media
+may be shared as immutable bytes only; mutable task outputs and receipts are not.
+
+DM name `rnr2-<Project64>-<Task32>-runtime` (or `-launch`) and UUID
+`rnr2.<r|l>.<Project64>.<Task32>` fit existing128/129byte capacities; exact whole name,
+UUID/device/event/table/readback remain necessary. No adoption by matching name.
+Kernel loop LO_NAME_SIZE64 cannot hold full64+32hex identity. Its fixed tag is
+`rnr2.<d|h|l|m>.<Base32>`: role-specific d(runtime data),h(runtime hash),l(launch data),
+m(launch hash); Base32 is52lowercase RFC4648 alphabet bytes, no padding, of SHA256
+on original binary project32||Task16||one exact role byte. Tag59bytes, remaining5
+bytes zero. Verify selected-kernel exact loop string storage/readback before use;
+no truncation or digest-only task authority. The complete binding/original producer
+and source/loop held identities remain independent. This relies on the same vetted
+computation-only SHA256 dependency, not an ad-hoc checksum or new runtime library.
