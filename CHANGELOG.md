@@ -38,6 +38,7 @@
 - **runner:** index product and operational release requirements ([25f81e951fb1](https://github.com/maxxab/agent_runner/commit/25f81e951fb12b44f05b1f96e5ab5644d5c35e04))
 - **runner:** record dependency and regression verification ([b8f4289d2294](https://github.com/maxxab/agent_runner/commit/b8f4289d2294d9b7921e80a2bdf139d7a8f97df0))
 - **runner:** checkpoint reviewed admission work and recovery ([754f932d3de1](https://github.com/maxxab/agent_runner/commit/754f932d3de130a053a99f95948a903742331f93))
+- **runner:** freeze simplified coupled admission contract ([51d38b625a53](https://github.com/maxxab/agent_runner/commit/51d38b625a5344f7cb5fbbe2cb629bb187e81167))
 
 ### Testing
 
