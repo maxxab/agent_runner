@@ -123,7 +123,9 @@ class GuardedCreateTests(EffectFixture, unittest.TestCase):
         self.held()
 
     def test_malformed_response_retains_observed_created_id_without_release(self):
-        server, _ = self.endpoint(self.request(claim=False))
+        # Exercise malformed-response containment, with room for real Store/IPC
+        # scheduling. Deadline-specific cases retain their explicit short budgets.
+        server, _ = self.endpoint(self.request(claim=False), timeout=1)
         raw=response(json.dumps({'Id':CID,'Warnings':['rejected']}).encode(),b'201 Created')
         driver, wire, image=self.driver(replies=[raw,b''])
         with self.assertRaises(ValueError):server._create(driver,image)
