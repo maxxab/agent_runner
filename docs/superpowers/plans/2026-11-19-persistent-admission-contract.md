@@ -1013,8 +1013,10 @@ must read/hash the actual referenced config/enrollment/startup/unit bytes and
 compare complete pins/identity with installation and task; a hash echo or nonzero
 field cannot replace that. Also require runtime image Merkle root to equal the
 execution-generation root actually used by _ExecutionRoot after the native root
-transition; current independent installation/task equality checks do NOT establish
-that relationship. Candidate F below proposes binary policy/layout and paths/size caps; acceptance
+transition. The2026-11-24 held-input and persistent-binding guards now reject any
+installation runtime/execution root mismatch before binding or persistence I/O.
+This byte equality does not prove physical mapping or mount identity. Candidate F
+below proposes binary policy/layout and paths/size caps; acceptance
 of those bytes and provenance of owner-approved semantics remains OPEN. No arbitrary projection of config
 or enrollment, new approval, or current account material is authorized by this
 candidate. Full startup/member verification may occur in its explicitly named
@@ -1264,3 +1266,56 @@ claims' hashes remain interpretable. Publish per-project task.bin exclusively;
 never rewrite it while any invocation/pending/uncertain active binding exists.
 A new task publication is not a consumption reset or permission to retire active.
 No current owner data was read or materialized while designing these bytes.
+
+#### Candidate F structural decoder prerequisite (2026-11-24)
+
+Implement the exact9728-byte policy framing as DATA ONLY in records.c/h, with no
+reader, renderer, installer, runtime call site or admission grant. Main owns all
+source/tests/Git; the existing sole reviewer independently challenges the interface
+and integrated diff. This does not accept the whole candidate F boundary.
+
+Freeze the structural ambiguities as follows. Repository uses the existing
+owner/project grammar `[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+`, excluding `.`/`..`
+components, exact case. Host is1..256ASCII bytes (1..127), contains at least one
+byte other than ASCII whitespace (09..0d or20), and has no NUL or normalization; the eventual
+installer must prove exact config/enrollment/uname equality. This parser must not
+invent DNS-label or lowercase rules. The chosen ASCII byte range includes control
+bytes and DEL; it is not a printable-hostname promise. All identity/digest fields and Git object
+IDs must contain a nonzero byte; boot UUID follows the existing canonical
+lowercase, nonzero UUID decoder. Flags exactly1 do not prove owner opt-in.
+
+UnitPath enforces the intersection with the existing declaration parser:1..32
+ordered unique paths, each<=248bytes, `[A-Za-z0-9_.-]` components, no empty/dot/
+dotdot component, at most16 entries when split on slash (including the leading
+empty entry), and exactly one `/run/systemd/transient` member. This is canonical
+structure, not proof of actual PID1 search paths. Preserve order and case.
+
+All caps are positive signed64 DATA except swap exactly0; CPU multiples10 are
+bounded by INT64_MAX/1000 so both specified microsecond conversions are safe.
+Memory and pids are bounded by INT64_MAX for representation only; this is NOT
+proof of supported physical kernel ranges. Later kernel correlation must enforce
+actual target limits. Policy parent caps may exceed the task decoder's stricter
+INT64_MAX/1000000 CPU bound; the task keeps that bound and must be <=workload caps.
+Service CPU/memory/pids must each be <=control; anchor equals workload in numeric
+caps and period, not their different fragment digests.
+No claim is made that these relationships establish inherited effective limits.
+
+The decoded policy owns fixed fields and borrows repository/host/path views from
+unchanged caller bytes, as the declaration does. Reject input/output overlap and
+clear the complete non-NULL output on every rejection. Validate exact header,
+size, every reserved/unused/tail byte, all size bounds and conversions before
+publishing the output. No file/clock/heap/Store/process operation. Verification:
+valid field/ordered-view checks, every reserved-byte mutation, zero/padding/size/
+integer/path/duplicate tests, truncation at every length, null/alias clearing,
+strict GCC warnings and undefined-import audit before running the inert fixture;
+then independent review, broader regression/build/installed-consumer checks.
+
+
+The structural decoder is now implemented without any runtime call site. The same
+sole reviewer found no blocking issue in its frozen interface or integrated source,
+without independently running tests. Strict inert policy/legacy-record/declaration
+checks passed8tests in4.807s; additional accepted maximum-size/path-count cases
+passed the policy fixture separately. Full regression/package outcomes are recorded
+in the[2026-11-24 admission checkpoint](2026-11-24-admission-armed-authentication.md):
+1444tests passed,7skips; wheel/sdist and2installedconsumers/3compile-onlynative
+builds passed. No actual native entry ran. All five operational gates remain open.

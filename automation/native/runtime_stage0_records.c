@@ -367,3 +367,112 @@ int rnr_stage0_decode_launch_declaration(const unsigned char *raw, size_t bytes,
         json_number(&p,v[10],3,3,&version)!=0)return -1;
     value.version=(uint32_t)version;*out=value;return 0;
 }
+
+static int policy_text(const unsigned char *raw,size_t capacity,uint32_t count,
+                       struct rnr_stage0_text_view *out)
+{
+    if(count<1 || count>capacity || !all_zero(raw+count,capacity-count))return -1;
+    for(size_t j=0;j<count;++j)if(raw[j]<1 || raw[j]>127)return -1;
+    out->bytes=raw;out->length=count;return 0;
+}
+static int policy_repository(const struct rnr_stage0_text_view *v)
+{
+    size_t split=v->length;
+    for(size_t j=0;j<v->length;++j){
+        unsigned char c=v->bytes[j];
+        if(c=='/'){
+            if(split!=v->length)return -1;
+            split=j;
+        }else if(!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||
+                   (c>='0'&&c<='9')||c=='_'||c=='.'||c=='-'))return -1;
+    }
+    if(split==0 || split>=v->length-1)return -1;
+    size_t lengths[]={split,v->length-split-1};
+    const unsigned char *parts[]={v->bytes,v->bytes+split+1};
+    for(size_t i=0;i<2;++i)
+        if((lengths[i]==1&&parts[i][0]=='.') ||
+           (lengths[i]==2&&parts[i][0]=='.'&&parts[i][1]=='.'))return -1;
+    return 0;
+}
+static int policy_host(const struct rnr_stage0_text_view *v)
+{
+    for(size_t j=0;j<v->length;++j){
+        unsigned char c=v->bytes[j];
+        if(c!=' ' && !(c>=9&&c<=13))return 0;
+    }
+    return -1;
+}
+int rnr_stage0_decode_policy(const unsigned char *raw,size_t bytes,
+                            struct rnr_stage0_policy *out)
+{
+    struct rnr_stage0_policy v={0};
+    if(out==NULL)return -1;
+    int alias=raw!=NULL&&overlap(raw,bytes,out,sizeof(*out));
+    memset(out,0,sizeof(*out));
+    if(raw==NULL || alias || bytes!=9728 || memcmp(raw,"RNRPOL01",8) ||
+       little(raw+8,4)!=1 || little(raw+12,4)!=9728 ||
+       all_zero(raw+16,32) || all_zero(raw+48,16) || boot_uuid(raw+64)!=0 ||
+       little(raw+100,4)!=1 || !all_zero(raw+1020,4))return -1;
+    v.version=1;v.flags=1;
+    memcpy(v.project_id,raw+16,32);memcpy(v.store_instance,raw+48,16);memcpy(v.boot_id,raw+64,36);
+    unsigned char *digests[]={v.configuration_digest,v.enrollment_digest,v.startup_digest,
+        v.native_digest,v.manager_digest,v.python_digest,v.execution_root,v.asset_root,
+        v.tool_digest,v.daemon_digest};
+    for(size_t i=0;i<10;++i){
+        if(all_zero(raw+104+32*i,32))return -1;
+        memcpy(digests[i],raw+104+32*i,32);
+    }
+    v.revision_bytes=(size_t)little(raw+424,4);
+    if((v.revision_bytes!=20 && v.revision_bytes!=32) ||
+       all_zero(raw+428,v.revision_bytes) ||
+       !all_zero(raw+428+v.revision_bytes,32-v.revision_bytes))return -1;
+    memcpy(v.revision,raw+428,v.revision_bytes);
+    if(policy_text(raw+464,256,(uint32_t)little(raw+460,4),&v.repository)!=0 ||
+       policy_repository(&v.repository)!=0 ||
+       policy_text(raw+724,256,(uint32_t)little(raw+720,4),&v.host)!=0 ||
+       policy_host(&v.host)!=0)return -1;
+    uint64_t *elf_sizes[]={&v.native_bytes,&v.manager_bytes,&v.python_bytes};
+    for(size_t i=0;i<3;++i){
+        uint64_t n=little(raw+980+8*i,8);
+        if(n<1 || n>33554432)return -1;
+        *elf_sizes[i]=n;
+    }
+    uint32_t *file_sizes[]={&v.configuration_bytes,&v.enrollment_bytes,&v.startup_bytes};
+    for(size_t i=0;i<3;++i){
+        uint64_t n=little(raw+1004+4*i,4);
+        if(n<1 || n>(i==2?1048576:131072))return -1;
+        *file_sizes[i]=(uint32_t)n;
+    }
+    for(size_t i=0;i<4;++i){
+        const unsigned char *p=raw+1024+128*i;
+        struct rnr_stage0_policy_unit *u=&v.units[i];
+        if(all_zero(p,32) || !all_zero(p+72,56))return -1;
+        memcpy(u->fragment_digest,p,32);
+        u->cpu_millis=little(p+32,8);u->memory_bytes=little(p+40,8);
+        u->swap_bytes=little(p+48,8);u->pids=little(p+56,8);u->cpu_period_us=little(p+64,8);
+        if(u->cpu_millis<1 || u->cpu_millis%10 || u->cpu_millis>(uint64_t)INT64_MAX/1000 ||
+           u->memory_bytes<1 || u->memory_bytes>INT64_MAX ||
+           u->pids<1 || u->pids>INT64_MAX || u->swap_bytes!=0 || u->cpu_period_us!=100000)return -1;
+    }
+    const struct rnr_stage0_policy_unit *service=&v.units[0],*control=&v.units[1],
+        *workload=&v.units[2],*anchor=&v.units[3];
+    if(service->cpu_millis>control->cpu_millis || service->memory_bytes>control->memory_bytes ||
+       service->pids>control->pids || anchor->cpu_millis!=workload->cpu_millis ||
+       anchor->memory_bytes!=workload->memory_bytes || anchor->pids!=workload->pids)return -1;
+    v.unit_path_count=(size_t)little(raw+1016,4);
+    if(v.unit_path_count<1 || v.unit_path_count>32)return -1;
+    int transient=0;
+    for(size_t i=0;i<32;++i){
+        const unsigned char *p=raw+1536+256*i;
+        if(i>=v.unit_path_count){if(!all_zero(p,256))return -1;continue;}
+        struct rnr_stage0_text_view *path=&v.unit_paths[i];
+        if(!all_zero(p+4,4) || policy_text(p+8,248,(uint32_t)little(p,4),path)!=0 ||
+           unit_path(path)!=0)return -1;
+        for(size_t j=0;j<i;++j)
+            if(path->length==v.unit_paths[j].length &&
+               memcmp(path->bytes,v.unit_paths[j].bytes,path->length)==0)return -1;
+        if(path->length==22 && !memcmp(path->bytes,"/run/systemd/transient",22))transient=1;
+    }
+    if(!transient)return -1;
+    *out=v;return 0;
+}

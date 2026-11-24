@@ -45,6 +45,32 @@ struct rnr_stage0_launch_declaration {
  * Reject overlap against the entire output and fail-clear on all rejection. */
 int rnr_stage0_decode_launch_declaration(const unsigned char *, size_t,
                                         struct rnr_stage0_launch_declaration *);
+/* Candidate F exact binary policy DATA. No protected-file provenance, hash,
+ * owner approval, kernel limits or correlation is established by decoding.
+ * Text views borrow unchanged caller bytes, just like launch declarations. */
+struct rnr_stage0_policy_unit {
+    unsigned char fragment_digest[32];
+    uint64_t cpu_millis, memory_bytes, swap_bytes, pids, cpu_period_us;
+};
+struct rnr_stage0_policy {
+    uint32_t version, flags;
+    unsigned char project_id[32], store_instance[16];
+    char boot_id[37];
+    unsigned char configuration_digest[32], enrollment_digest[32], startup_digest[32];
+    unsigned char native_digest[32], manager_digest[32], python_digest[32];
+    unsigned char execution_root[32], asset_root[32], tool_digest[32], daemon_digest[32];
+    unsigned char revision[32];
+    size_t revision_bytes;
+    struct rnr_stage0_text_view repository, host;
+    uint64_t native_bytes, manager_bytes, python_bytes;
+    uint32_t configuration_bytes, enrollment_bytes, startup_bytes;
+    struct rnr_stage0_policy_unit units[4];
+    struct rnr_stage0_text_view unit_paths[32];
+    size_t unit_path_count;
+};
+/* Exact9728 bytes, fail-clear, no input/output overlap. Clearing an overlapping
+ * output necessarily changes those input bytes. No runtime caller is enabled. */
+int rnr_stage0_decode_policy(const unsigned char *, size_t, struct rnr_stage0_policy *);
 struct rnr_stage0_task {
     unsigned char task_id[16];
     int64_t wall_cutoff_ns;
@@ -64,7 +90,8 @@ struct rnr_stage0_output {
  * gates. Output records cannot instantiate or resume a live preparer.
  */
 /* Installation accepts exact inert v1/128 or v2/448 framing. The current
- * protected reader still reads v1 only. v2 adds DATA, never store identity
+ * legacy input reader reads v1; held admission inputs require v2. v2 adds DATA,
+ * never store identity
  * authentication, filesystem durability, reboot reconciliation or admission. */
 int rnr_stage0_decode_installation(const unsigned char *, size_t,
                                   struct rnr_stage0_installation *);
