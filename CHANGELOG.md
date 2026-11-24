@@ -36,6 +36,7 @@
 - **release:** preserve admission continuation and ownership checkpoint ([8466723edf26](https://github.com/maxxab/agent_runner/commit/8466723edf26769886a409d718b0a7cb53038b8d))
 - **runner:** index product and operational release requirements ([25f81e951fb1](https://github.com/maxxab/agent_runner/commit/25f81e951fb12b44f05b1f96e5ab5644d5c35e04))
 - **runner:** record dependency and regression verification ([b8f4289d2294](https://github.com/maxxab/agent_runner/commit/b8f4289d2294d9b7921e80a2bdf139d7a8f97df0))
+- **runner:** checkpoint reviewed admission work and recovery ([754f932d3de1](https://github.com/maxxab/agent_runner/commit/754f932d3de130a053a99f95948a903742331f93))
 
 ### Testing
 
