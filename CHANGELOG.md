@@ -9,6 +9,7 @@
 - **native:** decode bounded canonical launch declarations ([bc58f30b7d3b](https://github.com/maxxab/agent_runner/commit/bc58f30b7d3b82b29ccfbe23130aefd02b77bcab))
 - **native:** supervise held-input admission without workload release ([e8a94016181f](https://github.com/maxxab/agent_runner/commit/e8a94016181f5dacbacd4be5f66cc0cbc87b2811))
 - **native:** prepare durable admission latch and claim without release ([5c423e7aaf4f](https://github.com/maxxab/agent_runner/commit/5c423e7aaf4f8d8a7a8c66c6c0cce0ee3b97fb13))
+- **native:** decode bounded admission policy records ([173c80f705dc](https://github.com/maxxab/agent_runner/commit/173c80f705dced901e9d5d4b0c9ce4984e7a61b3))
 
 ### Bug Fixes
 
@@ -17,6 +18,7 @@
 ### Security
 
 - **native:** authenticate the original admission fork packet ([35bbff3f5f50](https://github.com/maxxab/agent_runner/commit/35bbff3f5f50008ad6ce5ff3b497bbf99f5ad839))
+- **native:** bind execution to the runtime image root ([4414afe768dc](https://github.com/maxxab/agent_runner/commit/4414afe768dc474175b3fd5b4577d2cfef1aa1f7))
 
 ### Refactoring
 
@@ -32,3 +34,8 @@
 - **native:** specify reviewed admission transport and project policy ([122f9fad9830](https://github.com/maxxab/agent_runner/commit/122f9fad983002540f2ac0c73111aa843beaf6d3))
 - **release:** preserve admission continuation and ownership checkpoint ([8466723edf26](https://github.com/maxxab/agent_runner/commit/8466723edf26769886a409d718b0a7cb53038b8d))
 - **runner:** index product and operational release requirements ([25f81e951fb1](https://github.com/maxxab/agent_runner/commit/25f81e951fb12b44f05b1f96e5ab5644d5c35e04))
+- **runner:** record dependency and regression verification ([b8f4289d2294](https://github.com/maxxab/agent_runner/commit/b8f4289d2294d9b7921e80a2bdf139d7a8f97df0))
+
+### Testing
+
+- **receiver:** allow store scheduling in malformed response check ([e1df77313fbc](https://github.com/maxxab/agent_runner/commit/e1df77313fbc59688e1ce9ec4b5a6416f138c7eb))
