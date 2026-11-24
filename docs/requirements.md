@@ -2,7 +2,8 @@
 
 This is the navigation and traceability index for the existing product requirements.
 It does not replace their detailed contracts or create another backlog. Latest
-checkpoint: [24 November bootstrap and permission checkpoint](handoffs/2026-11-24-bootstrap-progress.md);
+checkpoint: [24 November coupled admission and input-clock checkpoint](handoffs/2026-11-24-coupled-input-progress.md);
+[bootstrap and permission checkpoint](handoffs/2026-11-24-bootstrap-progress.md) retains prior correction evidence;
 [preceding release progress](handoffs/2026-11-24-release-progress.md) retains baseline evidence. The current
 package is advisory; operational acceptance remains incomplete.
 

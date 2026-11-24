@@ -188,3 +188,33 @@ weakened, and package/consumer results remain applicable to unchanged source.
 The previous permission checkpoint is historical; coupled admission and operational
 release work remain unfinished. Current execution thread01a20b29 has a separate
 protected ownership-resume receipt and preserves UNKNOWN Main/counter values.
+
+
+## Shared held-reader clock correction under the reviewed G contract
+
+The next actual bootstrap/project-input flow reuses common preparer input helpers.
+Source trace found those helpers returned before post-call original-clock checks
+on failed open/fstat/statx/fstatfs/pread. A simultaneous syscall error and expiry
+therefore lost the separate clock capsule. Admission temporary closes similarly
+omitted a required post-check, and final acquisition suppressed it after close
+failure. This is a prerequisite correction in the existing actual held-input flow,
+not another DATA codec or complete project/host admission claim.
+
+One private failed_input helper preserves initiating code/errno, observes the
+original clock, and returns failure. Short/extra-EOF reads follow the same rule.
+live_input retains the first clock capsule; later fencing cannot overwrite it.
+Admission/final acquisition close registers invalidation first and observes the
+clock after a failed close; terminal drain remains once-only without fresh positive
+checks. No path, clock, receipt, producer, protocol, Store or activation API added.
+
+RED: new held fixture failed at its separate-clock-capsule assertion before source
+correction. GREEN: focused3tests PASS10.322s, including seven simultaneous input-
+error/expiry cases, two close cases and five added actual six-module scenarios.
+The actual-module driver audits imported host interfaces before execution and now
+covers25scenarios total. Same authorized replacement reviewer source PASS with
+exact four-file hashes; no reviewer execution. Protected evidence:
+release-admission-20261119/input-clock-successor-01a20b29. Full-suite/package evidence
+and final publication are recorded in the handoff when complete.
+
+The private wrapper still abandons/exits125. G1 actual bootstrap/project/policy/
+manager authentication and G2-G6 operational integration remain unfinished.

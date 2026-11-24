@@ -229,7 +229,7 @@ static int live_input(struct rnr_stage0_preparer_error *e)
 #endif
         result=rnr_stage0_check_operational_preparation(&clock_error);
     if(result!=0){
-        e->launch=clock_error;
+        if(e->launch.code==RNR_STAGE0_LAUNCH_OK)e->launch=clock_error;
         reject_input(e,RNR_STAGE0_PREPARER_CLOCK,clock_error.system_errno);return -1;
     }
     if(!active_preparation()){
@@ -237,12 +237,22 @@ static int live_input(struct rnr_stage0_preparer_error *e)
     }
     return 0;
 }
+/* A failed syscall still needs its post-call clock observation. Preserve the
+ * initiating failure before that check, with the first clock capsule separate. */
+static int failed_input(struct rnr_stage0_preparer_error *e,
+                        enum rnr_stage0_preparer_code code,int failure)
+{
+    reject_input(e,code,failure);
+    (void)live_input(e);
+    return -1;
+}
 static void close_input(int *slot,struct rnr_stage0_preparer_error *e)
 {
     int fd=*slot;
+    int phase=atomic_load_explicit(&preparer_state,memory_order_acquire);
     int checking=fd>=0 && e->code==RNR_STAGE0_PREPARER_OK &&
-        atomic_load_explicit(&preparer_state,memory_order_acquire)==PREPARER_FINAL_ACQUIRING;
-    if(checking)(void)live_input(e);
+        (phase==PREPARER_ADMISSION_ACQUIRING || phase==PREPARER_FINAL_ACQUIRING);
+    if(checking && live_input(e)!=0)checking=0;
     *slot=-1;
     if(fd>=0 && close(fd)!=0){
         int failure=errno;
@@ -253,7 +263,7 @@ static void close_input(int *slot,struct rnr_stage0_preparer_error *e)
         }else e->cleanup_overflow=1;
         reject_input(e,RNR_STAGE0_PREPARER_CLEANUP,failure);
     }
-    if(checking && e->code==RNR_STAGE0_PREPARER_OK)(void)live_input(e);
+    if(checking)(void)live_input(e);
 }
 static void drain_inputs(struct rnr_stage0_preparer_error *e)
 {
@@ -288,11 +298,11 @@ static int open_input(int parent,const char *name,int directory,int *slot,
     if(live_input(e)!=0)return -1;
     int flags=O_RDONLY|O_NOFOLLOW|O_CLOEXEC|(directory?O_DIRECTORY:O_NONBLOCK);
     int fd=parent<0?open(name,flags):openat(parent,name,flags);
-    if(fd<0){reject_input(e,RNR_STAGE0_PREPARER_OPEN,errno);return -1;}
+    if(fd<0)return failed_input(e,RNR_STAGE0_PREPARER_OPEN,errno);
     if(fd<3){
         /* This contradicts admitted stdio/single-owner assumptions. Do not
          * repair by adopting/closing a standard-stream slot. Retain evidence. */
-        e->unadopted_fd=fd;reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+        e->unadopted_fd=fd;return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
     }
     *slot=fd; /* register BEFORE any post-open clock or metadata observation */
     return live_input(e);
@@ -300,7 +310,7 @@ static int open_input(int parent,const char *name,int directory,int *slot,
 static int stat_input(int fd,struct stat *s,struct rnr_stage0_preparer_error *e)
 {
     if(live_input(e)!=0)return -1;
-    if(fstat(fd,s)!=0){reject_input(e,RNR_STAGE0_PREPARER_METADATA,errno);return -1;}
+    if(fstat(fd,s)!=0)return failed_input(e,RNR_STAGE0_PREPARER_METADATA,errno);
     return live_input(e);
 }
 static int mount_input(int fd,uint64_t *mount,struct rnr_stage0_preparer_error *e)
@@ -308,7 +318,7 @@ static int mount_input(int fd,uint64_t *mount,struct rnr_stage0_preparer_error *
     struct statx s={0};
     if(live_input(e)!=0)return -1;
     if(statx(fd,"",AT_EMPTY_PATH|AT_SYMLINK_NOFOLLOW,STATX_MNT_ID,&s)!=0){
-        reject_input(e,RNR_STAGE0_PREPARER_METADATA,errno);return -1;
+        return failed_input(e,RNR_STAGE0_PREPARER_METADATA,errno);
     }
     if(live_input(e)!=0)return -1;
     if(!(s.stx_mask&STATX_MNT_ID) || !s.stx_mnt_id){
@@ -320,7 +330,7 @@ static int filesystem_input(int fd,long *type,struct rnr_stage0_preparer_error *
 {
     struct statfs s;
     if(live_input(e)!=0)return -1;
-    if(fstatfs(fd,&s)!=0){reject_input(e,RNR_STAGE0_PREPARER_METADATA,errno);return -1;}
+    if(fstatfs(fd,&s)!=0)return failed_input(e,RNR_STAGE0_PREPARER_METADATA,errno);
     if(live_input(e)!=0)return -1;
     *type=s.f_type;return 0;
 }
@@ -356,17 +366,17 @@ static int read_input(int role,unsigned char *bytes,size_t minimum,size_t maximu
         size_t count=length-offset;if(count>32768)count=32768;
         if(live_input(e)!=0)return -1;
         ssize_t n=pread(fd,bytes+offset,count,(off_t)offset);
-        if(n<0){reject_input(e,RNR_STAGE0_PREPARER_READ,errno);return -1;}
+        if(n<0)return failed_input(e,RNR_STAGE0_PREPARER_READ,errno);
+        if((size_t)n!=count)return failed_input(e,RNR_STAGE0_PREPARER_READ,0);
         if(live_input(e)!=0)return -1;
-        if((size_t)n!=count){reject_input(e,RNR_STAGE0_PREPARER_READ,0);return -1;}
         offset+=count;
     }
     unsigned char extra;struct stat after;uint64_t mount;
     if(live_input(e)!=0)return -1;
     ssize_t n=pread(fd,&extra,1,(off_t)length);
-    if(n<0){reject_input(e,RNR_STAGE0_PREPARER_READ,errno);return -1;}
+    if(n<0)return failed_input(e,RNR_STAGE0_PREPARER_READ,errno);
+    if(n!=0)return failed_input(e,RNR_STAGE0_PREPARER_READ,0);
     if(live_input(e)!=0)return -1;
-    if(n!=0){reject_input(e,RNR_STAGE0_PREPARER_READ,0);return -1;}
     if(stat_input(fd,&after,e)!=0 || mount_input(fd,&mount,e)!=0)return -1;
     if(!same_input(s,&after,0) || mount!=input_owner.mounts[role]){
         reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;

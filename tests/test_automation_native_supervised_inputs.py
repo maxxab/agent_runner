@@ -40,7 +40,7 @@ class SupervisedInputsTests(unittest.TestCase):
                    'strcmp', 'strlen'}
         self.assertFalse(symbols - allowed, f'unmocked fixture imports: {sorted(symbols - allowed)}')
         fixture = declaration_fixture.NativeDeclarationTests();fixture.setUp()
-        for scenario in list(range(13)) + list(range(20, 27)):
+        for scenario in list(range(18)) + list(range(20, 27)):
             with self.subTest(scenario=scenario):
                 fixture.setUp()
                 if scenario == 3:

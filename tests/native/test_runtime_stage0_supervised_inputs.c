@@ -143,11 +143,11 @@ int __wrap_fstatfs(int fd,struct statfs *s)
  assert(fd_live[fd]);memset(s,0,sizeof(*s));s->f_type=0xef53;return 0;}
 ssize_t __wrap_pread(int fd,void *p,size_t n,off_t offset)
 {
- assert((fd==13||fd==14)&&fd_live[fd]);if(scenario==6){errno=EIO;return -1;}
- size_t total=fd==13?448:task_size;if((size_t)offset==total)return 0;
+ assert((fd==13||fd==14)&&fd_live[fd]);if(scenario==6||scenario==13){if(scenario==13)boot=25000000000LL;errno=EIO;return -1;}
+ size_t total=fd==13?448:task_size;if((size_t)offset==total){if(scenario==15){boot=25000000000LL;*(char *)p=1;return 1;}return 0;}
  assert(offset>=0&&(size_t)offset+n<=total&&n<=32768);memcpy(p,(fd==13?installation:task)+offset,n);
- if(scenario==4)boot=25000000000LL;
- return (ssize_t)n;
+ if(scenario==4||scenario==14)boot=25000000000LL;
+ return (ssize_t)n-(scenario==14?1:0);
 }
 int __wrap_close(int fd)
 {
@@ -157,7 +157,8 @@ int __wrap_close(int fd)
  if(fd==50||fd==51)return 0;
  if(fd==3&&scanner){scanner=0;return 0;}
  if(fd==3||fd==4){++gate_closed;return 0;}
- assert(fd>=10&&fd<25&&fd_live[fd]);fd_live[fd]=0;assert(++fd_closed[fd]==1);return 0;
+ assert(fd>=10&&fd<25&&fd_live[fd]);fd_live[fd]=0;assert(++fd_closed[fd]==1);
+ if(scenario==16||scenario==17){boot=25000000000LL;if(scenario==16){errno=EINTR;return -1;}}return 0;
 }
 int __wrap_socketpair(int domain,int type,int protocol,int fds[2])
 {assert(domain==AF_UNIX&&type==(SOCK_SEQPACKET|SOCK_CLOEXEC|SOCK_NONBLOCK)&&!protocol&&scans==1&&!scanner);fds[0]=3;fds[1]=4;return 0;}
@@ -226,6 +227,12 @@ int main(int argc,char **argv)
   if(scenario>=10&&scenario<=12){
    assert(error.code==RNR_STAGE0_PREPARER_BOOTSTRAP&&opens==0&&guard_count==0);
    if(scenario==11)assert(error.bootstrap.code==RNR_STAGE0_BOOTSTRAP_CLOCK&&guard_namespace);
+  }
+  if(scenario>=13&&scenario<=17){
+   assert(error.launch.code==RNR_STAGE0_LAUNCH_CLOCK&&error.launch.final.code==RNR_STAGE0_CLOCK_CUTOFF);
+   assert(error.code==(scenario==16?RNR_STAGE0_PREPARER_CLEANUP:scenario==17?RNR_STAGE0_PREPARER_CLOCK:RNR_STAGE0_PREPARER_READ));
+   assert(error.system_errno==(scenario==13?EIO:scenario==16?EINTR:0));
+   if(scenario==16)assert(error.cleanup_count==6);
   }
   if(scenario==7)assert(opens==0); /* held inventory before first input open */
   int before=opens;struct rnr_stage0_preparer_error ordinary;

@@ -92,6 +92,7 @@ enum metadata_fault { DIR_WRITABLE=1, UID_CHANGED, GID_CHANGED, MODE_CHANGED,
     INODE_CHANGED, RDEV_CHANGED };
 static int metadata_fd,metadata_fault,metadata_after,stat_calls[32];
 static int fstat_error_fd,statx_error_fd,statfs_error_fd;
+static int late_after_error, error_seen, close_late;
 static void le(unsigned char *p,uint64_t n,int bytes)
 {for(int j=0;j<bytes;++j)p[j]=(unsigned char)(n>>(8*j));}
 static void reset(void)
@@ -121,6 +122,7 @@ static void reset(void)
     foreign=abandon_calls=abandon_saw_closes=bind_calls=bind_bad=0;
     metadata_fd=fstat_error_fd=statx_error_fd=statfs_error_fd=-1;
     metadata_fault=metadata_after=0;memset(stat_calls,0,sizeof(stat_calls));
+    late_after_error=error_seen=close_late=0;
 }
 static int close_total(void)
 {int n=0;for(int j=0;j<32;++j)n+=closes[j];return n;}
@@ -136,7 +138,7 @@ static int opened(int role)
     ++opens;
     if(held_mode)assert(bootstrap_calls==1);
     assert(held_mode?(prepare_calls==0 && held_admits==1):(prepare_calls==1 && admit_calls==1));
-    if(opens==open_bad_at){errno=ELOOP;return -1;}
+    if(opens==open_bad_at){error_seen=1;errno=ELOOP;return -1;}
     int fd=role+10;
     if(live[fd]) fd+=10;
     assert(fd<32 && !live[fd]);live[fd]=1;
@@ -165,7 +167,7 @@ static int fake_fstat(int fd,struct stat *s)
 {
     assert(fd>=10 && fd<25 && live[fd]);int role=fd%10;
     ++stat_calls[fd];
-    if(fd==fstat_error_fd){errno=EIO;return -1;}
+    if(fd==fstat_error_fd){error_seen=1;errno=EIO;return -1;}
     memset(s,0,sizeof(*s));s->st_dev=1;s->st_ino=100+role;
     s->st_mode=role<3?S_IFDIR|0755:S_IFREG|0444;s->st_nlink=1;
     s->st_size=role==3?(held_mode?448:128):task_size;
@@ -194,7 +196,7 @@ static int fake_statx(int fd,const char *path,int flags,unsigned int mask,struct
 {
     assert(live[fd] && !strcmp(path,""));
     assert(flags==(AT_EMPTY_PATH|AT_SYMLINK_NOFOLLOW) && mask==STATX_MNT_ID);
-    if(fd==statx_error_fd){errno=EIO;return -1;}
+    if(fd==statx_error_fd){error_seen=1;errno=EIO;return -1;}
     memset(s,0,sizeof(*s));s->stx_mask=statx_missing?0:STATX_MNT_ID;
     s->stx_mnt_id=1000+fd%10;
     if(named_mount_change && fd==20)++s->stx_mnt_id;
@@ -203,23 +205,25 @@ static int fake_statx(int fd,const char *path,int flags,unsigned int mask,struct
 static int fake_fstatfs(int fd,struct statfs *s)
 {
     assert(live[fd]);
-    if(fd==statfs_error_fd){errno=EIO;return -1;}
+    if(fd==statfs_error_fd){error_seen=1;errno=EIO;return -1;}
     memset(s,0,sizeof(*s));s->f_type=0xef53;return 0;
 }
 static ssize_t fake_pread(int fd,void *buf,size_t count,off_t offset)
 {
     assert(live[fd] && (fd==13 || fd==14) && count<=32768 && offset>=0);
     size_t n=fd==13?(held_mode?448:128):task_size;unsigned char *raw=fd==13?install_raw:task_raw;
-    if(read_errno){errno=read_errno;return -1;}
-    if((size_t)offset==n){if(extra_eof){*(char *)buf='x';return 1;}return 0;}
+    if(read_errno){error_seen=1;errno=read_errno;return -1;}
+    if((size_t)offset==n){if(extra_eof){error_seen=1;*(char *)buf='x';return 1;}return 0;}
     assert((size_t)offset+count<=n);memcpy(buf,raw+offset,count);
+    if(short_read)error_seen=1;
     return (ssize_t)count-(short_read?1:0);
 }
 static int fake_close(int fd)
 {
     assert(fd>=10 && fd<25 && live[fd]);
     ++closes[fd];live[fd]=0;assert(closes[fd]==1);
-    if(close_bad){errno=EINTR;return -1;}return 0;
+    if(close_late)error_seen=1;
+    if(close_bad){error_seen=1;errno=EINTR;return -1;}return 0;
 }
 static int fake_prepare(struct rnr_stage0_launch_error *e)
 {
@@ -257,7 +261,8 @@ static int fake_held_check(struct rnr_stage0_launch_error *e)
     if(!e){writer_fenced=1;return -1;}
     ++held_checks;memset(e,0,sizeof(*e));
     if(held_checks==reenter_check)attempt_abandon();
-    if(writer_fenced||held_checks==clock_bad_at){e->code=RNR_STAGE0_LAUNCH_CLOCK;return -1;}
+    if(writer_fenced||held_checks==clock_bad_at||(late_after_error&&error_seen)){
+        e->code=RNR_STAGE0_LAUNCH_CLOCK;e->system_errno=ETIMEDOUT;return -1;}
     return 0;
 }
 static int fake_held_admit(struct rnr_stage0_admission_error *e)
@@ -322,6 +327,34 @@ int main(void)
     reset();assert(rnr_stage0_prepare_held_inputs(&e)==0);close_bad=1;
     assert(rnr_stage0_abandon_preparation_inputs(&e)==-1 && e.cleanup_count==5);drained();
     before=close_total();assert(rnr_stage0_abandon_preparation_inputs(&e)==-1 && close_total()==before);
+
+    /* A syscall error and simultaneous expiry are separate retained facts.
+     * Inject only at the selected syscall, never an earlier close/check. */
+    for(int which=0;which<7;++which){
+        reset();late_after_error=1;
+        enum rnr_stage0_preparer_code primary;
+        int failure=EIO;
+        if(which==0){open_bad_at=1;primary=RNR_STAGE0_PREPARER_OPEN;failure=ELOOP;}
+        else if(which==1){fstat_error_fd=10;primary=RNR_STAGE0_PREPARER_METADATA;}
+        else if(which==2){statx_error_fd=10;primary=RNR_STAGE0_PREPARER_METADATA;}
+        else if(which==3){statfs_error_fd=10;primary=RNR_STAGE0_PREPARER_METADATA;}
+        else if(which==4){read_errno=EIO;primary=RNR_STAGE0_PREPARER_READ;}
+        else if(which==5){short_read=1;primary=RNR_STAGE0_PREPARER_READ;failure=0;}
+        else {extra_eof=1;primary=RNR_STAGE0_PREPARER_READ;failure=0;}
+        assert(rnr_stage0_prepare_held_inputs(&e)==-1 && e.code==primary && e.system_errno==failure);
+        assert(e.launch.code==RNR_STAGE0_LAUNCH_CLOCK && e.launch.system_errno==ETIMEDOUT);
+        assert(!held_binds);drained();
+    }
+    /* Named-recheck temporary close failure/late success still gets its required
+     * post-call observation, then the already-owned five inputs drain once. */
+    for(int fail=0;fail<2;++fail){
+        reset();late_after_error=1;close_late=1;close_bad=fail;
+        assert(rnr_stage0_prepare_held_inputs(&e)==-1);
+        assert(e.code==(fail?RNR_STAGE0_PREPARER_CLEANUP:RNR_STAGE0_PREPARER_CLOCK));
+        assert(e.system_errno==(fail?EINTR:ETIMEDOUT));
+        assert(e.launch.code==RNR_STAGE0_LAUNCH_CLOCK && e.launch.system_errno==ETIMEDOUT);
+        assert(e.cleanup_count==(fail?6U:0U));drained();
+    }
 
     /* Ordinary stages and cross-mode calls fence, never admit effects or recapture. */
     reset();assert(rnr_stage0_prepare_held_inputs(&e)==0);
