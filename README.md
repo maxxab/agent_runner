@@ -10,6 +10,9 @@ for the exact artifact, evidence and limits, and the
 The package is unpublished; automatic service startup and the original hardened
 runtime remain unavailable with their release gates open.
 
+For a simple explanation and a small example task with a verification checklist,
+use the [supervised test walkthrough](docs/supervised-test-walkthrough.md).
+
 The [architecture guide](docs/architecture.md) explains the complete supervised
 lifecycle with component, sequence and state diagrams, including normal-exit
 clearance and explicit recovery.

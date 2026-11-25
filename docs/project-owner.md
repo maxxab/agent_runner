@@ -7,6 +7,22 @@ advisory; the original hardened runtime and service are unavailable. The
 artifact, review, passing tests and authorized live qualification. A different
 project needs its own explicit opt-in, reviewed inputs and per-run approval;
 the original runtime gates remain open.
+
+## In simple words
+
+The first release runs **one task at a time with a person in charge**. You review
+the task and checks, approve that run in the terminal, stay available while it
+works, and review the changes afterward. For example: approve a small README
+update, let the runner make it and run the agreed checks, then read the changed
+text before accepting it. Another run needs another approval.
+
+It does not choose the next task or work through a list unattended overnight.
+That autonomous mode is deferred to v0.2. A successful command does not mean the
+changes have been accepted, committed, pushed or deployed.
+
+Start with the [step-by-step test walkthrough](supervised-test-walkthrough.md).
+It explains what to check and when to accept, review or improve a result.
+
 Owner chat first reads /home/faris/development-standards/skills/agent-runner/SKILL.md
 and canonical POLICY.md. Explicitly select one project and obtain its opt-in;
 reading the skill does not authorize installation into any other project.
@@ -90,9 +106,10 @@ runtime evidence in Git. No global runtime log or Store is created by this packa
 
 ## Supervised single-task path
 
-This path is separate from the original hardened runner. Only one synthetic
-project has undergone the live qualification described above; a different
-project requires its own explicit opt-in and authorization. It is designed for
+This path is separate from the original hardened runner. Live evidence covers
+the synthetic fixture and one approved User Admin documentation task in the
+release record; a different project requires its own explicit opt-in and
+authorization. It is designed for
 one foreground operator and trusted project code. Codex and project commands
 may access the operator's account, credentials, network and host files. The
 runner cannot guarantee that Codex or those commands will not retry, publish or
