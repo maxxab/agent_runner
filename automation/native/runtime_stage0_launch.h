@@ -67,6 +67,9 @@ struct rnr_stage0_launch_declaration;
  * routes here only to fail closed; no GO or operational continuation. */
 int rnr_stage0_supervised_inputs(struct rnr_stage0_preparer_error *);
 int rnr_stage0_check_admission_preparation(struct rnr_stage0_launch_error *);
+/* Comparison only against the already-captured original namespace; cannot
+ * import a clock, renew it, or establish authority from caller-supplied data. */
+int rnr_stage0_match_admission_time_namespace(uint64_t,uint64_t,struct rnr_stage0_launch_error *);
 int rnr_stage0_bind_admission_inputs(const struct rnr_stage0_installation *,
     const struct rnr_stage0_task *,const struct rnr_stage0_launch_declaration *,
     struct rnr_stage0_launch_error *);

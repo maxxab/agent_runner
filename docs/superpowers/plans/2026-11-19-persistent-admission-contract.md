@@ -11,7 +11,7 @@ Current contract map (latest direction wins over superseded proposal paragraphs)
 Revision B is implemented storage preparation ONLY, published5c423e7/97ae696, uninvoked.
 Candidate C defines direct PID1 framing, conditionally challenged/corrected by v5.
 Candidate D defines effective units plus permanent empty controller-demand anchor;
-its post-review Manager.UnitPath addition makes316total requests, not314/128.
+its historical316-request inventory is amended below to324, not314/128.
 Correction E defines single-claim view and one-way producer handover direction.
 Candidate F defines proposed9728-byte protected policy and per-project input locator.
 C/D/E/F are NOT full source release. Still freeze/challenge complete policy semantic
@@ -953,11 +953,22 @@ would exceed its8192-byte cap. Unrecognized signatures/property replies reject.
 The final draft table contains275Properties.Get calls per snapshot: manager1,
 service103, control57, workload57 and anchor57, with no duplicate object/interface/property
 triples (protected candidate-d-flat-inventory.json). The first unit lookup adds1.
+
+**25 November 2026 amendment:** The user authorized four initial and four final
+`.Unit.Wants` reads after review found this dependency missing from the fixed
+inventory. The initial property inventory is now 279 reads, plus the first lookup;
+the final sweep is 44 reads and the total is 324, still under the original
+512-serial cap without reset. The expected exact `Wants` sets for all four units
+must be established from the installed unit semantics and selected manager before
+acceptance; do not infer empty sets merely from this amendment. This supplements,
+rather than replaces, filesystem inventory of `.wants` directories. The older
+275/40/316 figures below and in earlier evidence are historical.
+
 The draft128serial cap is INSUFFICIENT and superseded by512totalserials, no resets.
 Immediately before durable claim, repeat GetUnitByPID and .Unit Id/LoadState/
 ActiveState/SubState/InvocationID/Job on all4objects, .Service MainPID/ControlPID,
 type-specific Slice/ControlGroup/ControlGroupId on all4objects, and Manager.UnitPath:
-40additional requests,316total including first lookup/snapshot. Every reply must match retained
+40additional requests before the Wants amendment above. Every reply must match retained
 originals and final expected state. Recheck held kernel/path/clock observations
 as well; no new root/pidfd/object substitutes. This is finite arithmetic, not
 selected-manager compatibility or an atomic manager snapshot. Trusted exclusive
@@ -1118,7 +1129,8 @@ and physical mount/producer qualification remain OPEN. No view or runtime create
 
 The unit table also requires Manager.UnitPath, exact ORDER matching task and
 protected policy; bounded sets are wrong for search precedence. This raises the
-final draft inventory to275snapshot+1lookup+40final=316requests, within512. Read and
+historical draft to316requests; the Wants amendment gives279snapshot+1lookup+44final=324,
+within512. Read and
 retain relevant path/overlay inventories; no optional fallback to default UnitPath.
 
 The following fixes the native policy representation without embedding the full
@@ -1440,7 +1452,7 @@ closing the recorded producer/fork/terminal, arm-token, helper, full-DM-operand,
 namespace/view and typed-identity findings. It is the implementation contract;
 source proofs, integrated review and physical acceptance remain required. This is
 not source release, positive-wrapper acceptance or operational acceptance.
-It retains C/D's direct PID1 transport and316requests, F's exact9728-byte policy,
+It retains C/D's direct PID1 transport and amended324 requests, F's exact9728-byte policy,
 original T0/setup15/positive44/negative60–90, separate project opt-in/store, both
 emergency phases, and the user-authorized observer-lifetime amendment above.
 It supersedes A's unimplemented64x256 intent proposal ONLY where explicitly stated.
@@ -1518,13 +1530,13 @@ unit creation/repair or controller enabling precedes this admission. Per-project
 config/enrollment/install identity is mandatory for every consumer.
 
 C/D then authenticate root/PID1 private peer and actual effective units/kernel
-hierarchy with the unchanged closed316-request matrix, actual manager build and
+hierarchy with the amended closed324-request matrix, actual manager build and
 full overlay/UnitPath inventory. Actual service MainPID is original keeper, all
 original PID/start/exe/namespace/root facts correlate. Kernel cgroup mount has
 canonical namespace-root `/` at `/sys/fs/cgroup`; actual service/keeper path,
 ControlGroup/ControlGroupId and held kernel identities match. Read exact controls,
 limits, subtree bits, singleton memberships, frozen workload/empty active anchor.
-No manager-echo/nonzero-digest substitute; final40-request/path/identity sweep
+No manager-echo/nonzero-digest substitute; final44-request/path/identity sweep
 immediately precedes the initial latch/claim. Exclusive maintenance persists.
 
 ### G2: finite original-keeper transport

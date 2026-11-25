@@ -15,7 +15,7 @@ agent-runner = "automation.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["automation", "tools"]
-artifacts = ["automation/native/*.c", "automation/native/*.h"]
+artifacts = ["automation/native/*.c", "automation/native/*.h", "automation/native/libmd/*"]
 
 [tool.hatch.build.targets.sdist]
 include = ["automation", "tools", "tests", "scripts", "docs", "pyproject.toml", "README.md", "NOTICE.md", "CHANGELOG.md", "TROUBLESHOOTING.md", "AGENTS.md"]

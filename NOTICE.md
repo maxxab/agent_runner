@@ -13,3 +13,9 @@ Modkit Events and Workers informed packaging/consumer verification conventions;
 no modkit implementation, dependencies or functionality were copied. The optional
 Codex SDK/runtime and host programs are separate dependencies with their own terms;
 the SDK/runtime is not vendored or installed by this package.
+
+The native SHA-2 implementation and headers in automation/native/libmd are from
+libmd 1.1.0 (Aaron D. Gifford and Guillem Jover). Their copyright and BSD license
+conditions and disclaimers are retained in that directory's source headers and
+COPYING file. The retained upstream source and package provenance are recorded in
+the project's protected release evidence.

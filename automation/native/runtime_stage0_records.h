@@ -69,7 +69,8 @@ struct rnr_stage0_policy {
     size_t unit_path_count;
 };
 /* Exact9728 bytes, fail-clear, no input/output overlap. Clearing an overlapping
- * output necessarily changes those input bytes. No runtime caller is enabled. */
+ * output necessarily changes those input bytes. The held-input reader compares
+ * protected bytes and pins; decoding itself is not execution authority. */
 int rnr_stage0_decode_policy(const unsigned char *, size_t, struct rnr_stage0_policy *);
 struct rnr_stage0_task {
     unsigned char task_id[16];

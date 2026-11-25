@@ -124,6 +124,7 @@ static jmp_buf exited;
 static int reader_fail, reader_calls, abandoned, bind_bad;
 static int side,attempts,sockets,signals,admitted,gate_closes,pidfd_calls,sends,receives;
 static int exit_status,wait_calls,armed_signal,parent_checks,option_mask,readback_mask;
+static int buffer_set_mask,buffer_get_mask;
 static int received_closes[4];
 static uid_t fixture_uid(void){return gate_fault==58?1:0;}
 static uid_t fixture_euid(void){return gate_fault==59?1:0;}
@@ -138,6 +139,7 @@ static void gate_reset(int child)
     status_fd=status_reads=signal_calls=disposition_changed=0;thread_count=1;
     atomic_store(&fork_reserved,0);fork_parent_gate=-1;fork_parent_pid=0;fork_parent_clock=NULL;fork_parent_result=NULL;boot=1000000000000LL;wall=1700000000000000000LL;owner=thread=100;side=child;attempts=sockets=signals=admitted=gate_closes=0;
     pidfd_calls=sends=receives=gate_fault=exit_status=wait_calls=armed_signal=parent_checks=option_mask=readback_mask=0;
+    buffer_set_mask=buffer_get_mask=0;
     memset(received_closes,0,sizeof(received_closes));
 }
 static int gate_socketpair(int domain,int type,int protocol,int fds[2])
@@ -148,7 +150,15 @@ static int gate_socketpair(int domain,int type,int protocol,int fds[2])
 }
 static int __attribute__((unused)) gate_setsockopt(int fd,int level,int opt,const void *v,socklen_t n)
 {
-    assert(attempts==0&&(fd==3||fd==4)&&level==SOL_SOCKET&&opt==SO_PASSCRED);
+    assert(attempts==0&&(fd==3||fd==4)&&level==SOL_SOCKET);
+    if(opt==SO_SNDBUF||opt==SO_RCVBUF){
+        int index=(fd-3)*2+(opt==SO_RCVBUF),bit=1<<index;
+        assert(n==sizeof(int)&&*(const int *)v==131072&&!(buffer_set_mask&bit));
+        buffer_set_mask|=bit;
+        if(gate_fault==70+index||gate_fault==86){if(gate_fault==86)boot+=15000000000LL;errno=EPERM;return -1;}
+        return 0;
+    }
+    assert(opt==SO_PASSCRED);
     assert(n==sizeof(int)&&*(const int *)v==1);int bit=1<<(fd-3);
     assert(!(option_mask&bit));option_mask|=bit;
     if(gate_fault==(fd==3?50:51)){errno=EPERM;return -1;}
@@ -158,7 +168,16 @@ static int __attribute__((unused)) gate_setsockopt(int fd,int level,int opt,cons
 }
 static int __attribute__((unused)) gate_getsockopt(int fd,int level,int opt,void *v,socklen_t *n)
 {
-    assert(attempts==0&&(fd==3||fd==4)&&level==SOL_SOCKET&&opt==SO_PASSCRED);
+    assert(attempts==0&&(fd==3||fd==4)&&level==SOL_SOCKET);
+    if(opt==SO_SNDBUF||opt==SO_RCVBUF){
+        int index=(fd-3)*2+(opt==SO_RCVBUF),bit=1<<index;
+        assert(*n==sizeof(int)&&(buffer_set_mask&bit)&&!(buffer_get_mask&bit));buffer_get_mask|=bit;
+        if(gate_fault==74+index||gate_fault==87){if(gate_fault==87)boot+=15000000000LL;errno=EIO;return -1;}
+        *(int *)v=gate_fault==78+index?131072:262144;
+        if(gate_fault==82+index)*n=1;
+        return 0;
+    }
+    assert(opt==SO_PASSCRED);
     assert(*n==sizeof(int));int bit=1<<(fd-3);assert(option_mask&bit);readback_mask|=bit;
     if(gate_fault==(fd==3?54:55)){errno=EIO;return -1;}
     *(int *)v=gate_fault==(fd==3?52:53)?0:1;
@@ -177,6 +196,7 @@ static pid_t gate_fork(void)
 {
     assert(sockets==1&&signals==1);
     assert(option_mask==(fork_admission_route?3:0)&&readback_mask==(fork_admission_route?3:0));++attempts;
+    assert(buffer_set_mask==(fork_admission_route?15:0)&&buffer_get_mask==(fork_admission_route?15:0));
     if(gate_fault==5){errno=EAGAIN;return -1;}
     if(side){owner=thread=101;if(gate_fault==26)--boot;if(gate_fault==27)--wall;return 0;}return 101;
 }
@@ -358,6 +378,13 @@ int main(void)
         assert(rnr_stage0_clock_fork_admission(&s,&result,&e)==-1&&attempts==0);
         assert(e.system_errno==(bad==64?EPERM:EIO));
         assert(result.admission_clock.code==RNR_STAGE0_CLOCK_CUTOFF);
+    }
+    for(int bad=70;bad<=87;++bad){
+        gate_reset(0);s=prepared();gate_fault=bad;
+        assert(rnr_stage0_clock_fork_admission(&s,&result,&e)==-1);
+        assert(attempts==0&&result.child_pid==0&&receives==0&&gate_closes==2);
+        if(bad>=86){assert(e.system_errno==(bad==86?EPERM:EIO));
+            assert(result.admission_clock.code==RNR_STAGE0_CLOCK_CUTOFF);}
     }
     gate_reset(0);s=prepared();gate_fault=69;
     assert(rnr_stage0_clock_fork_admission(&s,&result,&e)==-1);

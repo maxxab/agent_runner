@@ -22,7 +22,8 @@ def main():
         assert 'automation/control_runtime_root_entry.py' in names
         assert 'tools/runner_idle_notifications.py' in names
         native = [n for n in names if n.startswith('automation/native/')]
-        assert len(native) == 17, native
+        assert len(native) == 24, native
+        assert all('automation/native/libmd/'+name in native for name in ('sha2.c','sha2.h','local-link.h','config.h','COPYING'))
         assert not any(n.endswith(('.so', '.o', '.pyc')) for n in names)
         assert not any('/.env' in n or '/state/' in n for n in names)
     with tempfile.TemporaryDirectory(prefix='agent-runner-consumers-') as temporary:
@@ -123,10 +124,12 @@ import automation.control_runtime_operational, tools.runner_idle_notifications
                               'import automation; print(automation.__path__[0])']).strip()) / 'native'
         common = ['runtime_stage0_launch.c','runtime_stage0_clock.c','runtime_stage0_admission.c']
         for private, files in ((False,['runtime_stage0_validate_main.c']+common),
-                               (True,['runtime_stage0_qualification_main.c','runtime_stage0_preparer.c','runtime_stage0_records.c','runtime_stage0_persistence.c','runtime_stage0_bootstrap.c']+common)):
+                               (True,['runtime_stage0_qualification_main.c','runtime_stage0_preparer.c','runtime_stage0_records.c','runtime_stage0_persistence.c','runtime_stage0_bootstrap.c','runtime_stage0_project_view.c']+common)):
             command = [compiler,'-std=c11','-Wall','-Wextra','-Werror','-O2']
-            if private: command += ['-DRNR_STAGE0_PRIVATE_QUALIFICATION=1']
-            run(command + [installed/name for name in files] + ['-o',root/('private' if private else 'validate')])
+            if private: command += ['-DRNR_STAGE0_PRIVATE_QUALIFICATION=1','-I',installed/'libmd']
+            sources = [installed/name for name in files]
+            if private: sources.append(installed/'libmd/sha2.c')
+            run(command + sources + ['-o',root/('private' if private else 'validate')])
         run([compiler,'-std=c11','-Wall','-Wextra','-Werror','-O2',installed/'runtime_guardian.c','-o',root/'guardian'])
         # Uninstall one project's package; other remains functional, owner config retained.
         run([uv,'pip','uninstall','--python',consumers[0][2],'agent-runner'])

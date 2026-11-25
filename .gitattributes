@@ -1,0 +1,2 @@
+# Preserve the verified upstream libmd source bytes, including its whitespace.
+automation/native/libmd/sha2.[ch] -whitespace

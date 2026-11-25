@@ -4,6 +4,7 @@
 #include "runtime_stage0_launch.h"
 #ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
 #include "runtime_stage0_bootstrap.h"
+#include "runtime_stage0_project_view.h"
 #endif
 enum rnr_stage0_preparer_code {
     RNR_STAGE0_PREPARER_OK, RNR_STAGE0_PREPARER_ATTEMPT,
@@ -23,7 +24,7 @@ struct rnr_stage0_preparer_error {
     enum rnr_stage0_preparer_code code;
     int system_errno, unadopted_fd;
     unsigned int cleanup_count;
-    struct { int fd, system_errno; } cleanup_errors[80];
+    struct { int fd, system_errno; } cleanup_errors[96];
     int cleanup_overflow;
     enum rnr_stage0_claim_disposition claim_disposition;
     int mkdir_errno;
@@ -31,6 +32,7 @@ struct rnr_stage0_preparer_error {
     struct rnr_stage0_admission_error admission;
 #ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
     struct rnr_stage0_bootstrap_error bootstrap;
+    struct rnr_stage0_project_error project,project_cleanup;
 #endif
 };
 /* ONE attempt: captures original operational T0 first, admits ONLY0..2, reads
@@ -44,7 +46,8 @@ struct rnr_stage0_preparer_error {
  */
 int rnr_stage0_prepare_inputs(struct rnr_stage0_preparer_error *);
 #ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
-/* Fixed launch child only: exact held inventory, v2 installation/v3 task DATA.
+/* Fixed launch child only: exact held inventory, v2 installation/v3 task DATA,
+ * protected policy and reference-byte correlation under the original clock.
  * Shares the one attempt; never publishes ordinary inputs or authorizes effects.
  * Caller must abandon inputs/gate and exit125 on either result. */
 int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *);

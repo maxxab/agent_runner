@@ -473,6 +473,22 @@ static int admission_passcred(int fd,struct rnr_stage0_clock *state,
     }
     return admission_sample_after(state,result,error);
 }
+static int admission_buffer(int fd,int option,struct rnr_stage0_clock *state,
+                            struct rnr_stage0_fork_result *result,
+                            struct rnr_stage0_clock_error *error)
+{
+    int requested=131072,observed=0;socklen_t length=sizeof(observed);
+    if(rnr_stage0_clock_check_setup(state,error)!=0)return -1;
+    int value=setsockopt(fd,SOL_SOCKET,option,&requested,sizeof(requested));
+    int failure=value<0?errno:0;
+    if(value!=0)reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    if(admission_sample_after(state,result,error)!=0)return -1;
+    value=getsockopt(fd,SOL_SOCKET,option,&observed,&length);
+    failure=value<0?errno:0;
+    if(value!=0||length!=sizeof(observed)||observed!=262144)
+        reject_clock(error,RNR_STAGE0_CLOCK_GATE,failure);
+    return admission_sample_after(state,result,error);
+}
 static int admission_armed(int fd,struct rnr_stage0_clock *state,
                            struct rnr_stage0_clock_error *error)
 {
@@ -638,7 +654,11 @@ static int fork_clock(struct rnr_stage0_clock *state,
     }
     if(rnr_stage0_clock_check_setup(state,error)!=0)goto failed;
     if(admission_route&&(admission_passcred(channels[0],state,result,error)!=0||
-                         admission_passcred(channels[1],state,result,error)!=0))goto failed;
+                         admission_passcred(channels[1],state,result,error)!=0||
+                         admission_buffer(channels[0],SO_SNDBUF,state,result,error)!=0||
+                         admission_buffer(channels[0],SO_RCVBUF,state,result,error)!=0||
+                         admission_buffer(channels[1],SO_SNDBUF,state,result,error)!=0||
+                         admission_buffer(channels[1],SO_RCVBUF,state,result,error)!=0))goto failed;
     pid_t parent=state->pid;
     result->fork_entered=1;
     pid_t child=fork();

@@ -4,6 +4,9 @@
 #define _GNU_SOURCE
 #include "runtime_stage0_preparer.h"
 #include "runtime_stage0_records.h"
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+#include "libmd/sha2.h"
+#endif
 #include <errno.h>
 #include <fcntl.h>
 #include <stdatomic.h>
@@ -23,6 +26,7 @@
 #include <linux/dm-ioctl.h>
 #include <stddef.h>
 #include <linux/fs.h>
+#include <linux/magic.h>
 #include <sys/sysmacros.h>
 #include <sys/ioctl.h>
 #include <sys/mount.h>
@@ -30,6 +34,9 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/statfs.h>
+#include <sys/xattr.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 
@@ -92,7 +99,34 @@ struct preparer_owner {
     struct fixed_binding binds[14];
     struct fixed_object optional[5];
     int optional_present[5];
-    int fds[5];
+    int fds[11];
+    int project_executables[3]; /* borrowed from the original project view */
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    int executable_fds[8];
+    struct stat executable_identities[8];
+    uint64_t executable_mounts[8];
+    int executables_initialized;
+    char native_hash[65];
+    int unit_fds[4],units_initialized;
+    struct stat unit_identities[6];
+    uint64_t unit_mounts[6];
+    char unit_paths[4][128];
+    struct stat search_identities[32];
+    uint64_t search_mounts[32];
+    unsigned char search_present[32];
+    int manager_fd,manager_initialized;
+    unsigned int manager_receives,manager_polls,manager_serial;
+    unsigned char manager_invocations[4][16];
+    uint64_t manager_cgroup_ids[4]; /* observations; kernel correlation remains mandatory */
+    int cgroup_fds[8],cgroup_initialized;
+    struct stat cgroup_identities[8];
+    uint64_t cgroup_mounts[8];
+    struct stat manager_identities[3];
+    uint64_t manager_mounts[3];
+#endif
+    int project_route,project_held;
+    pid_t original_keeper;
+    char project[65];
     int view_fds[22];
     unsigned int view_count;
     struct stat view_identities[22];
@@ -139,10 +173,14 @@ struct preparer_owner {
     char work_name[44];
     enum rnr_stage0_claim_disposition claim_disposition;
     int mkdir_errno;
-    struct stat identities[5];
-    uint64_t mounts[5];
+    struct stat identities[11];
+    uint64_t mounts[11];
     long root_filesystem;
     unsigned char installation_raw[448], task_raw[65600];
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    unsigned char policy_raw[9728], policy_chunk[32768];
+    struct rnr_stage0_policy policy;
+#endif
     struct rnr_stage0_installation installation;
     struct rnr_stage0_task task;
     struct rnr_stage0_preparer_error original_error, abandon_error;
@@ -256,8 +294,8 @@ static void close_input(int *slot,struct rnr_stage0_preparer_error *e)
     *slot=-1;
     if(fd>=0 && close(fd)!=0){
         int failure=errno;
-        /* Fixed binds78 persistent +two serialized walk temporaries. */
-        if(e->cleanup_count<80){
+        /* G5 reserves 96 preparation cleanup entries. */
+        if(e->cleanup_count<96){
             e->cleanup_errors[e->cleanup_count].fd=fd;
             e->cleanup_errors[e->cleanup_count++].system_errno=failure;
         }else e->cleanup_overflow=1;
@@ -267,6 +305,15 @@ static void close_input(int *slot,struct rnr_stage0_preparer_error *e)
 }
 static void drain_inputs(struct rnr_stage0_preparer_error *e)
 {
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    if(input_owner.cgroup_initialized)
+        for(int role=7;role>=0;--role)close_input(&input_owner.cgroup_fds[role],e);
+    if(input_owner.manager_initialized)close_input(&input_owner.manager_fd,e);
+    if(input_owner.units_initialized)
+        for(int role=3;role>=0;--role)close_input(&input_owner.unit_fds[role],e);
+    if(input_owner.executables_initialized)
+        for(int role=7;role>=0;--role)close_input(&input_owner.executable_fds[role],e);
+#endif
     if(input_owner.final_initialized)
         for(int i=5;i>=0;--i)close_input(&input_owner.final_fds[i],e);
     if(input_owner.binds_initialized){
@@ -289,7 +336,17 @@ static void drain_inputs(struct rnr_stage0_preparer_error *e)
         unsigned int role=--input_owner.view_count;
         close_input(&input_owner.view_fds[role],e);
     }
-    for(int role=4;role>=0;--role)close_input(&input_owner.fds[role],e);
+    for(int role=input_owner.project_route?10:4;role>=0;--role){
+        if(role==0&&input_owner.project_route)input_owner.fds[0]=-1; /* borrowed */
+        else close_input(&input_owner.fds[role],e);
+    }
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+    if(input_owner.project_held){
+        input_owner.project_held=0;
+        if(rnr_stage0_abandon_project_view(&e->project_cleanup)!=0)
+            reject_input(e,RNR_STAGE0_PREPARER_CLEANUP,e->project_cleanup.system_errno);
+    }
+#endif
 }
 
 static int open_input(int parent,const char *name,int directory,int *slot,
@@ -347,8 +404,9 @@ static int capture_input(int role,struct rnr_stage0_preparer_error *e)
     struct stat *s=&input_owner.identities[role];int fd=input_owner.fds[role];
     if(stat_input(fd,s,e)!=0 || mount_input(fd,&input_owner.mounts[role],e)!=0)return -1;
     if(s->st_uid!=0 || s->st_gid!=0 ||
-       (role<3?(!S_ISDIR(s->st_mode)||(s->st_mode&022)):
-        (!S_ISREG(s->st_mode)||(s->st_mode&07777)!=0444||s->st_nlink!=1))){
+       (role<3||role==5||role==6?(!S_ISDIR(s->st_mode)||(s->st_mode&022)||
+            (role==6&&(s->st_mode&07777)!=0700)):
+        (!S_ISREG(s->st_mode)||(s->st_mode&07777)!=(input_owner.project_route?0400:0444)||s->st_nlink!=1))){
         reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);return -1;
     }
     if(role==0 && filesystem_input(fd,&input_owner.root_filesystem,e)!=0)return -1;
@@ -385,11 +443,13 @@ static int read_input(int role,unsigned char *bytes,size_t minimum,size_t maximu
 }
 static int recheck_input(int role,struct rnr_stage0_preparer_error *e)
 {
-    static const char *const names[]={"/","etc","rnr","installation.bin","task.bin"};
-    const int parents[]={-1,0,1,2,2};
+    const char *const names[]={"/","etc","rnr","installation.bin","task.bin","projects",input_owner.project,
+        "admission-policy.bin","configuration.json","enrollment.json","startup-manifest.json"};
+    const int parents[]={-1,0,1,input_owner.project_route?6:2,input_owner.project_route?6:2,2,5,6,6,6,6};
+    int directory=role<3||role==5||role==6;
     int fd=input_owner.fds[role],temporary=-1;struct stat held,named;uint64_t mount;
     if(stat_input(fd,&held,e)!=0 || mount_input(fd,&mount,e)!=0)return -1;
-    if(!same_input(&held,&input_owner.identities[role],role<3) || mount!=input_owner.mounts[role]){
+    if(!same_input(&held,&input_owner.identities[role],directory) || mount!=input_owner.mounts[role]){
         reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
     }
     int postroot=input_owner.root_steps[1].entered && input_owner.root_steps[1].returned && input_owner.root_steps[1].result==0;
@@ -398,9 +458,9 @@ static int recheck_input(int role,struct rnr_stage0_preparer_error *e)
         if(filesystem_input(fd,&fs,e)!=0)return -1;
         if(fs!=input_owner.root_filesystem){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
     }
-    if(open_input(parent,role==0&&postroot?".":names[role],role<3,&temporary,e)!=0)goto done;
+    if(open_input(parent,role==0&&postroot?".":names[role],directory,&temporary,e)!=0)goto done;
     if(stat_input(temporary,&named,e)!=0 || mount_input(temporary,&mount,e)!=0)goto done;
-    if(!same_input(&named,&input_owner.identities[role],role<3) || mount!=input_owner.mounts[role]){
+    if(!same_input(&named,&input_owner.identities[role],directory) || mount!=input_owner.mounts[role]){
         reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;
     }
     if(role==0){
@@ -416,20 +476,1184 @@ done:
 }
 static int read_fixed_inputs(size_t installation_size,struct rnr_stage0_preparer_error *e)
 {
-    if(open_input(-1,"/",1,&input_owner.fds[0],e)!=0 || capture_input(0,e)!=0)return -1;
+    if(!input_owner.project_route&&open_input(-1,"/",1,&input_owner.fds[0],e)!=0)return -1;
+    if(capture_input(0,e)!=0)return -1;
     if(open_input(input_owner.fds[0],"etc",1,&input_owner.fds[1],e)!=0 || capture_input(1,e)!=0)return -1;
     if(open_input(input_owner.fds[1],"rnr",1,&input_owner.fds[2],e)!=0 || capture_input(2,e)!=0)return -1;
-    if(open_input(input_owner.fds[2],"installation.bin",0,&input_owner.fds[3],e)!=0 ||
+    int parent=input_owner.fds[2];
+    if(input_owner.project_route){
+        if(open_input(parent,"projects",1,&input_owner.fds[5],e)!=0||capture_input(5,e)!=0||
+           open_input(input_owner.fds[5],input_owner.project,1,&input_owner.fds[6],e)!=0||capture_input(6,e)!=0)return -1;
+        parent=input_owner.fds[6];
+    }
+    if(open_input(parent,"installation.bin",0,&input_owner.fds[3],e)!=0 ||
        capture_input(3,e)!=0 || read_input(3,input_owner.installation_raw,installation_size,installation_size,e)!=0)return -1;
-    if(open_input(input_owner.fds[2],"task.bin",0,&input_owner.fds[4],e)!=0 ||
+    if(open_input(parent,"task.bin",0,&input_owner.fds[4],e)!=0 ||
        capture_input(4,e)!=0 || read_input(4,input_owner.task_raw,65,65600,e)!=0)return -1;
     if(live_input(e)!=0)return -1;
-    if(rnr_stage0_decode_installation(input_owner.installation_raw,installation_size,&input_owner.installation)!=0 ||
-       rnr_stage0_decode_task(input_owner.task_raw,(size_t)input_owner.identities[4].st_size,&input_owner.task)!=0){
-        reject_input(e,RNR_STAGE0_PREPARER_DECODE,0);return -1;
+    if(rnr_stage0_decode_installation(input_owner.installation_raw,installation_size,&input_owner.installation)!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_DECODE,0);
+    if(live_input(e)!=0)return -1;
+    if(rnr_stage0_decode_task(input_owner.task_raw,(size_t)input_owner.identities[4].st_size,&input_owner.task)!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_DECODE,0);
+    return live_input(e);
+}
+#ifdef RNR_STAGE0_PRIVATE_QUALIFICATION
+/* Fixed protected policy/reference files. Digests cover the bytes actually
+ * read under the original clock; these checks do not establish installer trust. */
+static int digest_policy_bytes(const unsigned char *bytes,size_t size,unsigned char out[32],
+                               struct rnr_stage0_preparer_error *e)
+{
+    SHA2_CTX context;
+    if(live_input(e)!=0)return -1;
+    SHA256Init(&context);
+    if(live_input(e)!=0)return -1;
+    for(size_t offset=0;offset<size;){
+        size_t n=size-offset;if(n>32768)n=32768;
+        if(live_input(e)!=0)return -1;
+        SHA256Update(&context,bytes+offset,n);
+        if(live_input(e)!=0)return -1;
+        offset+=n;
+    }
+    if(live_input(e)!=0)return -1;
+    SHA256Final(out,&context);
+    return live_input(e);
+}
+static int digest_file(int fd,const struct stat *identity,uint64_t original_mount,
+                       size_t length,const unsigned char expected[32],
+                       struct rnr_stage0_preparer_error *e)
+{
+    struct stat after;uint64_t mount;unsigned char digest[32],extra;
+    SHA2_CTX context;
+    if(identity->st_size!=(off_t)length){reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);return -1;}
+    if(live_input(e)!=0)return -1;
+    SHA256Init(&context);
+    if(live_input(e)!=0)return -1;
+    for(size_t offset=0;offset<length;){
+        size_t n=length-offset;if(n>sizeof(input_owner.policy_chunk))n=sizeof(input_owner.policy_chunk);
+        if(live_input(e)!=0)return -1;
+        ssize_t got=pread(fd,input_owner.policy_chunk,n,(off_t)offset);
+        if(got<0)return failed_input(e,RNR_STAGE0_PREPARER_READ,errno);
+        if((size_t)got!=n)return failed_input(e,RNR_STAGE0_PREPARER_READ,0);
+        if(live_input(e)!=0)return -1;
+        SHA256Update(&context,input_owner.policy_chunk,n);
+        if(live_input(e)!=0)return -1;
+        offset+=n;
+    }
+    if(live_input(e)!=0)return -1;
+    ssize_t got=pread(fd,&extra,1,(off_t)length);
+    if(got<0)return failed_input(e,RNR_STAGE0_PREPARER_READ,errno);
+    if(got!=0)return failed_input(e,RNR_STAGE0_PREPARER_READ,0);
+    if(live_input(e)!=0)return -1;
+    SHA256Final(digest,&context);
+    if(live_input(e)!=0)return -1;
+    if(stat_input(fd,&after,e)!=0||mount_input(fd,&mount,e)!=0)return -1;
+    if(!same_input(&after,identity,0)||mount!=original_mount||memcmp(digest,expected,32)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
     }
     return 0;
 }
+static int read_project_policy(struct rnr_stage0_preparer_error *e)
+{
+    static const char *const names[]={"admission-policy.bin","configuration.json","enrollment.json","startup-manifest.json"};
+    unsigned char digest[32];
+    if(open_input(input_owner.fds[6],names[0],0,&input_owner.fds[7],e)!=0||capture_input(7,e)!=0||
+       read_input(7,input_owner.policy_raw,9728,9728,e)!=0||
+       digest_policy_bytes(input_owner.policy_raw,9728,digest,e)!=0)return -1;
+    if(memcmp(digest,input_owner.installation.unit_policy_digest,32)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+    }
+    if(live_input(e)!=0)return -1;
+    if(rnr_stage0_decode_policy(input_owner.policy_raw,9728,&input_owner.policy)!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_DECODE,0);
+    if(live_input(e)!=0)return -1;
+    const struct rnr_stage0_policy *p=&input_owner.policy;
+    const struct rnr_stage0_installation *i=&input_owner.installation;
+    if(memcmp(p->project_id,i->project_id,32)||memcmp(p->store_instance,i->store_instance,16)||
+       memcmp(p->boot_id,i->boot_id,37)||memcmp(p->configuration_digest,i->configuration_digest,32)||
+       memcmp(p->enrollment_digest,i->enrollment_digest,32)||memcmp(p->startup_digest,i->startup_digest,32)||
+       memcmp(p->execution_root,i->execution_root,32)||memcmp(p->asset_root,i->asset_root,32)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+    }
+    const size_t lengths[]={p->configuration_bytes,p->enrollment_bytes,p->startup_bytes};
+    const unsigned char *const pins[]={p->configuration_digest,p->enrollment_digest,p->startup_digest};
+    for(int n=0;n<3;++n){int role=8+n;
+        if(open_input(input_owner.fds[6],names[n+1],0,&input_owner.fds[role],e)!=0||
+           capture_input(role,e)!=0||digest_file(input_owner.fds[role],&input_owner.identities[role],input_owner.mounts[role],lengths[n],pins[n],e)!=0)return -1;
+    }
+    return 0;
+}
+/* The original process handles are borrowed from project_view. Only the
+ * fixed installed ancestry is newly owned here; neither is a trust source. */
+static int executable_profile(int fd,int directory,struct stat *s,uint64_t *mount,
+                              struct rnr_stage0_preparer_error *e)
+{
+    if(stat_input(fd,s,e)!=0||mount_input(fd,mount,e)!=0)return -1;
+    if(s->st_uid||s->st_gid||(s->st_mode&022)||
+       (directory?!S_ISDIR(s->st_mode):(!S_ISREG(s->st_mode)||(s->st_mode&06000)||!(s->st_mode&0111)||!s->st_nlink))){
+        reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);return -1;
+    }
+    if(!directory){
+        if(live_input(e)!=0)return -1;
+        ssize_t n=fgetxattr(fd,"security.capability",NULL,0);int failure=n<0?errno:0;
+        if(n>=0||failure!=ENODATA){
+            return failed_input(e,RNR_STAGE0_PREPARER_METADATA,failure);
+        }
+        if(live_input(e)!=0)return -1;
+    }
+    return 0;
+}
+static int executable_header(int fd,struct rnr_stage0_preparer_error *e)
+{
+    Elf64_Ehdr h;
+    if(live_input(e)!=0)return -1;
+    ssize_t n=pread(fd,&h,sizeof(h),0);
+    if(n<0)return failed_input(e,RNR_STAGE0_PREPARER_READ,errno);
+    if(n!=(ssize_t)sizeof(h))return failed_input(e,RNR_STAGE0_PREPARER_READ,0);
+    if(live_input(e)!=0)return -1;
+    if(memcmp(h.e_ident,ELFMAG,SELFMAG)||h.e_ident[EI_CLASS]!=ELFCLASS64||h.e_ident[EI_DATA]!=ELFDATA2LSB||
+       h.e_ident[EI_VERSION]!=EV_CURRENT||(h.e_type!=ET_EXEC&&h.e_type!=ET_DYN)||
+       h.e_machine!=EM_X86_64||h.e_version!=EV_CURRENT||h.e_ehsize!=sizeof(h)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+    }
+    return 0;
+}
+static int executable_path(int role,int *parent,const char **name)
+{
+    static const int parents[8]={-1,0,1,2,3,4,1,6};
+    const char *names[8]={"usr","lib","rnr","bootstraps",input_owner.native_hash,"rnr-stage0","systemd","systemd"};
+    if(role<0||role>=8)return -1;
+    *parent=parents[role]<0?input_owner.fds[0]:input_owner.executable_fds[parents[role]];
+    *name=names[role];return 0;
+}
+static int executable_recheck(struct rnr_stage0_preparer_error *e)
+{
+    for(int role=0;role<8;++role){
+        int parent,temporary=-1,directory=role!=5&&role!=7;const char *name;
+        struct stat s;uint64_t mount;
+        if(executable_profile(input_owner.executable_fds[role],directory,&s,&mount,e)!=0)return -1;
+        if(!same_input(&s,&input_owner.executable_identities[role],directory)||mount!=input_owner.executable_mounts[role]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+        }
+        (void)executable_path(role,&parent,&name);
+        if(open_input(parent,name,directory,&temporary,e)!=0)goto done;
+        if(executable_profile(temporary,directory,&s,&mount,e)!=0)goto done;
+        if(!same_input(&s,&input_owner.executable_identities[role],directory)||mount!=input_owner.executable_mounts[role])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&temporary,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    for(int i=0;i<3;++i){
+        struct stat s;uint64_t mount;int role=i==2?7:5;
+        if(executable_profile(input_owner.project_executables[i],0,&s,&mount,e)!=0)return -1;
+        if(!same_input(&s,&input_owner.executable_identities[role],0)||mount!=input_owner.executable_mounts[role]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+        }
+    }
+    return 0;
+}
+static int authenticate_executables(struct rnr_stage0_preparer_error *e)
+{
+    static const char hex[]="0123456789abcdef";
+    for(int i=0;i<32;++i){unsigned int b=input_owner.policy.native_digest[i];
+        input_owner.native_hash[2*i]=hex[b>>4];input_owner.native_hash[2*i+1]=hex[b&15];}
+    input_owner.native_hash[64]=0;
+    for(int i=0;i<8;++i)input_owner.executable_fds[i]=-1;
+    input_owner.executables_initialized=1;
+    for(int role=0;role<8;++role){
+        int parent,directory=role!=5&&role!=7;const char *name;
+        (void)executable_path(role,&parent,&name);
+        if(open_input(parent,name,directory,&input_owner.executable_fds[role],e)!=0||
+           executable_profile(input_owner.executable_fds[role],directory,&input_owner.executable_identities[role],
+                              &input_owner.executable_mounts[role],e)!=0)return -1;
+    }
+    for(int i=0;i<5;++i){
+        int role=i==2?5:i==4?7:i==3?7:5;
+        int fd=i==2||i==4?input_owner.executable_fds[role]:input_owner.project_executables[i==3?2:i];
+        const unsigned char *digest=role==5?input_owner.policy.native_digest:input_owner.policy.manager_digest;
+        size_t length=(size_t)(role==5?input_owner.policy.native_bytes:input_owner.policy.manager_bytes);
+        struct stat s;uint64_t mount;
+        if(fd<3){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(executable_profile(fd,0,&s,&mount,e)!=0)return -1;
+        if(!same_input(&s,&input_owner.executable_identities[role],0)||mount!=input_owner.executable_mounts[role]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+        }
+        if(executable_header(fd,e)!=0||digest_file(fd,&s,mount,length,digest,e)!=0)return -1;
+    }
+    return 0;
+}
+/* Unit names are fixed derivations. Directory observations use one serialized
+ * temporary under the retained /etc; the four file descriptors remain held. */
+static int open_beneath(int parent,const char *path,uint64_t flags,int *slot,struct rnr_stage0_preparer_error *e)
+{
+    const struct open_how how={.flags=flags,.resolve=RESOLVE_BENEATH|RESOLVE_NO_SYMLINKS};
+    if(live_input(e)!=0)return -1;
+    long fd=syscall(SYS_openat2,parent,path,&how,sizeof(how));
+    if(fd<0)return failed_input(e,RNR_STAGE0_PREPARER_OPEN,errno);
+    if(fd<3||fd>INT_MAX){if(fd<=INT_MAX)e->unadopted_fd=(int)fd;return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);}
+    *slot=(int)fd;
+    return live_input(e);
+}
+static int unit_open(const char *path,int directory,int *slot,struct rnr_stage0_preparer_error *e)
+{return open_beneath(input_owner.fds[1],path,O_RDONLY|O_NOFOLLOW|O_CLOEXEC|(directory?O_DIRECTORY:O_NONBLOCK),slot,e);}
+/* Observe the original manager search paths serially. These identities do not
+ * establish the contents, alias map or overlay inventory of the directories. */
+static int unit_search_directories(int capture,struct rnr_stage0_preparer_error *e)
+{
+    const struct open_how how={.flags=O_PATH|O_DIRECTORY|O_CLOEXEC,.resolve=RESOLVE_IN_ROOT};
+    for(size_t i=0;i<input_owner.policy.unit_path_count;++i){
+        const struct rnr_stage0_text_view *v=&input_owner.policy.unit_paths[i];
+        char path[249];int fd=-1;struct stat s;uint64_t mount;
+        if(!v->length||v->length>=sizeof(path)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        memcpy(path,v->bytes,v->length);path[v->length]=0;
+        if(live_input(e)!=0)return -1;
+        long result=syscall(SYS_openat2,input_owner.fds[0],path,&how,sizeof(how));
+        int failure=result<0?errno:0;
+        if(result<0&&failure!=ENOENT)return failed_input(e,RNR_STAGE0_PREPARER_OPEN,failure);
+        if(result>=0){
+            if(result<3||result>INT_MAX){if(result<=INT_MAX)e->unadopted_fd=(int)result;return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);}
+            fd=(int)result;
+        }
+        if(live_input(e)!=0)goto done;
+        if(result<0){
+            if(capture)input_owner.search_present[i]=0;
+            else if(input_owner.search_present[i]){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+            continue;
+        }
+        if(stat_input(fd,&s,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+        if(!S_ISDIR(s.st_mode)||!s.st_dev||!s.st_ino||s.st_uid||s.st_gid||(s.st_mode&022)){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;
+        }
+        if(capture){input_owner.search_present[i]=1;input_owner.search_identities[i]=s;input_owner.search_mounts[i]=mount;}
+        else if(!input_owner.search_present[i]||!same_input(&s,&input_owner.search_identities[i],1)||mount!=input_owner.search_mounts[i])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    return 0;
+}
+/* Partial .conf inventory for the fixed names, type scopes and anchor prefix.
+ * This is not an alias or dependency-directory inventory. */
+static int unit_conf_overlays(struct rnr_stage0_preparer_error *e)
+{
+    char scopes[7][96]={{0}};
+    const char *const formats[]={"service.d","slice.d","rnrc%s.service.d","rnrc%s.slice.d",
+        "rnrw%s.slice.d","rnrw%s-anchor.slice.d","rnrw%s-.slice.d"};
+    for(size_t i=0;i<7;++i){
+        int n=i<2?snprintf(scopes[i],sizeof(scopes[i]),"%s",formats[i]):
+            snprintf(scopes[i],sizeof(scopes[i]),formats[i],input_owner.project);
+        if(n<=0||(size_t)n>=sizeof(scopes[i])){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    }
+    const struct open_how how={.flags=O_RDONLY|O_DIRECTORY|O_CLOEXEC,.resolve=RESOLVE_IN_ROOT};
+    for(size_t i=0;i<input_owner.policy.unit_path_count;++i)for(size_t scope=0;scope<7;++scope){
+        const struct rnr_stage0_text_view *v=&input_owner.policy.unit_paths[i];
+        char path[384];int fd=-1,eof=0;struct stat before,after;uint64_t mount,after_mount;unsigned int records=0;
+        int n=snprintf(path,sizeof(path),"%.*s/%s",(int)v->length,(const char *)v->bytes,scopes[scope]);
+        if(n<=0||(size_t)n>=sizeof(path)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(live_input(e)!=0)return -1;
+        long result=syscall(SYS_openat2,input_owner.fds[0],path,&how,sizeof(how));int failure=result<0?errno:0;
+        if(result<0&&failure!=ENOENT&&failure!=ENOTDIR)return failed_input(e,RNR_STAGE0_PREPARER_OPEN,failure);
+        if(result>=0){
+            if(result<3||result>INT_MAX){if(result<=INT_MAX)e->unadopted_fd=(int)result;return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);}
+            fd=(int)result;
+        }
+        if(live_input(e)!=0)goto done;
+        if(result<0)continue;
+        if(stat_input(fd,&before,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+        if(!S_ISDIR(before.st_mode)||!before.st_dev||!before.st_ino||before.st_uid||before.st_gid||(before.st_mode&022)){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;
+        }
+        for(unsigned int reads=0;reads<17;++reads){
+            unsigned char bytes[4096];if(live_input(e)!=0)goto done;
+            long got=syscall(SYS_getdents64,fd,bytes,sizeof(bytes));
+            if(got<0){(void)failed_input(e,RNR_STAGE0_PREPARER_READ,errno);goto done;}
+            if(live_input(e)!=0)goto done;
+            if(!got){eof=1;break;}
+            if(got>(long)sizeof(bytes)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+            for(size_t off=0;off<(size_t)got;){
+                uint16_t size;if(++records>512||(size_t)got-off<24)goto malformed;
+                memcpy(&size,bytes+off+16,2);
+                if(size<24||size%8||size>(size_t)got-off)goto malformed;
+                const unsigned char *name=bytes+off+19,*end=memchr(name,0,size-19);
+                if(!end||end==name||memchr(name,'/',(size_t)(end-name)))goto malformed;
+                size_t length=(size_t)(end-name);
+                if(name[0]!='.'&&length>=5&&!memcmp(end-5,".conf",5))goto malformed;
+                off+=size;continue;
+malformed:
+                reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;
+            }
+        }
+        if(!eof){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+        if(stat_input(fd,&after,e)!=0||mount_input(fd,&after_mount,e)!=0)goto done;
+        if(!same_input(&before,&after,1)||mount!=after_mount)reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    return 0;
+}
+/* Retain the fixed kernel directories. Mount-root provenance and control files
+ * are separate required G1 checks; these observations alone grant no authority. */
+static int cgroup_path(unsigned int role,int *parent,char name[96])
+{
+    static const int parents[]={-1,0,1,2,3,4,2,6};
+    static const char *const names[]={"sys","fs","cgroup","rnrc%s.slice","rnrc%s.service","keeper","rnrw%s.slice","rnrw%s-anchor.slice"};
+    if(role>=8)return -1;
+    *parent=parents[role]<0?input_owner.fds[0]:input_owner.cgroup_fds[parents[role]];
+    int n=role==3||role==4||role==6||role==7?snprintf(name,96,names[role],input_owner.project):snprintf(name,96,"%s",names[role]);
+    return n>0&&n<96?0:-1;
+}
+static int cgroup_profile(unsigned int role,int fd,struct stat *s,uint64_t *mount,struct rnr_stage0_preparer_error *e)
+{
+    long filesystem;
+    if(stat_input(fd,s,e)!=0||mount_input(fd,mount,e)!=0||filesystem_input(fd,&filesystem,e)!=0)return -1;
+    if(!S_ISDIR(s->st_mode)||!s->st_dev||!s->st_ino||s->st_uid||s->st_gid||(s->st_mode&022)||
+       filesystem!=(role<2?SYSFS_MAGIC:CGROUP2_SUPER_MAGIC)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+    }
+    return 0;
+}
+static int cgroup_kernel_ids(struct rnr_stage0_preparer_error *e)
+{
+    /* Linux kernfs encodes an eight-byte ID as FILEID_KERNFS (0xfe):
+     * include/linux/exportfs.h and fs/kernfs/mount.c. */
+    enum { RNR_FILEID_KERNFS=0xfe };
+    static const unsigned int roles[]={4,3,6,7};
+    for(unsigned int i=0;i<4;++i){
+        union {struct file_handle handle;unsigned char bytes[sizeof(struct file_handle)+8];} h={0};
+        unsigned int role=roles[i];int mount=-1;uint64_t id;
+        h.handle.handle_bytes=8;
+        if(live_input(e)!=0)return -1;
+        if(syscall(SYS_name_to_handle_at,input_owner.cgroup_fds[role],"",&h.handle,&mount,AT_EMPTY_PATH)!=0)
+            return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,errno);
+        if(live_input(e)!=0)return -1;
+        memcpy(&id,h.handle.f_handle,sizeof(id));
+        if(h.handle.handle_type!=RNR_FILEID_KERNFS||h.handle.handle_bytes!=8||input_owner.cgroup_mounts[role]>UINT_MAX||
+           (uint32_t)mount!=(uint32_t)input_owner.cgroup_mounts[role]||id!=input_owner.manager_cgroup_ids[i]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+        }
+    }
+    return 0;
+}
+/* Only the held cgroup mount's exact mountinfo row is authority here. Other
+ * rows are traversed solely to establish that its mount ID occurs once. */
+static int mountinfo_decimal(const char *text)
+{
+    uint64_t value=0;if(!*text)return -1;
+    for(;*text;++text){
+        if(*text<'0'||*text>'9')return -1;
+        unsigned int digit=(unsigned int)(*text-'0');
+        if(value>(UINT64_MAX-digit)/10)return -1;
+        value=value*10+digit;
+    }
+    return 0;
+}
+static char *mountinfo_token(char **rest)
+{
+    char *start=*rest;if(!start||!*start||*start==' ')return NULL;
+    char *p=start;while(*p&&*p!=' ')++p;
+    if(*p){*p++=0;if(!*p||*p==' ')return NULL;*rest=p;}
+    else *rest=NULL;
+    return start;
+}
+static int cgroup_mountinfo_line(char *line,uint64_t target,unsigned int *matches)
+{
+    char *p=line;uint64_t id=0;
+    if(*p<'0'||*p>'9')return -1;
+    while(*p>='0'&&*p<='9'){
+        unsigned int digit=(unsigned int)(*p++-'0');
+        if(id>(UINT64_MAX-digit)/10)return -1;
+        id=id*10+digit;
+    }
+    if(*p!=' ')return -1;
+    if(id!=target)return 0;
+    if(++*matches!=1)return -1;
+    char *fields[6];p=line;
+    for(unsigned int i=0;i<6;++i)if(!(fields[i]=mountinfo_token(&p)))return -1;
+    char *colon=strchr(fields[2],':');
+    if(!colon||strchr(colon+1,':'))return -1;
+    *colon++=0;
+    if(mountinfo_decimal(fields[1])!=0||mountinfo_decimal(fields[2])!=0||mountinfo_decimal(colon)!=0||
+       strcmp(fields[3],"/")||strcmp(fields[4],"/sys/fs/cgroup"))return -1;
+    char *token;
+    do{token=mountinfo_token(&p);if(!token)return -1;}while(strcmp(token,"-"));
+    char *type=mountinfo_token(&p),*source=mountinfo_token(&p),*options=mountinfo_token(&p);
+    return type&&source&&options&&!p&&!strcmp(type,"cgroup2")?0:-1;
+}
+static int cgroup_mount_root(struct rnr_stage0_preparer_error *e)
+{
+    int fd=-1;struct stat before,after;uint64_t proc_mount,mount;long filesystem;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    if(open_beneath(input_owner.fds[0],"proc",O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC,&fd,e)!=0)goto done;
+    if(stat_input(fd,&before,e)!=0||mount_input(fd,&proc_mount,e)!=0||filesystem_input(fd,&filesystem,e)!=0)goto done;
+    if(!S_ISDIR(before.st_mode)||!before.st_ino||before.st_uid||before.st_gid||(before.st_mode&022)||filesystem!=PROC_SUPER_MAGIC){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    close_input(&fd,e);if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    char path[64];int n=snprintf(path,sizeof(path),"proc/%ld/mountinfo",(long)getpid());
+    if(n<=0||(size_t)n>=sizeof(path)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    if(open_beneath(input_owner.fds[0],path,O_RDONLY|O_NONBLOCK|O_NOFOLLOW|O_CLOEXEC,&fd,e)!=0)goto done;
+    if(stat_input(fd,&before,e)!=0||mount_input(fd,&mount,e)!=0||filesystem_input(fd,&filesystem,e)!=0)goto done;
+    if(!S_ISREG(before.st_mode)||!before.st_ino||before.st_uid||before.st_gid||(before.st_mode&022)||
+       mount!=proc_mount||filesystem!=PROC_SUPER_MAGIC){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    char line[4097],chunk[4096];size_t used=0,total=0;unsigned int matches=0;
+    for(;;){
+        size_t want=sizeof(chunk);if(want>1048577-total)want=1048577-total;
+        if(live_input(e)!=0)goto done;
+        ssize_t got=pread(fd,chunk,want,(off_t)total);
+        if(got<0){(void)failed_input(e,RNR_STAGE0_PREPARER_READ,errno);goto done;}
+        if(live_input(e)!=0)goto done;
+        if(!got)break;
+        if((size_t)got>1048576-total){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+        total+=(size_t)got;
+        for(ssize_t i=0;i<got;++i){
+            unsigned char c=(unsigned char)chunk[i];
+            if(!c){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+            if(c=='\n'){
+                line[used]=0;if(!used||cgroup_mountinfo_line(line,input_owner.cgroup_mounts[2],&matches)!=0){
+                    reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+                used=0;
+            }else{
+                if(used==sizeof(line)-1){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+                line[used++]=(char)c;
+            }
+        }
+    }
+    if(used||matches!=1){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    if(stat_input(fd,&after,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+    if(!same_input(&before,&after,1)||mount!=proc_mount)reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+    close_input(&fd,e);
+    if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    return 0;
+}
+static int cgroup_read_contents(unsigned int role,const char *name,char actual[4097],size_t *length,
+                                struct rnr_stage0_preparer_error *e)
+{
+    char extra;int fd=-1;struct stat before,after;uint64_t mount;long filesystem;
+    *length=0;
+    if(open_beneath(input_owner.cgroup_fds[role],name,O_RDONLY|O_NONBLOCK|O_NOFOLLOW|O_CLOEXEC,&fd,e)!=0)goto done;
+    if(stat_input(fd,&before,e)!=0||mount_input(fd,&mount,e)!=0||filesystem_input(fd,&filesystem,e)!=0)goto done;
+    if(!S_ISREG(before.st_mode)||!before.st_ino||before.st_uid||before.st_gid||(before.st_mode&022)||
+       before.st_dev!=input_owner.cgroup_identities[role].st_dev||mount!=input_owner.cgroup_mounts[role]||
+       filesystem!=CGROUP2_SUPER_MAGIC){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    if(live_input(e)!=0)goto done;
+    ssize_t read_count=pread(fd,actual,4097,0);
+    if(read_count<0){(void)failed_input(e,RNR_STAGE0_PREPARER_READ,errno);goto done;}
+    if(live_input(e)!=0)goto done;
+    if(read_count>4096){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    if(live_input(e)!=0)goto done;
+    ssize_t end=pread(fd,&extra,1,(off_t)read_count);
+    if(end<0){(void)failed_input(e,RNR_STAGE0_PREPARER_READ,errno);goto done;}
+    if(live_input(e)!=0)goto done;
+    if(end!=0){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    if(stat_input(fd,&after,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+    if(!same_input(&before,&after,1)||mount!=input_owner.cgroup_mounts[role])reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+    else *length=(size_t)read_count;
+done:
+    close_input(&fd,e);return e->code==RNR_STAGE0_PREPARER_OK?0:-1;
+}
+static int cgroup_read_expected(unsigned int role,const char *name,const char *const *expected,size_t count,
+                                struct rnr_stage0_preparer_error *e)
+{
+    char actual[4097];size_t length;
+    if(cgroup_read_contents(role,name,actual,&length,e)!=0)return -1;
+    for(size_t i=0;i<count;++i){size_t n=strlen(expected[i]);
+        if(length==n&&!memcmp(actual,expected[i],n))return 0;}
+    reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+}
+static int controller_space(unsigned char c)
+{return c==' '||c=='\n'||c=='\t'||c=='\r'||c=='\v'||c=='\f';}
+static int cgroup_controller_tokens(const char *bytes,size_t length)
+{
+    uint16_t offsets[2048],sizes[2048];size_t pos=0,count=0;unsigned int required=0;
+    while(pos<length){
+        while(pos<length&&controller_space((unsigned char)bytes[pos]))++pos;
+        if(pos==length)break;
+        size_t start=pos;if(bytes[pos]<'a'||bytes[pos]>'z')return -1;
+        while(pos<length&&!controller_space((unsigned char)bytes[pos])){
+            unsigned char c=(unsigned char)bytes[pos++];
+            if(!((c>='a'&&c<='z')||(c>='0'&&c<='9')||c=='_'))return -1;
+        }
+        size_t n=pos-start;if(count==2048)return -1;
+        for(size_t i=0;i<count;++i)if(sizes[i]==n&&!memcmp(bytes+offsets[i],bytes+start,n))return -1;
+        offsets[count]=(uint16_t)start;sizes[count++]=(uint16_t)n;
+        if(n==3&&!memcmp(bytes+start,"cpu",3))required|=1;
+        else if(n==6&&!memcmp(bytes+start,"memory",6))required|=2;
+        else if(n==4&&!memcmp(bytes+start,"pids",4))required|=4;
+    }
+    return required==7?0:-1;
+}
+static int cgroup_controllers(struct rnr_stage0_preparer_error *e)
+{
+    static const unsigned int roles[]={2,3,4,6};
+    static const char *const names[]={"cgroup.controllers","cgroup.subtree_control"};
+    for(size_t role=0;role<4;++role)for(size_t field=0;field<2;++field){
+        char actual[4097];size_t length;
+        if(cgroup_read_contents(roles[role],names[field],actual,&length,e)!=0)return -1;
+        if(cgroup_controller_tokens(actual,length)!=0){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    }
+    return 0;
+}
+static int cgroup_controls(struct rnr_stage0_preparer_error *e)
+{
+    static const unsigned int roles[]={4,3,6,7};
+    static const char *const names[]={"cgroup.type","cpu.max","memory.max","memory.swap.max","pids.max","memory.oom.group"};
+    for(unsigned int unit=0;unit<4;++unit)for(unsigned int field=0;field<6;++field){
+        const struct rnr_stage0_policy_unit *p=&input_owner.policy.units[unit];
+        unsigned int role=roles[unit];char expected[80];int n;
+        if(field==0)n=snprintf(expected,sizeof(expected),"domain\n");
+        else if(field==1)n=snprintf(expected,sizeof(expected),"%llu %llu\n",(unsigned long long)(p->cpu_millis*100),
+                                     (unsigned long long)p->cpu_period_us);
+        else if(field==2)n=snprintf(expected,sizeof(expected),"%llu\n",(unsigned long long)p->memory_bytes);
+        else if(field==3)n=snprintf(expected,sizeof(expected),"%llu\n",(unsigned long long)p->swap_bytes);
+        else if(field==4)n=snprintf(expected,sizeof(expected),"%llu\n",(unsigned long long)p->pids);
+        else n=snprintf(expected,sizeof(expected),"0\n");
+        if(n<=0||(size_t)n>=sizeof(expected)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        const char *values[]={expected};
+        if(cgroup_read_expected(role,names[field],values,1,e)!=0)return -1;
+    }
+    const char *keeper_oom[]={"0\n"};
+    return cgroup_read_expected(5,"memory.oom.group",keeper_oom,1,e);
+}
+static int cgroup_state(struct rnr_stage0_preparer_error *e)
+{
+    static const unsigned int roles[]={4,3,6,7,5};
+    static const char *const thawed[]={"populated 1\nfrozen 0\n","frozen 0\npopulated 1\n"};
+    static const char *const frozen[]={"populated 0\nfrozen 1\n","frozen 1\npopulated 0\n",
+                                       "populated 1\nfrozen 1\n","frozen 1\npopulated 1\n"};
+    static const char *const empty[]={""};
+    for(unsigned int i=0;i<5;++i){
+        const char *freeze=roles[i]==6?"1\n":"0\n";
+        if(cgroup_read_expected(roles[i],"cgroup.freeze",&freeze,1,e)!=0)return -1;
+        const char *const *events=roles[i]==6||roles[i]==7?frozen:thawed;
+        size_t count=roles[i]==6?4:2;
+        if(cgroup_read_expected(roles[i],"cgroup.events",events,count,e)!=0)return -1;
+    }
+    if(cgroup_read_expected(7,"cgroup.procs",empty,1,e)!=0||cgroup_read_expected(7,"cgroup.threads",empty,1,e)!=0)return -1;
+    return 0;
+}
+static int cgroup_membership(struct rnr_stage0_preparer_error *e)
+{
+    static const unsigned int empty_roles[]={3,4,6};
+    static const char *const names[]={"cgroup.procs","cgroup.threads"};
+    static const char *const empty[]={""};
+    char keeper_first[64],child_first[64];
+    long child=(long)getpid(),keeper=(long)input_owner.original_keeper;
+    int a=snprintf(keeper_first,sizeof(keeper_first),"%ld\n%ld\n",keeper,child);
+    int b=snprintf(child_first,sizeof(child_first),"%ld\n%ld\n",child,keeper);
+    if(child<=1||keeper<=1||child==keeper||a<=0||b<=0||
+       (size_t)a>=sizeof(keeper_first)||(size_t)b>=sizeof(child_first)){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;
+    }
+    const char *members[]={keeper_first,child_first};
+    for(size_t field=0;field<2;++field){
+        for(size_t role=0;role<3;++role)
+            if(cgroup_read_expected(empty_roles[role],names[field],empty,1,e)!=0)return -1;
+        if(cgroup_read_expected(5,names[field],members,2,e)!=0)return -1;
+    }
+    return 0;
+}
+static int cgroup_anchor_empty(struct rnr_stage0_preparer_error *e)
+{
+    int parent,fd=-1,eof=0;char name[96];struct stat s;uint64_t mount;unsigned int seen=0,records=0;
+    if(cgroup_path(7,&parent,name)!=0){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    if(open_beneath(parent,name,O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC,&fd,e)!=0)goto done;
+    if(cgroup_profile(7,fd,&s,&mount,e)!=0)goto done;
+    if(!same_input(&s,&input_owner.cgroup_identities[7],1)||mount!=input_owner.cgroup_mounts[7]){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+    for(unsigned int reads=0;reads<17;++reads){
+        unsigned char bytes[4096];if(live_input(e)!=0)goto done;
+        long n=syscall(SYS_getdents64,fd,bytes,sizeof(bytes));
+        if(n<0){(void)failed_input(e,RNR_STAGE0_PREPARER_READ,errno);goto done;}
+        if(live_input(e)!=0)goto done;
+        if(!n){eof=1;break;}
+        if(n>(long)sizeof(bytes)){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;}
+        for(size_t off=0;off<(size_t)n;){
+            uint16_t size;uint64_t inode;int64_t next;
+            if(++records>512||(size_t)n-off<24)goto malformed;
+            memcpy(&inode,bytes+off,8);memcpy(&next,bytes+off+8,8);memcpy(&size,bytes+off+16,2);
+            if(!inode||next<=0||size<24||size%8||size>(size_t)n-off)goto malformed;
+            const unsigned char *entry=bytes+off+19,*end=memchr(entry,0,size-19);
+            if(!end||end==entry||memchr(entry,'/',(size_t)(end-entry)))goto malformed;
+            unsigned int bit=0;
+            if(end-entry==1&&entry[0]=='.')bit=1;
+            else if(end-entry==2&&entry[0]=='.'&&entry[1]=='.')bit=2;
+            if(bit){if(bytes[off+18]!=DT_DIR||(seen&bit))goto malformed;seen|=bit;}
+            else if(bytes[off+18]!=DT_REG)goto malformed;
+            off+=size;continue;
+malformed:
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto done;
+        }
+    }
+    if(!eof||seen!=3)reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+    close_input(&fd,e);
+    if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    if(cgroup_profile(7,input_owner.cgroup_fds[7],&s,&mount,e)!=0)return -1;
+    if(!same_input(&s,&input_owner.cgroup_identities[7],1)||mount!=input_owner.cgroup_mounts[7]){
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    return 0;
+}
+static int cgroup_recheck(struct rnr_stage0_preparer_error *e)
+{
+    for(unsigned int role=0;role<8;++role){
+        int parent,fd=-1;char name[96];struct stat s;uint64_t mount;
+        if(cgroup_path(role,&parent,name)!=0){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(cgroup_profile(role,input_owner.cgroup_fds[role],&s,&mount,e)!=0)return -1;
+        if(!same_input(&s,&input_owner.cgroup_identities[role],1)||mount!=input_owner.cgroup_mounts[role]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(open_beneath(parent,name,O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC,&fd,e)!=0)goto done;
+        if(cgroup_profile(role,fd,&s,&mount,e)!=0)goto done;
+        if(!same_input(&s,&input_owner.cgroup_identities[role],1)||mount!=input_owner.cgroup_mounts[role])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    if(cgroup_mount_root(e)!=0||cgroup_kernel_ids(e)!=0)return -1;
+    if(cgroup_controls(e)!=0)return -1;
+    if(cgroup_controllers(e)!=0)return -1;
+    if(cgroup_state(e)!=0)return -1;
+    if(cgroup_membership(e)!=0)return -1;
+    return cgroup_anchor_empty(e);
+}
+static int cgroup_capture(struct rnr_stage0_preparer_error *e)
+{
+    for(int i=0;i<8;++i)input_owner.cgroup_fds[i]=-1;
+    input_owner.cgroup_initialized=1;
+    for(unsigned int role=0;role<8;++role){
+        int parent;char name[96];
+        if(cgroup_path(role,&parent,name)!=0){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(open_beneath(parent,name,O_RDONLY|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC,&input_owner.cgroup_fds[role],e)!=0||
+           cgroup_profile(role,input_owner.cgroup_fds[role],&input_owner.cgroup_identities[role],&input_owner.cgroup_mounts[role],e)!=0)return -1;
+        if((role==1&&(input_owner.cgroup_mounts[role]!=input_owner.cgroup_mounts[0]||
+                      input_owner.cgroup_identities[role].st_dev!=input_owner.cgroup_identities[0].st_dev))||
+           (role>2&&(input_owner.cgroup_mounts[role]!=input_owner.cgroup_mounts[2]||
+                     input_owner.cgroup_identities[role].st_dev!=input_owner.cgroup_identities[2].st_dev))){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+    }
+    return cgroup_recheck(e);
+}
+static int unit_profile(int fd,int directory,struct stat *s,uint64_t *mount,
+                        struct rnr_stage0_preparer_error *e)
+{
+    if(stat_input(fd,s,e)!=0||mount_input(fd,mount,e)!=0)return -1;
+    if(s->st_uid||s->st_gid||(s->st_mode&022)||
+       (directory?!S_ISDIR(s->st_mode):(!S_ISREG(s->st_mode)||!s->st_nlink||s->st_size<0))){
+        reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);return -1;
+    }
+    return 0;
+}
+static int unit_directories(int capture,struct rnr_stage0_preparer_error *e)
+{
+    static const char *const paths[]={"systemd","systemd/system"};
+    for(int i=0;i<2;++i){
+        int fd=-1;struct stat s;uint64_t mount;
+        if(unit_open(paths[i],1,&fd,e)!=0)goto done;
+        if(unit_profile(fd,1,&s,&mount,e)!=0)goto done;
+        if(capture){input_owner.unit_identities[4+i]=s;input_owner.unit_mounts[4+i]=mount;}
+        else if(!same_input(&s,&input_owner.unit_identities[4+i],1)||mount!=input_owner.unit_mounts[4+i])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    return 0;
+}
+static int unit_recheck(struct rnr_stage0_preparer_error *e)
+{
+    if(unit_directories(0,e)!=0)return -1;
+    for(int i=0;i<4;++i){
+        int fd=-1;struct stat s;uint64_t mount;
+        if(unit_profile(input_owner.unit_fds[i],0,&s,&mount,e)!=0)return -1;
+        if(!same_input(&s,&input_owner.unit_identities[i],0)||mount!=input_owner.unit_mounts[i]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(unit_open(input_owner.unit_paths[i],0,&fd,e)!=0)goto done;
+        if(unit_profile(fd,0,&s,&mount,e)!=0)goto done;
+        if(!same_input(&s,&input_owner.unit_identities[i],0)||mount!=input_owner.unit_mounts[i])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    return 0;
+}
+static int authenticate_unit_fragments(struct rnr_stage0_preparer_error *e)
+{
+    static const char *const formats[]={"systemd/system/rnrc%s.service","systemd/system/rnrc%s.slice",
+        "systemd/system/rnrw%s.slice","systemd/system/rnrw%s-anchor.slice"};
+    for(int i=0;i<4;++i)input_owner.unit_fds[i]=-1;
+    input_owner.units_initialized=1;
+    if(unit_directories(1,e)!=0)return -1;
+    for(int i=0;i<4;++i){
+        int n=snprintf(input_owner.unit_paths[i],sizeof(input_owner.unit_paths[i]),formats[i],input_owner.project);
+        if(n<=0||(size_t)n>=sizeof(input_owner.unit_paths[i])){reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);return -1;}
+        if(unit_open(input_owner.unit_paths[i],0,&input_owner.unit_fds[i],e)!=0||
+           unit_profile(input_owner.unit_fds[i],0,&input_owner.unit_identities[i],&input_owner.unit_mounts[i],e)!=0)return -1;
+        size_t length=(size_t)input_owner.unit_identities[i].st_size;
+        if((uintmax_t)length!=(uintmax_t)input_owner.unit_identities[i].st_size){reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);return -1;}
+        if(digest_file(input_owner.unit_fds[i],&input_owner.unit_identities[i],input_owner.unit_mounts[i],
+                       length,input_owner.policy.units[i].fragment_digest,e)!=0)return -1;
+    }
+    return 0;
+}
+/* Absolute manager paths must resolve from the same original root. */
+static int original_working_directory(struct rnr_stage0_preparer_error *e)
+{
+    int fd=-1;struct stat s;uint64_t mount;
+    if(recheck_input(0,e)!=0)return -1;
+    if(open_input(-1,".",1,&fd,e)!=0)goto done;
+    if(stat_input(fd,&s,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+    if(!same_input(&s,&input_owner.identities[0],1)||mount!=input_owner.mounts[0])
+        reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+    close_input(&fd,e);
+    return e->code==RNR_STAGE0_PREPARER_OK?0:-1;
+}
+/* Fixed original manager socket. A successfully authenticated peer is still
+ * not admission: properties, kernel controls and the final sweep remain open. */
+static int manager_paths(int capture,struct rnr_stage0_preparer_error *e)
+{
+    static const char *const paths[]={"run","run/systemd","run/systemd/private"};
+    for(int i=0;i<3;++i){
+        int fd=-1;struct stat s;uint64_t mount;
+        uint64_t flags=(i==2?O_PATH:O_RDONLY|O_DIRECTORY)|O_NOFOLLOW|O_CLOEXEC;
+        if(open_beneath(input_owner.fds[0],paths[i],flags,&fd,e)!=0)goto done;
+        if(stat_input(fd,&s,e)!=0||mount_input(fd,&mount,e)!=0)goto done;
+        if(s.st_uid||s.st_gid||(s.st_mode&022)||(i==2?!S_ISSOCK(s.st_mode):!S_ISDIR(s.st_mode))){
+            reject_input(e,RNR_STAGE0_PREPARER_METADATA,0);goto done;}
+        if(capture){input_owner.manager_identities[i]=s;input_owner.manager_mounts[i]=mount;}
+        else if(!same_input(&s,&input_owner.manager_identities[i],i!=2)||mount!=input_owner.manager_mounts[i])
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);
+done:
+        close_input(&fd,e);
+        if(e->code!=RNR_STAGE0_PREPARER_OK)return -1;
+    }
+    return 0;
+}
+static int manager_peer(struct rnr_stage0_preparer_error *e)
+{
+    struct ucred peer;socklen_t size=sizeof(peer);
+    if(live_input(e)!=0)return -1;
+    if(getsockopt(input_owner.manager_fd,SOL_SOCKET,SO_PEERCRED,&peer,&size)!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if(live_input(e)!=0)return -1;
+    if(size!=sizeof(peer)||peer.pid!=1||peer.uid||peer.gid){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    return 0;
+}
+static int manager_option(int option,struct rnr_stage0_preparer_error *e)
+{
+    int value=0;socklen_t size=sizeof(value);
+    if(live_input(e)!=0)return -1;
+    if(setsockopt(input_owner.manager_fd,SOL_SOCKET,option,&value,sizeof(value))!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if(live_input(e)!=0)return -1;
+    if(getsockopt(input_owner.manager_fd,SOL_SOCKET,option,&value,&size)!=0)
+        return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if(live_input(e)!=0)return -1;
+    if(size!=sizeof(value)||value){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    return 0;
+}
+static int manager_poll(short events,struct rnr_stage0_preparer_error *e)
+{
+    struct pollfd p={.fd=input_owner.manager_fd,.events=events};
+    if(++input_owner.manager_polls>4096){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    if(live_input(e)!=0)return -1;
+    int result=poll(&p,1,1);
+    if(result<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if(live_input(e)!=0)return -1;
+    if(result!=1||p.revents!=events){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    return 0;
+}
+static int manager_send(const void *bytes,size_t length,struct rnr_stage0_preparer_error *e)
+{
+    if(live_input(e)!=0)return -1;
+    ssize_t n=send(input_owner.manager_fd,bytes,length,MSG_NOSIGNAL);
+    if(n<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if((size_t)n!=length)return failed_input(e,RNR_STAGE0_PREPARER_PID1,0);
+    return live_input(e);
+}
+static int manager_authenticate(struct rnr_stage0_preparer_error *e)
+{
+    static const char auth[]="\0AUTH EXTERNAL 30\r\n",begin[]="BEGIN\r\n";
+    unsigned char response[37];size_t offset=0;unsigned int fragments=0,polls=0;
+    if(manager_send(auth,sizeof(auth)-1,e)!=0)return -1;
+    while(offset<sizeof(response)){
+        struct iovec iov={.iov_base=response+offset,.iov_len=sizeof(response)-offset};
+        struct msghdr message={.msg_iov=&iov,.msg_iovlen=1};
+        if(++input_owner.manager_receives>4096){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+        if(live_input(e)!=0)return -1;
+        ssize_t n=recvmsg(input_owner.manager_fd,&message,MSG_DONTWAIT|MSG_CMSG_CLOEXEC);int failure=n<0?errno:0;
+        if(n<0&&failure!=EAGAIN&&failure!=EWOULDBLOCK)return failed_input(e,RNR_STAGE0_PREPARER_PID1,failure);
+        if(live_input(e)!=0)return -1;
+        if(n<0){
+            if(++polls>128){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+            if(manager_poll(POLLIN,e)!=0)return -1;
+            continue;
+        }
+        if(!n||(size_t)n>sizeof(response)-offset||++fragments>37||
+           (message.msg_flags&(MSG_CTRUNC|MSG_TRUNC))){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+        offset+=(size_t)n;
+    }
+    if(memcmp(response,"OK ",3)||response[35]!='\r'||response[36]!='\n'){
+        reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    for(int i=3;i<35;++i)if(!((response[i]>='0'&&response[i]<='9')||(response[i]>='a'&&response[i]<='f'))){
+        reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    return manager_send(begin,sizeof(begin)-1,e);
+}
+static int manager_begin(struct rnr_stage0_preparer_error *e)
+{
+    input_owner.manager_fd=-1;input_owner.manager_initialized=1;
+    if(manager_paths(1,e)!=0||original_working_directory(e)!=0)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    if(live_input(e)!=0)return -1;
+    int fd=socket(AF_UNIX,SOCK_STREAM|SOCK_NONBLOCK|SOCK_CLOEXEC,0);
+    if(fd<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if(fd<3){e->unadopted_fd=fd;return failed_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);}
+    input_owner.manager_fd=fd;
+    if(live_input(e)!=0||manager_option(SO_PASSCRED,e)!=0||manager_option(SO_PASSSEC,e)!=0)return -1;
+    struct sockaddr_un address={.sun_family=AF_UNIX,.sun_path="/run/systemd/private"};
+    if(live_input(e)!=0)return -1;
+    int result=connect(fd,(struct sockaddr *)&address,offsetof(struct sockaddr_un,sun_path)+sizeof("/run/systemd/private"));
+    int failure=result<0?errno:0;
+    if(result<0&&failure!=EINPROGRESS)return failed_input(e,RNR_STAGE0_PREPARER_PID1,failure);
+    if(live_input(e)!=0)return -1;
+    if(result<0){int error=0;socklen_t size=sizeof(error);
+        if(manager_poll(POLLOUT,e)!=0||live_input(e)!=0)return -1;
+        if(getsockopt(fd,SOL_SOCKET,SO_ERROR,&error,&size)!=0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+        if(live_input(e)!=0)return -1;
+        if(size!=sizeof(error)||error){reject_input(e,RNR_STAGE0_PREPARER_PID1,error);return -1;}}
+    if(original_working_directory(e)!=0||manager_paths(0,e)!=0||manager_peer(e)!=0)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    if(manager_authenticate(e)!=0||manager_peer(e)!=0||manager_paths(0,e)!=0||original_working_directory(e)!=0)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    return 0;
+}
+static void manager_put_u32(unsigned char *p,uint32_t n)
+{for(int i=0;i<4;++i)p[i]=(unsigned char)(n>>(8*i));}
+static uint32_t manager_u32(const unsigned char *p)
+{return (uint32_t)p[0]|(uint32_t)p[1]<<8|(uint32_t)p[2]<<16|(uint32_t)p[3]<<24;}
+static int64_t manager_i32(const unsigned char *p)
+{
+    uint32_t value=manager_u32(p);
+    return value<=INT32_MAX?(int64_t)value:(int64_t)value-INT64_C(4294967296);
+}
+static uint64_t manager_cgroup_limit(const struct rnr_stage0_policy_unit *unit,unsigned int field)
+{
+    switch(field){case 1:return unit->cpu_millis*1000;case 2:return unit->cpu_period_us;
+        case 3:return unit->memory_bytes;case 4:return unit->swap_bytes;case 5:return unit->pids;default:return 0;}
+}
+static uint32_t manager_reserve_serial(struct rnr_stage0_preparer_error *e)
+{
+    if(input_owner.manager_serial>=512){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return 0;}
+    return ++input_owner.manager_serial;
+}
+static int manager_receive(unsigned char *buffer,size_t length,unsigned int *fragments,
+                           struct rnr_stage0_preparer_error *e)
+{
+    size_t offset=0;
+    while(offset<length){
+        struct iovec iov={.iov_base=buffer+offset,.iov_len=length-offset};
+        struct msghdr message={.msg_iov=&iov,.msg_iovlen=1};
+        if(++input_owner.manager_receives>4096){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+        if(live_input(e)!=0)return -1;
+        ssize_t n=recvmsg(input_owner.manager_fd,&message,MSG_DONTWAIT|MSG_CMSG_CLOEXEC);int failure=n<0?errno:0;
+        if(n<0&&failure!=EAGAIN&&failure!=EWOULDBLOCK)return failed_input(e,RNR_STAGE0_PREPARER_PID1,failure);
+        if(live_input(e)!=0)return -1;
+        if(n<0){
+            if(manager_poll(POLLIN,e)!=0)return -1;
+            continue;
+        }
+        if(!n||(size_t)n>length-offset||++*fragments>512||(message.msg_flags&(MSG_CTRUNC|MSG_TRUNC))){
+            reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+        offset+=(size_t)n;
+    }
+    return 0;
+}
+/* The only initial query is GetUnitByPID(original keeper). The fixed request
+ * and the two permitted reply-header orders are not a general D-Bus API. */
+static int manager_lookup_keeper(struct rnr_stage0_preparer_error *e)
+{
+    static const char path[]="/org/freedesktop/systemd1",interface[]="org.freedesktop.systemd1.Manager",member[]="GetUnitByPID";
+    unsigned char fields_a[15]={5,1,'u',0,0,0,0,0,8,1,'g',0,1,'o',0};
+    unsigned char fields_b[16]={8,1,'g',0,1,'o',0,0,5,1,'u',0,0,0,0,0};
+    unsigned char request[140]={0},reply[146];char expected[128];
+    if(input_owner.original_keeper<=1){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    int n=snprintf(expected,sizeof(expected),"/org/freedesktop/systemd1/unit/rnrc%s_2eservice",input_owner.project);
+    if(n!=109){reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    uint32_t serial=manager_reserve_serial(e);if(!serial)return -1;
+    manager_put_u32(fields_a+4,serial);manager_put_u32(fields_b+12,serial);
+    request[0]='l';request[1]=1;request[2]=2;request[3]=1;
+    manager_put_u32(request+4,4);manager_put_u32(request+8,serial);manager_put_u32(request+12,119);
+    request[16]=1;request[17]=1;request[18]='o';manager_put_u32(request+20,sizeof(path)-1);memcpy(request+24,path,sizeof(path)-1);
+    request[56]=2;request[57]=1;request[58]='s';manager_put_u32(request+60,sizeof(interface)-1);memcpy(request+64,interface,sizeof(interface)-1);
+    request[104]=3;request[105]=1;request[106]='s';manager_put_u32(request+108,sizeof(member)-1);memcpy(request+112,member,sizeof(member)-1);
+    request[128]=8;request[129]=1;request[130]='g';request[132]=1;request[133]='u';
+    manager_put_u32(request+136,(uint32_t)input_owner.original_keeper);
+    struct iovec iov={.iov_base=request,.iov_len=sizeof(request)};
+    struct msghdr message={.msg_iov=&iov,.msg_iovlen=1};
+    if(manager_peer(e)!=0||live_input(e)!=0)return -1;
+    ssize_t sent=sendmsg(input_owner.manager_fd,&message,MSG_NOSIGNAL);
+    if(sent<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if((size_t)sent!=sizeof(request))return failed_input(e,RNR_STAGE0_PREPARER_PID1,0);
+    if(live_input(e)!=0)return -1;
+    unsigned int fragments=0;
+    if(manager_receive(reply,16,&fragments,e)!=0)return -1;
+    uint32_t body=manager_u32(reply+4),reply_serial=manager_u32(reply+8),fields=manager_u32(reply+12);
+    if(reply[0]!='l'||reply[1]!=2||reply[2]!=1||reply[3]!=1||!reply_serial||body!=114||(fields!=15&&fields!=16)){
+        reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    if(manager_receive(reply+16,sizeof(reply)-16,&fragments,e)!=0)return -1;
+    if((fields==15&&(memcmp(reply+16,fields_a,sizeof(fields_a))||reply[31]))||
+       (fields==16&&memcmp(reply+16,fields_b,sizeof(fields_b)))||manager_u32(reply+32)!=(uint32_t)n||
+       memcmp(reply+36,expected,(size_t)n+1)){
+        reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;}
+    if(manager_peer(e)!=0||manager_paths(0,e)!=0||original_working_directory(e)!=0)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    return 0;
+}
+/* UnitPath is a fixed query, not a caller-selected D-Bus operation. */
+static int manager_unit_path(struct rnr_stage0_preparer_error *e)
+{
+    static const char path[]="/org/freedesktop/systemd1";
+    static const char properties[]="org.freedesktop.DBus.Properties";
+    static const char manager[]="org.freedesktop.systemd1.Manager";
+    unsigned char fields_a[15]={5,1,'u',0,0,0,0,0,8,1,'g',0,1,'v',0};
+    unsigned char fields_b[16]={8,1,'g',0,1,'v',0,0,5,1,'u',0,0,0,0,0};
+    unsigned char request[173]={0},reply[16+16+16384];
+    uint32_t serial=manager_reserve_serial(e);if(!serial)return -1;
+    manager_put_u32(fields_a+4,serial);manager_put_u32(fields_b+12,serial);
+    request[0]='l';request[1]=1;request[2]=2;request[3]=1;
+    manager_put_u32(request+4,53);manager_put_u32(request+8,serial);manager_put_u32(request+12,104);
+    request[16]=1;request[17]=1;request[18]='o';manager_put_u32(request+20,sizeof(path)-1);memcpy(request+24,path,sizeof(path)-1);
+    request[56]=2;request[57]=1;request[58]='s';manager_put_u32(request+60,sizeof(properties)-1);memcpy(request+64,properties,sizeof(properties)-1);
+    request[96]=3;request[97]=1;request[98]='s';manager_put_u32(request+100,3);memcpy(request+104,"Get",3);
+    request[112]=8;request[113]=1;request[114]='g';request[116]=2;request[117]='s';request[118]='s';
+    manager_put_u32(request+120,sizeof(manager)-1);memcpy(request+124,manager,sizeof(manager)-1);
+    manager_put_u32(request+160,8);memcpy(request+164,"UnitPath",8);
+    struct iovec iov={.iov_base=request,.iov_len=sizeof(request)};
+    struct msghdr message={.msg_iov=&iov,.msg_iovlen=1};
+    if(manager_peer(e)!=0||live_input(e)!=0)return -1;
+    ssize_t sent=sendmsg(input_owner.manager_fd,&message,MSG_NOSIGNAL);
+    if(sent<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+    if((size_t)sent!=sizeof(request))return failed_input(e,RNR_STAGE0_PREPARER_PID1,0);
+    if(live_input(e)!=0)return -1;
+    unsigned int fragments=0;
+    if(manager_receive(reply,16,&fragments,e)!=0)return -1;
+    uint32_t body=manager_u32(reply+4),fields=manager_u32(reply+12);
+    if(reply[0]!='l'||reply[1]!=2||reply[2]!=1||reply[3]!=1||!manager_u32(reply+8)||
+       body<8||body>16384||(fields!=15&&fields!=16))goto invalid;
+    if(manager_receive(reply+16,16+(size_t)body,&fragments,e)!=0)return -1;
+    if((fields==15&&(memcmp(reply+16,fields_a,sizeof(fields_a))||reply[31]))||
+       (fields==16&&memcmp(reply+16,fields_b,sizeof(fields_b))))goto invalid;
+    const unsigned char *b=reply+32;
+    if(b[0]!=2||b[1]!='a'||b[2]!='s'||b[3]||manager_u32(b+4)!=body-8||body-8>8192)goto invalid;
+    size_t pos=8;
+    for(size_t i=0;i<input_owner.policy.unit_path_count;++i){
+        while(pos%4){if(pos>=body||b[pos++])goto invalid;}
+        if(pos>body||body-pos<4)goto invalid;
+        uint32_t n=manager_u32(b+pos);pos+=4;
+        if(n!=input_owner.policy.unit_paths[i].length||n>248||n>=body-pos||
+           memcmp(b+pos,input_owner.policy.unit_paths[i].bytes,n)||b[pos+n])goto invalid;
+        pos+=(size_t)n+1;
+    }
+    if(pos!=body)goto invalid;
+    if(manager_peer(e)!=0||manager_paths(0,e)!=0||original_working_directory(e)!=0)return -1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    return 0;
+invalid:
+    reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;
+}
+static int manager_check_unit_identities(struct rnr_stage0_preparer_error *e)
+{
+    static const char *const objects[]={"/org/freedesktop/systemd1/unit/rnrc%s_2eservice",
+        "/org/freedesktop/systemd1/unit/rnrc%s_2eslice","/org/freedesktop/systemd1/unit/rnrw%s_2eslice",
+        "/org/freedesktop/systemd1/unit/rnrw%s_2danchor_2eslice"};
+    static const char *const names[]={"rnrc%s.service","rnrc%s.slice","rnrw%s.slice","rnrw%s-anchor.slice"};
+    static const char *const fields[]={"LoadState","ActiveState","SubState","FragmentPath","SourcePath",
+        "CollectMode","JobTimeoutAction","FailureAction","SuccessAction","StartLimitAction"};
+    static const char *const boolean_fields[]={"NeedDaemonReload","Transient","DefaultDependencies",
+        "RefuseManualStart","RefuseManualStop","IgnoreOnIsolate","StopWhenUnneeded"};
+    static const char *const identity_fields[]={"InvocationID","Job"};
+    static const char *const dependency_fields[]={"DropInPaths","Requires","Requisite","BindsTo","PartOf","ConsistsOf",
+        "Conflicts","ConflictedBy","Before","After","OnFailure","OnSuccess","PropagatesStopTo","StopPropagatedFrom",
+        "Triggers","TriggeredBy","RequiresMountsFor","Upholds","OnFailureOf","OnSuccessOf"};
+    static const char *const timeout_fields[]={"JobTimeoutUSec","JobRunningTimeoutUSec"};
+    static const char *const service_fields[]={"Type","ExitType","Restart","RestartMode","OOMPolicy","NotifyAccess","PIDFile",
+        "TimeoutStartFailureMode","TimeoutStopFailureMode","User","Group","RootDirectory","RootImage","WorkingDirectory",
+        "StandardInput","StandardOutput","StandardError","PAMName","BusName","KillMode"};
+    static const char *const service_values[]={"exec","cgroup","no","normal","continue","none","",
+        "terminate","terminate","root","root","","","","null","null","null","","","process"};
+    static const char *const service_scalar_fields[]={"RemainAfterExit","DynamicUser","SendSIGKILL","SendSIGHUP",
+        "RuntimeMaxUSec","RuntimeRandomizedExtraUSec","WatchdogUSec","LimitNOFILE","LimitNOFILESoft",
+        "MainPID","ControlPID","NRestarts","FileDescriptorStoreMax","NFileDescriptorStore"};
+    static const char service_scalar_types[]="bbbbtttttuuuuu";
+    static const char *const service_empty_fields[]={"Environment","EnvironmentFiles","PassEnvironment","UnsetEnvironment",
+        "RestartForceExitStatus","ExecConditionEx","ExecStartPreEx","ExecStartPostEx","ExecReloadEx","ExecStopEx","ExecStopPostEx"};
+    static const char *const cgroup_string_fields[]={"Slice","ControlGroup","DelegateSubgroup","ManagedOOMSwap","ManagedOOMMemoryPressure"};
+    static const char *const cgroup_scalar_fields[]={"Delegate","CPUQuotaPerSecUSec","CPUQuotaPeriodUSec","MemoryMax","MemorySwapMax","TasksMax"};
+    static const char *const cgroup_array_fields[]={"DelegateControllers","DisableControllers"};
+    static const char properties[]="org.freedesktop.DBus.Properties";
+    for(unsigned int phase=0;phase<103;++phase)for(unsigned int role=0;role<(phase<43||phase>=89?4U:1U);++role){
+        char object[160],unit[96],expected[192];unsigned char request[384]={0},reply[316];
+        const char *property=phase<2?(phase?"Names":"Id"):phase<12?fields[phase-2]:phase<19?boolean_fields[phase-12]:
+                             phase<21?identity_fields[phase-19]:phase<41?dependency_fields[phase-21]:phase<43?timeout_fields[phase-41]:
+                             phase<63?service_fields[phase-43]:phase<77?service_scalar_fields[phase-63]:phase<88?service_empty_fields[phase-77]:
+                             phase==88?"ExecStartEx":phase<94?cgroup_string_fields[phase-89]:phase<100?cgroup_scalar_fields[phase-94]:phase<102?cgroup_array_fields[phase-100]:"ControlGroupId";
+        const char *interface=phase<43?"org.freedesktop.systemd1.Unit":phase>=89&&role?"org.freedesktop.systemd1.Slice":"org.freedesktop.systemd1.Service";
+        size_t property_length=strlen(property);
+        int on=snprintf(object,sizeof(object),objects[role],input_owner.project);
+        int un=snprintf(unit,sizeof(unit),names[role],input_owner.project),en;
+        if(on<=0||(size_t)on>=sizeof(object)||un<=0||(size_t)un>=sizeof(unit))goto invalid;
+        if(phase>=94){expected[0]=0;en=0;
+        }else if(phase>=89){
+            if(phase==89)en=role==0?snprintf(expected,sizeof(expected),names[1],input_owner.project):
+                role==3?snprintf(expected,sizeof(expected),names[2],input_owner.project):snprintf(expected,sizeof(expected),"-.slice");
+            else if(phase==90){
+                if(role==0)en=snprintf(expected,sizeof(expected),"/rnrc%s.slice/rnrc%s.service",input_owner.project,input_owner.project);
+                else if(role==3)en=snprintf(expected,sizeof(expected),"/rnrw%s.slice/rnrw%s-anchor.slice",input_owner.project,input_owner.project);
+                else en=snprintf(expected,sizeof(expected),"/%s",unit);
+            }else en=snprintf(expected,sizeof(expected),"%s",phase==91?(role?"":"keeper"):"auto");
+        }else if(phase>=63){expected[0]=0;en=0;}
+        else if(phase>=43)en=snprintf(expected,sizeof(expected),"%s",service_values[phase-43]);
+        else if(phase<2)en=snprintf(expected,sizeof(expected),"%s",unit);
+        else if(phase==2)en=snprintf(expected,sizeof(expected),"loaded");
+        else if(phase==3)en=snprintf(expected,sizeof(expected),"active");
+        else if(phase==4)en=snprintf(expected,sizeof(expected),"%s",role?"active":"running");
+        else if(phase==5)en=snprintf(expected,sizeof(expected),"/etc/systemd/system/%s",unit);
+        else if(phase==6)en=snprintf(expected,sizeof(expected),"%s","");
+        else if(phase==7)en=snprintf(expected,sizeof(expected),"inactive");
+        else if(phase<12)en=snprintf(expected,sizeof(expected),"none");
+        else if(phase<21){expected[0]=0;en=0;}
+        else if(phase<41){
+            unsigned int dep=phase-21;const char *format=NULL;
+            if(dep==1||dep==9){if(role==0)format=names[1];else if(role==3)format=names[2];}
+            else if(dep==8){if(role==1)format=names[0];else if(role==2)format=names[3];}
+            if(format)en=snprintf(expected,sizeof(expected),format,input_owner.project);
+            else if((dep==1||dep==9)&&(role==1||role==2))en=snprintf(expected,sizeof(expected),"-.slice");
+            else{expected[0]=0;en=0;}
+        }else{expected[0]=0;en=0;}
+        if(en<0||(size_t)en>=sizeof(expected)||(size_t)en+((phase==1||(phase>=21&&phase<41))?45:41)>sizeof(reply))goto invalid;
+        uint32_t serial=manager_reserve_serial(e);if(!serial)return -1;
+        size_t p=16;request[p++]=1;request[p++]=1;request[p++]='o';++p;
+        manager_put_u32(request+p,(uint32_t)on);p+=4;memcpy(request+p,object,(size_t)on+1);p+=(size_t)on+1;
+        while(p%8)++p;
+        request[p++]=2;request[p++]=1;request[p++]='s';++p;
+        manager_put_u32(request+p,sizeof(properties)-1);p+=4;memcpy(request+p,properties,sizeof(properties));p+=sizeof(properties);
+        request[p++]=3;request[p++]=1;request[p++]='s';++p;
+        manager_put_u32(request+p,3);p+=4;memcpy(request+p,"Get",4);p+=4;
+        while(p%8)++p;
+        request[p++]=8;request[p++]=1;request[p++]='g';++p;request[p++]=2;request[p++]='s';request[p++]='s';++p;
+        size_t fields=p-16,body_start=p,interface_length=strlen(interface);
+        manager_put_u32(request+p,(uint32_t)interface_length);p+=4;memcpy(request+p,interface,interface_length+1);p+=interface_length+1;
+        while(p%4)++p;
+        manager_put_u32(request+p,(uint32_t)property_length);p+=4;memcpy(request+p,property,property_length+1);p+=property_length+1;
+        request[0]='l';request[1]=1;request[2]=2;request[3]=1;
+        manager_put_u32(request+4,(uint32_t)(p-body_start));manager_put_u32(request+8,serial);manager_put_u32(request+12,(uint32_t)fields);
+        struct iovec iov={.iov_base=request,.iov_len=p};struct msghdr message={.msg_iov=&iov,.msg_iovlen=1};
+        if(manager_peer(e)!=0||live_input(e)!=0)return -1;
+        ssize_t sent=sendmsg(input_owner.manager_fd,&message,MSG_NOSIGNAL);
+        if(sent<0)return failed_input(e,RNR_STAGE0_PREPARER_PID1,errno);
+        if((size_t)sent!=p)return failed_input(e,RNR_STAGE0_PREPARER_PID1,0);
+        if(live_input(e)!=0)return -1;
+        unsigned int fragments=0;
+        if(manager_receive(reply,16,&fragments,e)!=0)return -1;
+        uint32_t body=manager_u32(reply+4),header=manager_u32(reply+12);
+        if(reply[0]!='l'||reply[1]!=2||reply[2]!=1||reply[3]!=1||!manager_u32(reply+8)||
+           body!=(phase==102?16:phase>=100?(phase==100&&role==0?37:8):phase>=94?(phase==94?8:16):phase>=89?(uint32_t)en+9:phase==88?284:phase>=77?((phase==78||phase==81)?16:phase>=82?24:8):phase>=63?(service_scalar_types[phase-63]=='t'?16:8):phase>=43?(uint32_t)en+9:phase>=41?16:phase>=21?(en?(uint32_t)en+13:8):phase==19?24:phase==20?18:phase>=12?8:
+                  (uint32_t)en+(phase==1?13:9))||(header!=15&&header!=16))goto invalid;
+        if(manager_receive(reply+16,16+(size_t)body,&fragments,e)!=0)return -1;
+        unsigned char a[15]={5,1,'u',0,0,0,0,0,8,1,'g',0,1,'v',0};
+        unsigned char b[16]={8,1,'g',0,1,'v',0,0,5,1,'u',0,0,0,0,0};
+        manager_put_u32(a+4,serial);manager_put_u32(b+12,serial);
+        if((header==15&&(memcmp(reply+16,a,sizeof(a))||reply[31]))||
+           (header==16&&memcmp(reply+16,b,sizeof(b))))goto invalid;
+        if(phase==102){
+            static const unsigned char type[]={1,'t',0,0,0,0,0,0};
+            if(memcmp(reply+32,type,sizeof(type)))goto invalid;
+            uint64_t id=0;for(size_t i=0;i<8;++i)id|=(uint64_t)reply[40+i]<<(8*i);
+            if(!id)goto invalid;
+            input_owner.manager_cgroup_ids[role]=id;
+        }else if(phase>=100){
+            static const unsigned char empty[]={2,'a','s',0,0,0,0,0};
+            static const unsigned char controllers[]={2,'a','s',0,29,0,0,0,3,0,0,0,'c','p','u',0,
+                6,0,0,0,'m','e','m','o','r','y',0,0,4,0,0,0,'p','i','d','s',0};
+            if(phase==100&&role==0){if(memcmp(reply+32,controllers,sizeof(controllers)))goto invalid;}
+            else if(memcmp(reply+32,empty,sizeof(empty)))goto invalid;
+        }else if(phase>=94){
+            unsigned int field=phase-94;char type=field?'t':'b';
+            uint64_t value=field?manager_cgroup_limit(&input_owner.policy.units[role],field):(role==0);
+            if(reply[32]!=1||reply[33]!=(unsigned char)type||reply[34]||reply[35])goto invalid;
+            size_t start=field?40:36,count=field?8:4;
+            if(field&&(reply[36]||reply[37]||reply[38]||reply[39]))goto invalid;
+            for(size_t i=0;i<count;++i)if(reply[start+i]!=(unsigned char)(value>>(8*i)))goto invalid;
+        }else if(phase>=89){
+            if(reply[32]!=1||reply[33]!='s'||reply[34]||reply[35]||manager_u32(reply+36)!=(uint32_t)en||
+               memcmp(reply+40,expected,(size_t)en+1))goto invalid;
+        }else if(phase==88){
+            static const unsigned char start[]={15,'a','(','s','a','s','a','s','t','t','t','t','u','i','i',')',0,0,0,0,4,1,0,0};
+            static const char prefix[]="/usr/lib/rnr/bootstraps/",suffix[]="/rnr-stage0",hex[]="0123456789abcdef";
+            char executable[100];memcpy(executable,prefix,sizeof(prefix)-1);
+            for(size_t i=0;i<32;++i){unsigned int byte=input_owner.policy.native_digest[i];
+                executable[sizeof(prefix)-1+2*i]=hex[byte>>4];executable[sizeof(prefix)+2*i]=hex[byte&15];}
+            memcpy(executable+sizeof(prefix)-1+64,suffix,sizeof(suffix));
+            if(memcmp(reply+32,start,sizeof(start))||manager_u32(reply+56)!=99||memcmp(reply+60,executable,sizeof(executable))||
+               manager_u32(reply+160)!=104||manager_u32(reply+164)!=99||memcmp(reply+168,executable,sizeof(executable))||
+               manager_u32(reply+268)!=0||manager_u32(reply+304)!=(uint32_t)input_owner.original_keeper)goto invalid;
+            for(size_t i=288;i<304;++i)if(reply[i])goto invalid;
+            if(manager_i32(reply+308)!=0||manager_i32(reply+312)!=0)goto invalid;
+        }else if(phase>=77){
+            static const unsigned char as[]={2,'a','s',0,0,0,0,0};
+            static const unsigned char asb[]={5,'a','(','s','b',')',0,0,0,0,0,0,0,0,0,0};
+            static const unsigned char aiai[]={6,'(','a','i','a','i',')',0,0,0,0,0,0,0,0,0};
+            static const unsigned char exec[]={15,'a','(','s','a','s','a','s','t','t','t','t','u','i','i',')',0,0,0,0,0,0,0,0};
+            const unsigned char *v=phase==78?asb:phase==81?aiai:phase>=82?exec:as;
+            size_t n=phase==78?sizeof(asb):phase==81?sizeof(aiai):phase>=82?sizeof(exec):sizeof(as);
+            if(memcmp(reply+32,v,n))goto invalid;
+        }else if(phase>=63){
+            unsigned int field=phase-63;char type=service_scalar_types[field];
+            uint64_t value=field==4?UINT64_MAX:(field==7||field==8)?256:field==9?(uint64_t)input_owner.original_keeper:0;
+            if(reply[32]!=1||reply[33]!=(unsigned char)type||reply[34]||reply[35])goto invalid;
+            size_t start=type=='t'?40:36,count=type=='t'?8:4;
+            if(type=='t'&&(reply[36]||reply[37]||reply[38]||reply[39]))goto invalid;
+            for(size_t i=0;i<count;++i)if(reply[start+i]!=(unsigned char)(value>>(8*i)))goto invalid;
+        }else if(phase>=43){
+            if(reply[32]!=1||reply[33]!='s'||reply[34]||reply[35]||manager_u32(reply+36)!=(uint32_t)en||
+               memcmp(reply+40,expected,(size_t)en+1))goto invalid;
+        }else if(phase>=41){
+            static const unsigned char infinity[]={1,'t',0,0,0,0,0,0,255,255,255,255,255,255,255,255};
+            if(memcmp(reply+32,infinity,sizeof(infinity)))goto invalid;
+        }else if(phase>=21){
+            if(reply[32]!=2||reply[33]!='a'||reply[34]!='s'||reply[35]||
+               manager_u32(reply+36)!=(en?(uint32_t)en+5:0))goto invalid;
+            if(en&&(manager_u32(reply+40)!=(uint32_t)en||memcmp(reply+44,expected,(size_t)en+1)))goto invalid;
+        }else if(phase==19){
+            if(reply[32]!=2||reply[33]!='a'||reply[34]!='y'||reply[35]||manager_u32(reply+36)!=16)goto invalid;
+            unsigned int nonzero=0;for(size_t i=0;i<16;++i)nonzero|=reply[40+i];
+            if(!nonzero)goto invalid;
+            memcpy(input_owner.manager_invocations[role],reply+40,16);
+        }else if(phase==20){
+            static const unsigned char empty_job[]={4,'(','u','o',')',0,0,0,0,0,0,0,1,0,0,0,'/',0};
+            if(memcmp(reply+32,empty_job,sizeof(empty_job)))goto invalid;
+        }else if(phase>=12){
+            if(reply[32]!=1||reply[33]!='b'||reply[34]||reply[35]||
+               manager_u32(reply+36)!=(unsigned int)(phase==16||phase==17))goto invalid;
+        }else if(phase!=1){
+            if(reply[32]!=1||reply[33]!='s'||reply[34]||reply[35]||manager_u32(reply+36)!=(uint32_t)en||
+               memcmp(reply+40,expected,(size_t)en+1))goto invalid;
+        }else if(reply[32]!=2||reply[33]!='a'||reply[34]!='s'||reply[35]||
+                 manager_u32(reply+36)!=(uint32_t)en+5||manager_u32(reply+40)!=(uint32_t)en||
+                 memcmp(reply+44,expected,(size_t)en+1))goto invalid;
+        if(manager_peer(e)!=0||manager_paths(0,e)!=0||original_working_directory(e)!=0)return -1;
+        if(rnr_stage0_check_project_view(&e->project)!=0){reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);return -1;}
+    }
+    return 0;
+invalid:
+    reject_input(e,RNR_STAGE0_PREPARER_PID1,0);return -1;
+}
+#endif
 int rnr_stage0_prepare_inputs(struct rnr_stage0_preparer_error *e)
 {
     int expected=PREPARER_NEW;
@@ -515,24 +1739,70 @@ int rnr_stage0_prepare_held_inputs(struct rnr_stage0_preparer_error *e)
     if(rnr_stage0_check_bootstrap(&e->bootstrap)!=0){
         reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->bootstrap.system_errno);goto failed;
     }
-    if(live_input(e)!=0 || read_fixed_inputs(448,e)!=0)goto failed;
-    struct rnr_stage0_launch_declaration declaration;
-    if(rnr_stage0_decode_launch_declaration(input_owner.task.payload,input_owner.task.payload_bytes,&declaration)!=0){
-        reject_input(e,RNR_STAGE0_PREPARER_DECODE,0);goto failed;
+    input_owner.project_route=1;for(int role=5;role<=10;++role)input_owner.fds[role]=-1;
+    if(rnr_stage0_capture_project_view(input_owner.project,&input_owner.fds[0],input_owner.project_executables,&input_owner.original_keeper,&e->project)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);goto failed;
     }
+    input_owner.project_held=1;
+    if(rnr_stage0_check_project_view(&e->project)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);goto failed;
+    }
+    if(live_input(e)!=0 || read_fixed_inputs(448,e)!=0)goto failed;
+    static const char hex[]="0123456789abcdef";
+    for(int i=0;i<32;++i){
+        unsigned int b=input_owner.installation.project_id[i];
+        if(input_owner.project[2*i]!=hex[b>>4]||input_owner.project[2*i+1]!=hex[b&15]){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto failed;
+        }
+    }
+    if(read_project_policy(e)!=0||authenticate_executables(e)!=0||authenticate_unit_fragments(e)!=0)goto failed;
+    for(int role=0;role<11;++role)if(recheck_input(role,e)!=0)goto failed;
+    if(executable_recheck(e)!=0)goto failed;
+    if(unit_recheck(e)!=0)goto failed;
+    if(rnr_stage0_check_project_view(&e->project)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);goto failed;
+    }
+    if(manager_begin(e)!=0||manager_lookup_keeper(e)!=0||manager_unit_path(e)!=0||unit_search_directories(1,e)!=0||unit_conf_overlays(e)!=0||manager_check_unit_identities(e)!=0||
+       cgroup_capture(e)!=0)goto failed;
+    struct rnr_stage0_launch_declaration declaration;
+    if(live_input(e)!=0)goto failed;
+    if(rnr_stage0_decode_launch_declaration(input_owner.task.payload,input_owner.task.payload_bytes,&declaration)!=0){
+        (void)failed_input(e,RNR_STAGE0_PREPARER_DECODE,0);goto failed;
+    }
+    if(live_input(e)!=0)goto failed;
     if(input_owner.installation.version!=2 ||
        memcmp(declaration.allocation,input_owner.task.task_id,16) ||
        memcmp(declaration.asset_root,input_owner.installation.asset_root,32) ||
        memcmp(declaration.execution_root,input_owner.installation.execution_root,32) ||
-       memcmp(input_owner.installation.runtime.root,input_owner.installation.execution_root,32)){
+       memcmp(input_owner.installation.runtime.root,input_owner.installation.execution_root,32) ||
+       memcmp(declaration.tool_digest,input_owner.policy.tool_digest,32) ||
+       memcmp(declaration.daemon_digest,input_owner.policy.daemon_digest,32) ||
+       memcmp(declaration.manager_digest,input_owner.policy.manager_digest,32) ||
+       declaration.cpu_millis>input_owner.policy.units[2].cpu_millis ||
+       declaration.memory_bytes>input_owner.policy.units[2].memory_bytes ||
+       declaration.pids>input_owner.policy.units[2].pids ||
+       declaration.swap_bytes!=input_owner.policy.units[2].swap_bytes ||
+       declaration.unit_path_count!=input_owner.policy.unit_path_count){
         reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto failed;
+    }
+    for(size_t n=0;n<declaration.unit_path_count;++n){
+        if(declaration.unit_paths[n].length!=input_owner.policy.unit_paths[n].length||
+           memcmp(declaration.unit_paths[n].bytes,input_owner.policy.unit_paths[n].bytes,declaration.unit_paths[n].length)){
+            reject_input(e,RNR_STAGE0_PREPARER_IDENTITY,0);goto failed;
+        }
     }
     if(live_input(e)!=0)goto failed;
     if(rnr_stage0_bind_admission_inputs(&input_owner.installation,&input_owner.task,&declaration,&e->launch)!=0){
         reject_input(e,RNR_STAGE0_PREPARER_CLOCK,e->launch.system_errno);goto failed;
     }
     if(live_input(e)!=0)goto failed;
-    for(int role=0;role<5;++role)if(recheck_input(role,e)!=0)goto failed;
+    for(int role=0;role<11;++role)if(recheck_input(role,e)!=0)goto failed;
+    if(executable_recheck(e)!=0)goto failed;
+    if(unit_recheck(e)!=0)goto failed;
+    if(rnr_stage0_check_project_view(&e->project)!=0){
+        reject_input(e,RNR_STAGE0_PREPARER_BOOTSTRAP,e->project.system_errno);goto failed;
+    }
+    if(manager_peer(e)!=0||manager_paths(0,e)!=0||original_working_directory(e)!=0||unit_search_directories(0,e)!=0||unit_conf_overlays(e)!=0||cgroup_recheck(e)!=0)goto failed;
     if(live_input(e)!=0)goto failed;
     expected=PREPARER_ADMISSION_ACQUIRING;
     if(!atomic_compare_exchange_strong_explicit(&preparer_state,&expected,PREPARER_ADMISSION_INPUTS_HELD,
@@ -1630,7 +2900,7 @@ static int media_close(int *fd,unsigned int slot,struct rnr_stage0_preparer_erro
     int result=close(original),failure=result<0?errno:0;
     /* Ordinary drain retains the same exact close uncertainty, without retry. */
     if(result<0){
-        if(e->cleanup_count<80){e->cleanup_errors[e->cleanup_count].fd=original;
+        if(e->cleanup_count<96){e->cleanup_errors[e->cleanup_count].fd=original;
             e->cleanup_errors[e->cleanup_count++].system_errno=failure;}
         else e->cleanup_overflow=1;
     }
@@ -1888,7 +3158,7 @@ static int media_helper_close(int helper,int role,struct rnr_stage0_preparer_err
     input_owner.helper_closes[helper][role-6].result=result;
     input_owner.helper_closes[helper][role-6].system_errno=failure;
     if(result<0){
-        if(e->cleanup_count<80){e->cleanup_errors[e->cleanup_count].fd=fd;
+        if(e->cleanup_count<96){e->cleanup_errors[e->cleanup_count].fd=fd;
             e->cleanup_errors[e->cleanup_count++].system_errno=failure;}
         else e->cleanup_overflow=1;
         return media_reject(e,failure);

@@ -439,6 +439,16 @@ failed:
 }
 int rnr_stage0_check_admission_preparation(struct rnr_stage0_launch_error *error)
 {return admission_check(error,0,NULL,NULL,NULL);}
+int rnr_stage0_match_admission_time_namespace(uint64_t device,uint64_t inode,
+    struct rnr_stage0_launch_error *error)
+{
+    if(rnr_stage0_check_admission_preparation(error)!=0)return -1;
+    if(device!=prepared_clock.time_ns_device||inode!=prepared_clock.time_ns_inode){
+        reject_launch(error,RNR_STAGE0_LAUNCH_CONTEXT,0);
+        atomic_store(&launch_state,LAUNCH_FENCED);return -1;
+    }
+    return rnr_stage0_check_admission_preparation(error);
+}
 int rnr_stage0_bind_admission_inputs(const struct rnr_stage0_installation *installation,
     const struct rnr_stage0_task *task,const struct rnr_stage0_launch_declaration *declaration,
     struct rnr_stage0_launch_error *error)

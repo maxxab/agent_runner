@@ -1,5 +1,12 @@
 # RNR-D00 coupled admission and input-clock checkpoint —24 November2026
 
+Latest continuation: [manual Windows-visible stopping checkpoint](2026-11-24-windows-visible-progress.md).
+The user stopped Ubuntu-background execution and will open the visible Windows
+chat manually. No new chat may be created/dispatched. Current main is DIRTY with
+partial G1 work; verify the new protected windows-visible stopping receipt and
+dirty hashes before writes. The clean baseline and automatic-continuation wording
+below are historical; retain the original protected records unchanged.
+
 Operational release remains incomplete. All five gates in requirements.md are OPEN.
 No actual native qualification artifact, real provider request or live activation
 occurred. Continue authorized implementation; no user input is currently required.
