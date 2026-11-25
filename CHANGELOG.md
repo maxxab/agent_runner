@@ -45,6 +45,7 @@
 - **release:** record checkpoint provenance and continuation ([74f91d20d2e5](https://github.com/maxxab/agent_runner/commit/74f91d20d2e5d35998cf6f471b97c87f780dcbd5))
 - **architecture:** explain complete supervised lifecycle with Mermaid ([151f1f07ed82](https://github.com/maxxab/agent_runner/commit/151f1f07ed82961569d92278c68a80357bb48f89))
 - **admission:** refine dependency inventory and record project review ([5754885b11e2](https://github.com/maxxab/agent_runner/commit/5754885b11e2a14c3a83bd85ba5e31fd5b76388a))
+- **admission:** refine conservative inventory and buffer lifetime ([3a84323f19eb](https://github.com/maxxab/agent_runner/commit/3a84323f19ebe99e17b32d17a755572246ea8c97))
 
 ### Testing
 
