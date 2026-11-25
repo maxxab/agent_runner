@@ -17,6 +17,7 @@
 
 - **runtime:** require explicit finite provider retry controls ([6ce2f59d96c9](https://github.com/maxxab/agent_runner/commit/6ce2f59d96c98ef452facf271ea28a9940b82f23))
 - **runner:** retain post-failure input clock evidence ([d9e98cfacc65](https://github.com/maxxab/agent_runner/commit/d9e98cfacc65f21212241ef88fc3dc8fdf887c55))
+- **supervised:** pass explicit requested model settings ([5bd865c70b22](https://github.com/maxxab/agent_runner/commit/5bd865c70b2231670b4b5f793fd9144e57f0445d))
 
 ### Security
 
