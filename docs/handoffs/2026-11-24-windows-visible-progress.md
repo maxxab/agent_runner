@@ -1165,9 +1165,9 @@ its remote, with only `skills/agent-runner/SKILL.md` dirty. Preserve it; publish
 that separate repository would also publish unrelated work, so it is excluded
 from this agent_runner push.
 
-Main will checkpoint the existing fenced native work and the supervised release
-in separate conventional commits, regenerate/check the changelog, and attempt a
-normal push of agent_runner `main`. The actual final commits, push confirmation,
+Main checkpointed the fenced native work as `9815ba5` and the supervised release
+as `a7c5077` in separate conventional commits. Changelog generation/checking and
+normal push follow. The actual final commits, push confirmation,
 source/index state, external archives and stopped ownership are recorded in
 `supervised-chat-checkpoint-20261125.json`. Consult that receipt rather than
 treating this description of the intended operation as proof it succeeded.

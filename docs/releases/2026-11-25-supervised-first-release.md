@@ -9,12 +9,16 @@ No unattended service or autonomous task selection is offered.
 
 ## Artifact and supported environment
 
-The retained source checkout is `/home/faris/agent_runner`, branch `main`, HEAD
-`a39202b2b925d02b1d5a3a554de1bfe256d252e4`, with preserved uncommitted work. HEAD
-alone does not identify the implemented release: the protected manifests and
-wheel digest identify its working snapshot. No source commit, tag, publication
-or push was performed. The package retains its existing local development
-version; identify an installation by its exact wheel SHA256 as well as version.
+The source was qualified from a working snapshot of `/home/faris/agent_runner`,
+branch `main`, based on HEAD `a39202b2b925d02b1d5a3a554de1bfe256d252e4`.
+The protected manifests and wheel digest identify that snapshot. After the
+owner authorized commit and push, the preserved native progress was committed
+as `9815ba5` and the supervised implementation as `a7c5077`. Later checkpoint
+documentation/changelog commits and the actual push result are recorded in
+the protected `supervised-chat-checkpoint-20261125.json` receipt referenced by
+the handoff. No package tag or package publication was performed. The package
+retains its local development version; identify an installation by exact wheel
+SHA256 as well as version.
 
 The qualified environment is user `faris` on Linux/WSL2 host `DESKTOP-3CK36LV`,
 Python 3.12.3, Codex CLI 0.162.1, model `gpt-6.1-terra` and CLI-reported provider
