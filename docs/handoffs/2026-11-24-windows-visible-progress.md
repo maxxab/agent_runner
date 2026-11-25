@@ -2148,3 +2148,76 @@ Review exact allowed diff, requested/effective settings, unit/link results and
 post-exit status/clearance before claiming acceptance. Preserve UNKNOWN and
 reconcile any uncertain attempt without retry or reinitialization. Actual final
 publication/ownership state is in the newest protected first-use receipt.
+
+
+## 26 November: approved User Admin first-project acceptance completed
+
+The owner explicitly answered the concrete pending checkout/enrollment/one-live-run
+approval with “proceed quickly and close it.” The latest user message confirmed
+that this covers the prepared revision2 exception and scoped setup/opt-in/single
+provider invocation with the disclosed account/network/cost limits. Main did not
+ask again. Same chat01a21466, RNR-D00, zero observed compactions; all historical
+task IDs/names and UNKNOWN Main ownership/Issue Lead counters remain preserved.
+Original chat is stopped for source/runtime work. Canonical teamwork was read
+before execution. Exact `user-admin-first-use-approval-stop-20261125.json` matched
+main e5adccc, clean index/status/diff, all321 tracked hashes/modes and User Admin
+HEAD/status/both original dirty hashes; no continuing operation. Main resumed
+sole source/Git/runtime ownership in protected `user-admin-first-use-20261125/approved-ownership.json`.
+
+Created only the approved local existing-main clone at
+`/home/faris/.local/share/agent-runner-trials/user-admin-20261125`, from committed
+db10197 rather than unrelated dirty contents. Local setup commit
+`7927a1777849e81d9b0e1a9c13cb03003054d633` changes only reviewed config,
+ignore rules and backlog preparation entry. Origin retains the named GitHub
+repository label; no User Admin push. Offline `uv sync --locked --all-groups`
+and separate project-local wheel installation/import passed. The wheel digest
+matches delivered1c2306d43d4d741539a942c00d97022fc1d2d804509d9db022e3b9c289362cb7.
+Advisory doctor passed with execution disabled/native runtime unavailable.
+Private enrollment pins the exact setup commit, host and config digest
+35a7f5018ca18d7af78fb77371d5af56127921b6c446aff8018542d72cbcaee8.
+
+The fixed User Admin registration/state was absent before opt-in; no foreign
+state was overwritten or uncertain attempt replayed. Main inspected and approved
+foreground checkout/opt-in summaries, then observed initialized/ready. One
+read-only status call without a terminal was refused before any workload; the
+foreground status query returned ready. Main inspected the matching detailed
+execution summary and approved exactly one900s foreground task with180s/check.
+No provider retry/fallback or additional task invocation occurred.
+
+Attempt `115c0ffb757a222d9a0e682b4c322385` completed, Codex exit0 and shell-visible
+runner exit0. CLI0.162.1 reports modelgpt-6.1-sol, reasoning effortmedium,
+provideropenai, workspace-write and the exact approved clone. Unit check exit0:
+67tests passed1.25s. Links check exit0:21targets, none missing. Main reviewed the
+actual source claims/link/diff and all tracked changes: only the permitted
+`docs/developer/README.md` subsection and new `BACKLOG.md` task entry changed.
+HEAD7927a17/index remained unchanged; no nonignored untracked files. Ignored
+output is the two owned environments and pytest/Python caches. The authoritative
+User Admin HEAD/status/both original dirty hashes still match; frozen proposal
+and revision2 hashes are preserved. Result is retained uncommitted in the clone.
+No transfer into the original checkout or User Admin publication is authorized.
+
+The terminal report was delivered; an attempt-bound result clearance exists;
+post-exit foreground status returned ready with historical pending data. No
+reconciliation or reinitialization was needed. Main accepted this bounded first-
+project result and closed the remaining supervised v0.1 delivery scope. This is
+operator/source-check acceptance, not independent live QA, real integrations,
+account/cost audit, hostile-code containment or proof of absent external effects.
+No original gate is waived; autonomous G1–G6/five gates stay deferred/open for
+v0.2 and native abandon/exit125 remains. No service, container/native workload,
+deployment, new branch/worktree or automatic activation was performed.
+
+Evidence remains protected outside Git under user-admin-first-use-20261125:
+setup/install logs and exact base; approved ownership and live-operation record;
+terminal-results.json; accepted-task.patch; acceptance-result.json with private
+log/attempt/clearance hashes and limits. Fixed runtime state is retained at
+supervised-v1/ac5d3289f71bf82c3e121e02bad15265c6592a9dbd87ca21b70e06b0cc039156.state.
+Existing User Admin request73 was checked under the same locked durable sender;
+it remained pending with empty inbox and no duplicate request was sent. A later
+owner-chat reply cannot expand this completed one-run authorization.
+
+Only minimal release/handoff/changelog documentation is published for acceptance;
+no runner source, package, test or review change warrants repeating the1562-test
+suite, build or completed independent reviews. Actual closure commits, standards,
+ordinary SSH push, remote HEAD, checkout/runtime result and stopped ownership are
+in protected `user-admin-first-use-complete-stop-20261126.json`. No further trial,
+provider call or task is implied by readiness or this completed acceptance.

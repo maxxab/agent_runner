@@ -22,13 +22,52 @@ the existing [requirements index](../requirements.md) and
 They are retained autonomous follow-up work, not waived requirements or claims
 of v0.2 readiness. Keep the native unconditional abandon/exit-125 fence.
 
-First-project acceptance is a separate use checkpoint. The prepared User Admin
-documentation task and config remain unchanged; revision2 adds only explicit
-`gpt-6.1-sol` / `medium` checks settings. Execution is pending a specific decision
-on the separate-checkout exception, local setup commit, project enrollment/opt-in
-and one foreground provider run. The accepted recommendation explicitly called
-for resolving those approvals first. No first-project acceptance is claimed.
-Protected proposal: `/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/revision2/proposal.json`.
+**First-project acceptance is complete, 26 November 2026**, for the single
+authorized User Admin documentation task recorded below. The owner explicitly
+approved its separate-checkout exception, local setup commit, project enrollment/
+opt-in and one foreground provider invocation. The task/config remained unchanged;
+immutable revision2 added only explicit `gpt-6.1-sol` / `medium` checks settings.
+This closes the approved supervised v0.1 delivery scope. Further projects and
+runs still require their own authorization.
+
+## First-project acceptance — User Admin
+
+Main reviewed and accepted the result of attempt
+`115c0ffb757a222d9a0e682b4c322385`. The approved disposable clone is
+`/home/faris/.local/share/agent-runner-trials/user-admin-20261125`, existing main
+from `db10197fe11c1b99e24412e85db26c8305bf4f46`. Its local setup commit
+`7927a1777849e81d9b0e1a9c13cb03003054d633` adds only the reviewed runner config,
+ignore rules and backlog preparation entry. Private enrollment pins that commit,
+host `DESKTOP-3CK36LV` and config SHA256
+`35a7f5018ca18d7af78fb77371d5af56127921b6c446aff8018542d72cbcaee8`.
+Offline locked dependency synchronization, isolated project runner installation/
+import and advisory doctor passed. Doctor continued to report native runtime
+unavailable; it did not start one. The exact corrected wheel below was used.
+
+| Acceptance boundary | Observed evidence | Result / limits |
+| --- | --- | --- |
+| Explicit project and run approval | Separate checkout/opt-in summaries and captured task/checks/base/settings inspected and approved in the foreground; pre-run state `ready`; one 900s task, 180s/check | PASS; one CLI invocation, no runner retry or fallback |
+| Requested and effective settings | Installed CLI 0.162.1 log reports `gpt-6.1-sol`, reasoning effort `medium`, provider `openai`, workspace-write and the selected disposable checkout | PASS for CLI-reported settings; account identity, cost and provider-side effects unaudited |
+| Task and checks | Codex exit 0; ordered `unit` exit 0 (67 tests passed in 1.25s), `links` exit 0 (21 local targets, none missing) | PASS for these narrow source/link checks; no live integration qualification |
+| Reviewed result | Only `docs/developer/README.md` and a new `BACKLOG.md` task entry changed; wording matches source profile/opt-in/evidence limits, correct relative review link; diff whitespace check passed; HEAD/index unchanged, no nonignored untracked files | PASS; result retained uncommitted in the disposable checkout, no User Admin push |
+| Normal exit and clearance | Complete terminal report and exit 0; attempt-bound result clearance certificate; post-exit `supervised-status` returned `ready` | PASS under the previously qualified observer/filesystem limits; historical `pending` identifies the cleared attempt |
+| Original work custody | Authoritative User Admin remains at db10197 with the same two original dirty file hashes and status | PASS; neither original file nor frozen proposal was changed |
+
+Protected proposal:
+`/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/revision2/proposal.json`.
+Protected evidence:
+`/home/faris/.local/state/agent-runner/release-admission-20261119/user-admin-first-use-20261125/`:
+`approved-ownership.json`, `setup-result.json`, `installation.log`,
+`live-operation.json`, `terminal-results.json`, `accepted-task.patch` and
+`acceptance-result.json`. The latter pins private log, attempt and clearance
+digests; runtime records remain at the project's separate fixed supervised-v1
+state location outside Git. No unresolved attempt was erased or reinitialized.
+
+Ignored output comprises the owned runner/product environments and pytest/Python
+caches. Source review and the accepted result do not prove absence of escaped
+descendants or external effects. No service, container, native qualification,
+deployment, automatic activation, new branch/worktree or User Admin publication
+was performed. The original autonomous gates and exit-125 fence remain intact.
 
 ## Artifact and supported environment
 
