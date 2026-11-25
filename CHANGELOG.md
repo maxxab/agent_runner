@@ -48,6 +48,7 @@
 - **admission:** refine conservative inventory and buffer lifetime ([3a84323f19eb](https://github.com/maxxab/agent_runner/commit/3a84323f19ebe99e17b32d17a755572246ea8c97))
 - **admission:** specify bounded inventory layout and preclaim sequence ([6c42cf0a4de3](https://github.com/maxxab/agent_runner/commit/6c42cf0a4de31bf05d427ca3cf947acc0092a47f))
 - refine admission safety boundaries ([09cea549090a](https://github.com/maxxab/agent_runner/commit/09cea549090a7d8a1acb0b09fbe007c24f872a08))
+- **admission:** clarify mount and alias evidence ([d7fb85b8b5d7](https://github.com/maxxab/agent_runner/commit/d7fb85b8b5d7b3360f422ee77b53a1c28e6a7e13))
 
 ### Testing
 
