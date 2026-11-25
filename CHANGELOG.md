@@ -44,6 +44,7 @@
 - **runner:** freeze simplified coupled admission contract ([51d38b625a53](https://github.com/maxxab/agent_runner/commit/51d38b625a5344f7cb5fbbe2cb629bb187e81167))
 - **release:** record checkpoint provenance and continuation ([74f91d20d2e5](https://github.com/maxxab/agent_runner/commit/74f91d20d2e5d35998cf6f471b97c87f780dcbd5))
 - **architecture:** explain complete supervised lifecycle with Mermaid ([151f1f07ed82](https://github.com/maxxab/agent_runner/commit/151f1f07ed82961569d92278c68a80357bb48f89))
+- **admission:** refine dependency inventory and record project review ([5754885b11e2](https://github.com/maxxab/agent_runner/commit/5754885b11e2a14c3a83bd85ba5e31fd5b76388a))
 
 ### Testing
 
