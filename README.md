@@ -10,6 +10,10 @@ for the exact artifact, evidence and limits, and the
 The package is unpublished; automatic service startup and the original hardened
 runtime remain unavailable with their release gates open.
 
+The [architecture guide](docs/architecture.md) explains the complete supervised
+lifecycle with component, sequence and state diagrams, including normal-exit
+clearance and explicit recovery.
+
 The installed `agent-runner doctor` and `preview` commands provide read-only
 advisory reports. Python >=3.12 and Git are required; ordinary Python runtime
 dependencies are empty. Existing `automation` and `tools` import names and flat

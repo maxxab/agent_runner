@@ -11,6 +11,9 @@ Owner chat first reads /home/faris/development-standards/skills/agent-runner/SKI
 and canonical POLICY.md. Explicitly select one project and obtain its opt-in;
 reading the skill does not authorize installation into any other project.
 
+The [architecture guide](architecture.md) shows the complete setup, run, report,
+exit and reconciliation lifecycle, including trust boundaries and private state.
+
 ## Prerequisites and ownership
 
 Use an absolute Git worktree root, Python>=3.12, Git, uv and a reviewed local wheel.

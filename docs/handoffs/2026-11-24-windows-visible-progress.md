@@ -1178,3 +1178,67 @@ original gates, both recovery guarantees, evidence, authorizations, and the next
 documentation step. Historical subagents are unavailable and must not be resumed.
 There has been one confirmed compaction in this chat; numeric ownership version
 and next Issue Lead counter remain UNKNOWN. No new chat was created or dispatched.
+
+## 25 November: canonical architecture and diagrams completed
+
+A fresh continuation Main `/root` resumed RNR-D00 as Lead / Orchestrator and
+sole source/docs/Git writer. Before writing, Main verified checkpoint `a84b833`,
+the clean index/worktree, all 319 recorded file hashes/modes, protected manifest
+and bundle digests, complete bundle verification, and remote `main` equality.
+The predecessor's ownership release was explicit; no matching prior runner work
+process was observed. Fresh ownership is recorded externally in
+`supervised-architecture-ownership-20261125.json`. No predecessor was resumed
+and no new agent was delegated. This new chat has zero confirmed compactions;
+prior compaction history, UNKNOWN numeric ownership version and UNKNOWN next
+Issue Lead counter remain intact.
+
+Main traced the actual CLI and config, capture/rechecks, state, execution and
+observer modules end to end. The trace covered installation and explicit opt-in,
+all approval boundaries, lock/observer handshake, protected guard before launch,
+one Codex invocation and ordered checks, logs and final Git observation, result
+persistence, full report write/flush, delivery token, actual process exit and
+clearance. It also covered declined/changed inputs, timeout/interruption,
+abrupt loss, interrupted preparation and explicit reconciliation. No new
+implementation defect was established. The canonical
+[architecture guide](../architecture.md) now contains seven Mermaid diagrams:
+components/trust boundaries, complete owner journey, installation/opt-in,
+run admission, execution/report/exit, failure/reconciliation, and logical state.
+README, owner guide and release record link to that single guide.
+
+All seven final blocks rendered successfully using Mermaid **11.12.1** in the
+available Playwright browser. Main inspected screenshots of all seven, corrected
+sequence-message semicolon parsing, shortened component labels and wrapped long
+messages. The initial standalone headless-browser attempts stalled and were
+stopped; available-browser rendering then succeeded. Some screenshot calls timed
+out; final captures, including the admission diagram's viewport capture, were
+obtained and inspected. This verifies the pinned renderer, not GitHub's exact
+renderer or operational behavior. Final Mermaid sources, SVGs, screenshots,
+source digests and `verification.json` are protected outside Git at
+`/home/faris/.local/state/agent-runner/release-admission-20261119/supervised-architecture-render-20261125/`.
+
+The guide retains both owner decisions: observed normal completion (including
+normal failed tasks) clears only after report delivery and confirmed normal
+foreground exit; abrupt loss remains UNKNOWN and requires explicit
+reconciliation. It explicitly explains historical `pending` with `ready`,
+exit-zero status queries that report `unresolved`, private storage retention,
+operator review and the absence of containment, an enforced spending cap or
+proof of human receipt. RNR-D00/G1–G6, the native exit-125 fence and all five
+original operational gates remain open. No runtime code, consumer enrollment,
+provider call, service or native activation changed.
+
+Documentation fences, local links and diff checks were verified for this change.
+The preserved full-suite and focused-log digests were rechecked; the prior
+1,556-test/seven-skip, 31-test, independent source/design review and synthetic
+qualification evidence is reused for unchanged runtime source. No new test-suite,
+package build, independent review or live-run result is claimed for this prose
+change. The documentation task is complete; another real-project trial remains
+a separate operation requiring a selected project and explicit authorization.
+
+Authorized documentation/changelog commits, explicit-range standards checks,
+actual normal push outcome, final HEAD/index/worktree/remote and Main ownership
+release are recorded in the protected final receipt
+`/home/faris/.local/state/agent-runner/release-admission-20261119/supervised-architecture-stop-20261125.json`.
+Consult that receipt and current Git state rather than inferring publication from
+this document. Earlier receipts and archives remain unchanged. The separate
+shared-standards checkout and its uncommitted canonical skill change are preserved
+and excluded from this publication authorization.

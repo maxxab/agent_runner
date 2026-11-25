@@ -79,6 +79,10 @@ attempt and log/certificate digests. The
 [handoff](../handoffs/2026-11-24-windows-visible-progress.md) preserves prior
 review findings, corrections, authorizations and evidence history.
 
+The canonical [architecture guide](../architecture.md) traces the implementation
+with component, sequence and state diagrams. Its documentation checks are
+separate from the qualification evidence above.
+
 ## Run and recovery
 
 Follow the [owner guide](../project-owner.md): install the exact reviewed wheel
