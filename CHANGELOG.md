@@ -52,6 +52,7 @@
 - **admission:** clarify mount and alias evidence ([d7fb85b8b5d7](https://github.com/maxxab/agent_runner/commit/d7fb85b8b5d7b3360f422ee77b53a1c28e6a7e13))
 - **release:** freeze supervised v0.1 implementation scope ([65725aa06b4c](https://github.com/maxxab/agent_runner/commit/65725aa06b4cebcd115c5c60c632cbd878e4a321))
 - **release:** accept first supervised User Admin task ([bebd8d95af77](https://github.com/maxxab/agent_runner/commit/bebd8d95af77a2f18c7e0511e0e5e3fb8af2d5f9))
+- **runner:** explain supervised use and task verification ([3372e1099b5f](https://github.com/maxxab/agent_runner/commit/3372e1099b5f435b4da430c9b047db1e34cc01a1))
 
 ### Testing
 
