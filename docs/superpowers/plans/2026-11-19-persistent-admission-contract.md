@@ -2927,7 +2927,8 @@ at 0..28 are total bytes, next fact offset, compiled observation-role code,
 component bytes, link bytes, definite syscall disposition, mode and uid; gid
 and reserved are at 32/36. u64 at 40/48/56/64/72/80/88/96/104/112 are
 dev/inode/mount/nlink/rdev/size/mtime-seconds/mtime-nanoseconds/ctime-seconds/
-ctime-nanoseconds; 120..127 reserved zero. Signed size/time fields use their
+ctime-nanoseconds; u64 at 120 stores the exact observed filesystem type where
+the fixed role requires it, zero otherwise. Signed size/time fields use their
 exact signed64 representation. No fact reads device/FIFO contents. Components
 are bounded by NAME_MAX=255; a link read uses its actual syscall byte count,
 bounded by the 4096-byte scratch slot, with a full-capacity result refused as
@@ -3029,7 +3030,8 @@ getter, caller-selected callback, supplied directory or reusable approval token:
    comparisons must exist before this step can return success.
 5. Retire the arena through the reviewed original-owner clear, then publish the
    one-way `ADMISSION_PRECLAIM_CHECKED` state only by successful CAS from its
-   unfenced active state. This is not media/GO authority or a reusable token.
+   unfenced preparer phase. Launch and persistence are separately checked as
+   described below. This is not media/GO authority or a reusable token.
    Quiescent abandon recognizes the checked state; active abandon attempts only
    fence. Failure at any point clears private memory through the original owner
    and closes that owner's handles once, preserving first and cleanup errors.
@@ -3042,8 +3044,9 @@ getter, caller-selected callback, supplied directory or reusable approval token:
    any known fence prevents the next effect; an already-entered uncertain syscall
    retains its actual disposition, never an invented UNATTEMPTED result.
 7. Preserve today's one-shot create/write/file-sync/parent-sync ordering for
-   active and claim. Only full timely success can publish the paired held state
-   needed by a later authenticated CLAIM exchange. A paired publication failure,
+   active and claim. Only full timely success can publish the individually
+   tentative owner states needed by a later authenticated CLAIM exchange.
+   A coupled validation failure,
    concurrent fence, lost ACK or any syscall/close uncertainty fences both owners
    and retains consumption; no rollback, retry or claim removal. No new native
    preparation, media helper or GO is allowed from these proposed states.
@@ -3058,3 +3061,591 @@ lookup and creation; a successful absence lookup never creates that exclusion.
 The sequence adds no retained FD, but actual nested temporary/call-frame peaks,
 binding-buffer ownership and maximum I/O/computation counts remain to be proved.
 It refines the integration question only; Revision B and all G gates stay open.
+
+The current source exposes an important cross-owner fencing detail. A preparer
+fence routes through `rnr_stage0_check_admission_preparation(NULL)`, which sets
+the shared launch state to FENCED; subsequent persistence `live` checks then
+fail. Persistence's own `fence()` currently changes only persistence state. If
+a losing persistence call fences while the original owner is inside a nested
+preclaim reader, that reader's `live_input` does not currently inspect the
+persistence phase, so it could finish and attempt publication even though the
+store owner was fenced. The current uninvoked storage function has no nested
+reader; this is a prospective integration problem, not an observed runtime
+failure. Merely checking persistence after the reader returns prevents a later
+claim, but does not itself invalidate the reader's publication.
+
+The candidate cross-owner rule is one shared existing launch fence: every
+rejected/foreign/reentrant persistence path that can overlap the fixed preclaim
+reader must also atomically fence the existing launch owner; each existing
+preparer/persistence `live` check then observes that shared fence. The original
+active call alone drains its own FDs and private arena. Treat both private
+owner phases as necessary gates: `CHECKED` alone is never consumable by another
+caller, and persistence HELD alone never produces a CLAIM ACK. The fixed launch
+call chain may proceed only after both successful owner completions and a fresh
+shared launch check. A failed CAS or concurrent fence on either owner is terminal;
+the launch fence is monotonic and cannot be restored by another phase's success.
+Checks before and after syscalls do not cancel an already-entered syscall; retain
+its actual returned/unknown disposition and consumed files. No second lock,
+clock, authority token, callback or polling loop is introduced.
+
+**Independent review correction: publication and alias safety remain open.**
+The launch fence and the two owner phases are separate atomics. Even after a
+successful `live_input` call, another invocation can fence launch before the
+preparer's `CHECKING -> CHECKED` CAS; that CAS may still succeed. Conversely,
+the persistence HELD CAS may succeed after another owner fenced launch. The
+candidate does not prevent either historical publication atomically. Both
+CHECKED and HELD are tentative observations, never standalone authority. Their
+fixed positive consumer must check the required preparer and persistence phase,
+the original owner identity and the monotonic launch state after each publication
+and again before each dependent effect. A failed post-publication check enters
+the original-owner cleanup, and no external caller may use an individual phase
+to grant a receipt, GO or another effect. A fence occurring after any check can
+still overlap an entered syscall; capture its actual result/disposition, retain
+consumption and do not invent a rollback. This rule needs an exact call graph
+and interleaving proof; it is not a multi-atomic transaction.
+
+Current entry points accept caller-provided error pointers and can initialize
+them before rejecting a losing acquisition. If a foreign or reentrant invocation
+passes an active owner's error object, that write can race with the real owner's
+first-error or cleanup evidence. Shared launch fencing does not repair this.
+The future fixed route must use exclusive original-owner result storage, with
+separate preparer and persistence capsules and immutable binding bytes. A losing,
+foreign, null or reentrant call may fence atomics and report through an output
+only after its non-overlap with every live owner capsule, mutable owner storage
+and retained binding is established without touching that storage. Otherwise it
+must not dereference the supplied pointer. The sole admitted fixed call graph
+and any retained callable legacy entry points need the same alias/reentry audit;
+do not assume a pointer is safe merely because the caller promises exclusivity.
+An implementation may instead remove caller-selected output pointers from the
+new private route, but must still account for all reachable legacy entry points.
+These are requirements to design and review, not an implemented API.
+
+The following ownership table is a failure contract for that fixed call graph;
+it does not release an independent cleanup callback or a new owner:
+
+| Point of failure/fence | Exact original-owner responsibility |
+| --- | --- |
+| Before nested preclaim begins | Persistence drains only acquired persistence slots once; preparer retains its held-input state until the fixed outer owner fences and abandons it once; launch owns gate/clock abandonment. |
+| Nested check/clear active | The active preparer owner stops positive work, invalidates and clears its private inventory, then drains its own slots once. The still-active persistence owner drains its own slots after the nested call returns; outer launch abandons gate/clock. Losing callers drain neither owner. |
+| CHECKED published or its post-check fails | No claim authority follows from CHECKED. The original owner fences and drains preparer and persistence owners once using their actual quiescent/active states; outer launch abandons gate/clock. |
+| `active`/`claim` operation entered, failed, late or uncertain | Persistence preserves entered/returned/result/errno and actual create disposition, closes its slots once and never deletes or retries either object. Preparer closes only its own slots; outer launch abandons gate/clock. |
+| One or both owners tentatively published HELD | A failed coupled check or later abandonment fences both, then each original owner closes its own held slots once. Preserve both capsules and all persistent objects; no ACK or GO follows failed validation. |
+
+The initial binding used in the latch and claim writes must be the same complete,
+immutable original bytes whose exact binding was accepted by the original keeper
+in DECL. Equality of a decoded structural subset or a nonzero digest does not
+establish this provenance. The full binding must stay alive and non-overlapping
+with outputs, the inventory arena and any packet receive scratch until both
+writes and their original-budget checks have completed. The current binding
+parser borrows its argument and does not provide this ownership proof. The fixed
+producer buffer, its authenticated-ACK link, lifetime, byte equality checks and
+all-phase memory/FD accounting still require a concrete independently reviewed
+interface before implementation; no hidden new data-dependent allocation is
+authorized by this statement.
+
+**Binding storage candidate for challenge.** G2 already budgets one fixed
+132864-byte packet receive buffer per actor process. After the original fork,
+the original Main and keeper have separate private address spaces; neither may
+replace this buffer with shared memory. In the original Main only, reserve the
+last76032 bytes for its exact original binding (the actual route maximum is
+256+448+65600+9728). The first56832 bytes are packet/response scratch. This is
+one partition of the existing buffer, not a second allocation or a replacement
+for the separate4MiB inventory arena. The keeper retains its own full132864-byte
+receive capacity, including the original hard131840-byte structural body ceiling.
+
+Main constructs and validates the full binding once into the reserved tail,
+retaining its exact checked byte count. Its closed DECL `sendmsg` uses two fixed
+iovecs, one1024-byte header in the prefix and the unchanged binding tail as the
+body, in a single seqpacket syscall. The keeper still receives exactly the same
+wire bytes and independently verifies the original declaration. The exact
+original-keeper DECL ACK, sequence, original credentials and state must be
+validated before any persistent owner acquires a claim. A hash or a locally
+constructed header is not a substitute for that ACK and original byte binding.
+The tail remains immutable through both persistence writes, their post-checks,
+and successful construction, sealing and verification of the G4 capsule that
+contains the complete original binding. It is not released merely when the two
+persistence borrows end. Subsequent output/capsule construction may read it but
+cannot overwrite or alias it during that lifetime. The native media helpers fork
+before operation70: their fork copies the Main address space, including these
+binding bytes, even though inventory was already cleared. The fixed trusted
+pre-exec child path must neither expose, modify or pass those bytes and must
+exec the pinned helper or exit without returning to Main; the actual helper/
+parent-death/no-escape closure and this inherited-memory consequence require
+independent source and physical qualification. Do not claim that clearing the
+separate inventory also erases the binding from those child copies.
+
+Native Main's accepted incoming G2 ACK body is at most256 bytes: the fixed DECL
+ACK header; its other ACKs have empty bodies. Native receives therefore provide
+a fixed1280-byte data span in the prefix, with `MSG_TRUNC` and the existing exact
+ancillary/credential rules. Reject an oversized returned full length or truncation
+indication and dispose of any received rights before parsing or another step.
+Any unexpected, wrong-phase or extra packet fences; it is never copied into the
+reserved tail. The original eight-byte GO remains its separately fixed one-shot
+receive. FACT responses can carry1024-byte bodies and thus total2048 bytes, but
+they occur in Python after operation70 `exec` replaced the native address space.
+Python needs its own independently bounded receiver, exact original keeper/
+producer authentication and resource proof; it cannot inherit or borrow this
+native partition. The keeper's independent receive ceiling and all G2 rejection
+caps remain unchanged. The other prefix bytes and tail padding cannot be treated
+as a second input or dynamic allocation; no caller selects iovecs or limits.
+
+This candidate refines G2's earlier phrase “one fixed receive buffer132864”:
+it names the same allocation and the Main-specific receive span during binding
+ownership. The full fixed packet/ACK inventory, maximum reply arithmetic,
+actual buffer owner, initial construction without aliasing original task/policy,
+fork/COW assumptions, exact send/receive/cleanup paths, later G4 capsule lifetime,
+all-phase memory/stack and descriptor peaks, and malformed/oversized/late/alias
+fixtures still require independent review before source. No actual packet, claim,
+keeper session or native artifact was invoked to develop this candidate.
+
+Keep the existing separate fixed error capsules: the preparer records its first
+input/clock error and its own once-close errors; persistence records its own
+first error, separate launch error, entered/returned and latch/claim dispositions,
+and its own once-close errors. A fixed enclosing result must retain both capsules
+without overwriting the initiating failure with a nested or cleanup failure.
+Each owner drains only its own registered slots; the original launch wrapper
+owns final gate/clock abandonment. The exact result structure, first-error
+ordering under asynchronous fencing, admitted private call graph and all
+success/failure/late/reentry interleavings still require an independent challenge
+and focused fixture before dependent source. This paragraph is not approval of
+the proposed implementation or permission to invoke the existing storage owner.
+
+#### Successor refinement: path facts and serial traversal candidate
+
+Status: **candidate for independent review, not implementation approval**.
+This uses the already selected systemd source observations and the reviewed
+arena, without adopting systemd code. It supplies a finite conservative
+observation interface; selected-manager cache, target/load state and physical
+equivalence remain independent gates. A valid ordinary symlink is not refused
+solely for being a symlink.
+
+**Capture and publication.** `BUILDING` records are private and mutable to the
+one original admission owner. Directory and entry rows may initially reserve
+their fact offset/count and map-bit fields, then fill them after scans and
+classification. This is not publication of an incomplete accepted observation.
+No later comparison or consumer may access them until the complete name-map,
+singleton determination, all dependency rows, per-map classifications, fact
+chains, indexes and checked framing are finalized and the one original owner
+publishes `RETAINED`. A capture failure fences the whole attempt and clears the
+private arena under the existing owner cleanup; no partial record is adopted.
+The arena's original rows, facts, indexes and classifications then stay immutable
+through both later comparisons; only separate comparison marks/scratch change.
+
+**Fixed path observation roles.** Fact role codes are compiled locally, never
+from filesystem or task bytes. Within a chain retain ordered observations:
+
+| Code | Role and required observation |
+| --- | --- |
+| 1 | ROOT: the already held genuine root dev/inode/mount/mode/uid/gid; compare to the original retained root, never open a new authority root. |
+| 2 | COMPONENT: exact component bytes and nofollow dev/inode/mount/mode/uid/gid/nlink/rdev/size/mtime/ctime for each existing object; whether it is an intermediate directory or a final object follows the fixed caller, not an input flag. |
+| 3 | LINK: a COMPONENT which is a symlink plus exact nonempty readlink bytes. Nofollow named and held metadata are sampled before/after the read; the link's actual spelling and containing directory remain distinct from its target. |
+| 4 | MISSING: exact first missing component and remaining lexical suffix, with the last existing held parent and nofollow ENOENT. Retain every suffix byte in bounded component records in order. An error other than definite ENOENT fences; it is not an absence proof. |
+| 5 | PARENT: an observed `..` traversal, including the prior and resulting held directory identities and root-clamping result; a simple textual removal is not sufficient across mounts. |
+| 6 | TERMINAL: exact normalized resolved path as an ordered sequence of component-sized fact tails, operation-specific terminal disposition and final identity or the explicitly recorded missing suffix. This is derived from earlier facts, not a substitute for them. |
+
+Each directory or entry's single fact chain consists of one or more delimited
+operations, rather than an untyped concatenation of path steps. Additional
+compiled roles are 7 BEGIN, 8 END, 9 METADATA and 10 UNVISITED_SUFFIX. Every
+operation begins with BEGIN and finishes with END; neither may nest. BEGIN's
+16-byte component tail is exactly four little-endian u32 values: owner record
+offset, operation code, fixed occurrence number and operation flags. END repeats
+the same key. Its metadata fields are zero, as are BEGIN's; END's disposition
+is the closed completed-present or completed-missing result. The owner offset
+must equal the containing directory/entry row; it is never a caller-provided
+authority. No other tail belongs to BEGIN/END. The operation flags encode only
+the compiled call-specific source flags; unknown combinations fence.
+
+The fixed operation codes are: 1 search-path expansion, 2 dependency-scope
+discovery, 3 dependency-directory listing chase, 4 name-map source-link read,
+5 name-map destination chase, 6 dependency mask observation, 7 dependency
+nofollow-type observation, 8 dependency source-link read, 9 cache source-link
+read, and 10 cache-target observation. Codes 1–3 belong to their directory
+row; 4–10 to the particular entry row. Code1 has occurrence0 for each name-map
+directory; codes2/3 occurrence0 for each dependency-scope directory. Each
+entry role uses occurrence0 for each applicable code. More than one map uses
+the same physical entry's facts by reference to that same row; it does not
+create an unkeyed duplicate. If future source semantics require an additional
+call, root, flags combination or distinct observation of the same role, that
+is an unclosed interface and fences; it is not assigned an ad-hoc occurrence.
+The current root/CWD/call-specific source mapping is still an explicit blocker
+before these keys can authorize implementation.
+
+METADATA role9 holds exactly one nofollow/held tuple in the existing header;
+its disposition selects one compiled phase: 1 named-before, 2 held-before,
+3 named-after, 4 held-after, 5 prior-directory, 6 resulting-directory, or
+7 missing-parent. The phase has no meaning outside its surrounding operation
+and the preceding LINK, PARENT or MISSING marker that starts its contiguous
+tuple sequence. A LINK is followed
+by phases1,2,3,4 in that exact order: the held handle and named lookup refer
+to the same original symlink, with all required equalities enforced. A PARENT
+is followed by phases5,6; its disposition is exactly0 (ordinary parent) or1
+(verified clamp to the retained root). A MISSING marks the single attempted
+component returning ENOENT and is followed by phase7, then zero or more
+UNVISITED_SUFFIX records containing the remaining lexical components. Those
+suffix records are not claimed as attempted or absent; their bytes and order
+are retained for the source safety predicate and normalized output. TERMINAL
+role6 records normalized components in order; each carries disposition1 for
+an intermediate component and2 for the last, or3 for root-only. END must agree
+with the terminal and the observed present/missing disposition. All other
+role/disposition combinations, nonzero reserved fields and invalid tuple fields
+are rejected according to the fixed call-specific parser before publication.
+Each fixed operation must specify whether its metadata tuples require a
+filesystem-type observation and retain/compare that value; zero cannot stand in
+for an unperformed required check. The role/operation table and selected-host
+semantics for those checks remain open. Recording a filesystem type alone does
+not prove that an overmounted or later-expiring automount is absent.
+
+Record framing, offset arithmetic and ownership are checked on capture and on
+each later comparison: the chain length equals its row's count; each record is
+fully in the allocated record region, aligned, visited once and has a single
+owner; the last next offset is zero. Operations appear in increasing code order
+with no duplicate key, extra operation, missing required operation, nesting,
+or reordered/extra tuple, suffix or terminal component. The required operation
+set derives from the frozen row role and classification, including the union
+of all roles on an entry. Recompute the same requirement in each later pass;
+compare original bytes/fields with newly observed facts rather than replacing
+them. Later passes may use the fixed scratch for one transient record at a time;
+they must still prove every original operation and fact was matched exactly
+once. Do not infer an unseen observation from an operation's presence alone.
+BEGIN/END each cost align8(128+16)=144 bytes, i.e. at least288 additional bytes
+per recorded operation inside the same variable arena; METADATA and suffix
+facts add their own aligned cost. The prior 33,653-entry ceiling ignores all
+facts and remains a valid loose upper bound, not a claim that this grammar fits
+that many actual entries. Insufficient room fences before a record is published.
+
+Use the existing 128-byte fact framing and component/link tails. A MISSING
+component has one role-4 MISSING record; following role-10 UNVISITED_SUFFIX
+records retain the remaining lexical components, rather than hiding an
+unbounded string in scratch. A link target can contain multiple components or `..`; preserve its
+original bytes, then record the actual next components/parent transitions.
+Bound each working path to 4095 bytes plus terminator, each component to255,
+each followed-link chain to the source's at-most31 followed symlinks, and each
+complete chase to at most4096 component/parent steps. Refuse overflow, empty
+link target, truncation, malformed path or uncertain transition; do not treat
+an exhausted bound as absence. These are additional conservative bounds, not a
+claim that the source has the same limits or that all safe host paths fit.
+For a source `CHASE_NONEXISTENT` operation, permit a missing first component
+only when the source's remaining-suffix safety predicate is independently
+reproduced; otherwise fence. `CHASE_NOFOLLOW` retains the final link as a link,
+and its final component does not count as a followed symlink. Do not reuse these
+rules as proof that direct kernel `stat` or `opendir` follows the same algorithm.
+
+All applicable facts must be compared on post-bind and final passes, with the
+same exact role/order/component/link bytes, success/missing disposition and
+the fields captured for that role. For a directory, ignore volatile directory
+size, nlink, mtime and ctime for equality, but retain the original values as
+evidence; compare dev/inode/mount/mode/uid/gid/rdev and the separately enumerated
+children. For a non-directory object, compare all listed metadata fields and
+exact link bytes if a link. A terminal normalized string must match exactly.
+This makes no continuous-stability theorem: named/held comparisons across three
+passes rely on the existing actual exclusive maintenance, stable mount and no
+privileged replacement premises. If those premises cannot be established,
+matching metadata and timestamps do not defeat inode reuse or an intervening
+replacement; fence rather than claim a same-object proof.
+
+**Source-call mapping.** Retain one independently keyed chain for each logical
+operation, even when it reaches an already observed object:
+
+* Search-path expansion and dependency-scope discovery retain the source path,
+  every followed component and the normalized result or proved absence.
+  Preserve the original UnitPath ordering and the source's scope ordering.
+* A possible winning unit-file symlink retains its own named LINK and a separate
+  destination chase with `NOFOLLOW|NONEXISTENT`. Classify the normalized target
+  against the ordered original-plus-resolved search paths with the reviewed
+  patched prefix semantics and source name/alias rules. Missing or error cannot
+  be substituted with a lower map winner unless source semantics and all earlier
+  possible winners are actually established. Eight name-map lookups remain a
+  separate bound from the 31-follow chase bound.
+* A possible dependency winner first records its nofollow named type, then the
+  mask observation actually needed by the source. An empty regular file or
+  character device is a mask; never open/read a device or FIFO for its contents.
+  Record a symlink's own bytes and, separately, whatever target/stat resolution
+  establishes the mask result. A dangling link is not proof of a mask or absent
+  addition. A negative, ambiguous or unsupported mask/compatibility/target
+  observation fences. A non-link winner and invalid dependency name need no
+  fabricated target edge, but still occupy their basename according to source.
+* Cache-directory links are separate observations from name-map and dependency
+  links. Preserve both their original target bytes and the independently required
+  manager-CWD interpretation where applicable; without proof of actual cache
+  membership, retain eligibility unknown and apply the reviewed possible-winner
+  union. A fresh scan does not upgrade that state.
+
+Name-map/cache and dependency roles of one physical object are all retained;
+grouping by directory never merges their evidence or grants extra precedence.
+Source logs and skips some errors; the observer fences uncertainty instead. The
+precise accepted set of target identities and selected manager's loaded Unit
+mapping remains unproved, including aliases, merges, self-edges and already
+loaded units. No final property read has been added by these facts.
+
+The retained source fixes the following call-specific distinctions for the
+above operation keys; this is source evidence, not selected-manager proof:
+
+| Key | Source call and condition to preserve |
+| --- | --- |
+| 1 | `unit_file_build_name_map` first retains each original search-path string, then calls `chase(path, NULL, 0, &resolved, NULL)`; the resolved path is separately appended if new. A missing resolved path does not erase the original path. |
+| 2 | `unit_file_find_dirs` consults the original-path cache first, then `unit_file_add_dir` calls `chase(path, original_root, 0, &chased, NULL)`. `process_deps` supplies `original_root=NULL`; unknown cache membership does not prove this call occurred. |
+| 3 | `conf_files_list_strv` passes each discovered path to `chase_and_opendir(path, NULL, CHASE_PREFIX_ROOT, &path, &dir)`. Because a result path is requested, the retained helper does not take its direct `opendir(path)` shortcut. |
+| 4/5 | `unit_file_resolve_symlink` reads the source relative to its actual scan directory FD; relative target text is joined to the logical source directory. It then calls `chase(target, lp->root_dir, CHASE_NOFOLLOW|CHASE_NONEXISTENT, &simplified, NULL)` before the patched ordered search-prefix test. The actual selected manager's `lp->root_dir` still needs evidence; do not silently substitute NULL. |
+| 6 | `process_deps` calls `null_or_empty_path` first. Its supplied-path lexical shortcut uses `path_equal_ptr(path_startswith(fn, root ?: "/"), "dev/null")`, whose helper compares path components; this is distinct from reading a symlink target. Otherwise the retained NULL-root/no-result-path branch of `chase_and_stat` shortcuts to `fstatat(AT_FDCWD, path, ..., 0)`; it is not the userspace chase counted by the31-follow rule. |
+| 7/8 | `is_symlink` uses `lstat(path)`; only after a positive result and valid unit name does `process_deps` call `readlink_malloc(path, ...)`. Both use the manager's path view, and a warning-only target-name mismatch can still attempt an addition. |
+| 9/10 | The name-map builder reads a cache-directory link relative to the scan directory, but `is_dir(target, true)` performs `fstatat(AT_FDCWD, target, ..., 0)`. Relative target text therefore uses the manager's actual CWD, not the scan directory. Existing `original_working_directory` checks Main's CWD, not PID1's; it cannot prove the manager's CWD. |
+
+For `DT_UNKNOWN`, the retained `readdir_ensure_type` assigns directory type
+directly to `.` and `..`; for other names it uses `statx_fallback` with
+`AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT`. Its final-component
+flag is not a general guarantee for intermediate components or later calls.
+The observer may fence more errors than systemd logs and skips, but it must not
+replace one of these direct calls with a different chase-limit claim. Exact
+observer equivalence, no-trigger automount handling and selected manager's root,
+CWD, cache and loaded-target facts remain open.
+
+**Serial descriptor discipline.** From the already retained root use at most
+three new inventory temporaries, all registered before the post-open clock
+check: one scan directory, one current path directory and one next component.
+The root itself is borrowed and never closed by the walker. A traversal not
+inside enumeration uses only the latter two; an absolute link restarts from the
+same retained root. Sample metadata/readlink through these roles, close/invalidate
+the old current only after the next component is adopted, and close all three
+once on owner failure. Temporary clock checking uses its separate existing slot.
+No descriptor is silently duplicated across owners; failures preserve the first
+error and independent close errors. Retain/recheck the scan directory's named
+identity before and after its complete bounded enumeration. Cross-call path and
+metadata APIs must actually fit this discipline; any required additional handle
+changes the budget and blocks source until reviewed.
+
+The existing prospective G5 pre-GO union counted one named temporary and one
+clock temporary. Replacing that named slot with three inventory temporaries adds
+two: its conservative arithmetic upper bound becomes81 rather than79
+(58 fixed + 4 stdio/gate + 10 storage + 1 manager + 3 inventory + 1 clock +
+4 unexpected rights). It is a deliberately conservative union, not evidence
+that all rights and traversal occur together. Each FD role, cleanup capsule,
+binding-buffer lifetime and exact nested call chain still needs source trace and
+compile/link evidence. Four-megabyte capacity, per-directory entry/getdents
+ceilings, 4096 traversal steps per chase and original-clock checks bound work;
+none bounds syscall latency or proves this can complete within setup15.
+The earlier79 applies only to the pre-inventory prospective role list.
+
+**Later-pass comparison without a second inventory.** During each complete
+post-bind/final pass, reset only the separate match marks, then enumerate the
+same fixed logical directory keys. For each included candidate, search the
+immutable original (directory key, name) index. Determine current-pass inclusion
+and independent role eligibility from the current observation before looking up
+that index; an original role or classification must never suppress a currently
+relevant candidate. A changed eligibility must produce a missing original record,
+an unmatched original record, or a failure of the retained role facts. A missing index entry, repeated
+match, malformed original record or unavailable exact fact chain fences. Compare
+the roles and required operation facts recorded for that original entry using the
+one transient scratch record at a time; mark it only after its entire applicable
+comparison succeeds. An entry serving multiple independent directory/role keys
+is separately compared at each such key. At end of each directory, require every
+original included member for that exact key to be marked, using its contiguous
+range in the original directory/name index rather than rescanning the entire
+inventory per directory; at end of the pass,
+require every expected directory row and entry matched exactly once. Absence
+rows compare their original absent-path chain; an absent/present transition fences.
+
+Provisional comparison with an original role never grants an effect. Only after
+the entire pass succeeds may the owner re-evaluate the fixed per-map precedence
+and cache-union rules using the original immutable sorted records, now-proved
+equal member set, successfully compared role facts and unchanged original cache
+evidence. The result must equal every originally stored applicable/possible
+winner bit. This is a recomputation over an established equal set, not acceptance
+of the old bits on faith or construction of a fresh baseline. An extra name can
+never be ignored because the original map lacked a matching record. Any changed
+cache proof, classification input, name, presence or role fact fences before
+the recomputation. In particular, an unknown cache stays unknown; a present
+filesystem directory does not become proved consulted. The separately retained
+singleton/name-map and manager-state requirements still apply.
+
+Matching all required semantic members before deriving winners makes results
+independent of `getdents64` order, without an uncharged second data-dependent
+array. Fixed scratch and the original index do not themselves prove that every
+independently keyed operation can be reconstructed serially; that implementation
+and its actual stack/FD/deadline proof remain open. No result authorizes claim,
+GO or use of an unverified manager state.
+
+**Automount boundary remains open.** A pathname lookup can cause a filesystem
+or automount daemon to mount an object, which would contradict the preclaim
+observation-only premise. The Linux kernel describes mount traps and automount
+lookup behavior in its [autofs documentation](https://docs.kernel.org/filesystems/autofs.html)
+and [pathname lookup documentation](https://docs.kernel.org/5.18/filesystems/path-lookup.html).
+The current partial reader's `unit_search_directories` uses a multi-component
+`openat2` on the supplied search path; `unit_conf_overlays` similarly opens a
+multi-component path. The source alone does not prove that an arbitrary selected
+path or intervening mount is free of automount effects. No such path was executed
+or inspected to establish a live incident in this review.
+
+Before source integration, define and independently review a bounded observation
+method and trusted mount-topology premise that prevent triggering any relevant
+automount during search-path, cache-target, link, mask and directory observations,
+including intermediate components and races with maintenance. A serial O_PATH
+walk and filesystem/metadata checks are candidate inputs, not yet a proof for
+every filesystem and transition; the selected kernel and permitted filesystems
+need actual evidence. An unexpected automount-capable or unprovable path must
+fence before an operation that could trigger it. Do not assume `O_NONBLOCK`,
+`O_NOFOLLOW`, a final-component no-automount flag, or a same-inode observation
+proves the entire path cannot trigger an automount. Any compatibility restriction
+must remain precise and reviewed, and must not turn into a blanket symlink ban.
+This finding does not authorize a host query, mount, activation or native test.
+
+Further source evidence narrows the candidate but does not prove a solution.
+Upstream Linux v6.18 [`build_open_flags`](https://github.com/torvalds/linux/blob/v6.18/fs/open.c)
+does not set `LOOKUP_OPEN` for `O_PATH`, but `O_DIRECTORY` sets
+`LOOKUP_DIRECTORY`. Its [`follow_automount`](https://github.com/torvalds/linux/blob/v6.18/fs/namei.c)
+may invoke automount for a negative dentry even without the usual open/directory/
+automount lookup flags. It refuses that invocation when `LOOKUP_NO_XDEV` applies.
+Therefore neither a single-component `O_PATH` probe nor an ENOENT-intended lookup
+alone proves absence of effects; `RESOLVE_NO_XDEV` is a possible conservative
+component, but also rejects ordinary mountpoint crossings that the accepted
+UnitPath may require. Do not silently adopt that compatibility restriction or
+assume it proves the complete `..`/symlink/stat/opendir sequence. The current
+reader uses `O_PATH|O_DIRECTORY` for search paths. This is upstream-source
+reasoning only: the running WSL kernel's implementation and actual path behavior
+have not been checked, and no mount or live incident was observed.
+
+The same scoped G1 reviewer subsequently identified `openat2` with
+`RESOLVE_CACHED` as a candidate component-acquisition primitive. Upstream v6.18
+maps it to `LOOKUP_CACHED`; its RCU mount walk can cross an already covered mount
+but returns from the fast path at an uncovered automount, and the cached walk
+cannot fall back to ordinary reference-walk when that requires leaving RCU.
+This suggests a bounded `O_PATH|O_NOFOLLOW` component walk with manual ordinary
+symlink handling, never retrying without `RESOLVE_CACHED`. It does not require a
+blanket mount-crossing or symlink refusal. The detailed candidate and follow-up
+are source-derived, **not** an independently accepted end-to-end interface.
+
+There are material open limits. Uncached safe paths can fail with `EAGAIN`.
+On 25 November the owner explicitly allowed this scoped refusal for G1 path
+resolution, with no unrestricted retry or cache warming. The earlier
+cache-omission decision concerns a different ambiguity. This authorization
+does not establish the remaining safety proof or permit other refusals. The same kernel
+source calls `d_manage` in the RCU mount walk, and `complete_walk` clears
+`LOOKUP_CACHED` before possible `d_weak_revalidate`; neither is proven harmless
+for every allowed filesystem. Held-object metadata, link reads, directory opens
+and enumeration need separate no-trigger proofs. The exact root/CWD, mount,
+`..`, symlink, trailing slash and missing-suffix behavior must still match each
+original operation, with selected-kernel correspondence, exclusion and finite
+resource/deadline evidence. No cache warming or unrestricted retry is authorized
+by this candidate, and no live kernel, mount or runtime operation occurred.
+
+One concrete callback limitation is visible in upstream v6.18
+[`autofs_d_manage` and `autofs_mount_wait`](https://github.com/torvalds/linux/blob/v6.18/fs/autofs/root.c):
+even the RCU path can update `last_used` when strict expiry is disabled. That
+may affect expiry timing despite avoiding the ordinary mount request; a blanket
+claim that cached lookup is observation-only would therefore be false. This is
+source analysis, not evidence that any selected path is autofs or that this
+callback ran. The design must account for that state change and its accepted
+scope, including mounts covered by other filesystems, before relying on the
+candidate. `O_PATH` skips the ordinary filesystem open callback in upstream
+`do_dentry_open`, but pathname and completion callbacks still require proof.
+The scoped G1 reviewer independently confirmed that `d_manage(path,true)` runs
+before following an existing covering mount, and that `autofs_can_expire` uses
+the updated timestamp unless immediate expiry applies. A post-crossing
+filesystem-type check cannot undo the earlier callback. This does not establish
+that expiry actually changed or that the selected kernel behaves identically.
+
+### Remaining cgroup control correspondence: source trace, not a closed design
+
+The current held reader's fixed directory roles are cgroup root2, project
+control slice3, service4, keeper leaf5, workload slice6 and anchor7. It checks
+the policy-derived `cpu.max`, `memory.max`, `memory.swap.max`, `pids.max`,
+`cgroup.type` and `memory.oom.group` on roles4/3/6/7, plus only
+`memory.oom.group` on keeper5. It checks controller availability and subtree
+enablement on roles2/3/4/6. Thus those reads do not establish the keeper's own
+CPU, memory, swap or task ceilings, and the four manager properties cannot be
+substituted for an observation of the keeper leaf. The keeper is below the
+service and its local limits may be more restrictive; their effect on keeper
+liveness, helper creation and deadline enforcement needs an explicit policy and
+evidence. Do not copy another role's policy values or invent an exact keeper
+topology. The real launch topology, all applicable controls, and continuous
+maintenance exclusion remain unqualified.
+
+Upstream Linux v6.18 documents `cpu.max.burst` as a distinct non-root control
+and CPU bandwidth as applying to fair-class scheduling. Its
+[bandwidth documentation](https://github.com/torvalds/linux/blob/v6.18/Documentation/scheduler/sched-bwc.rst)
+also describes quota carryover through per-CPU slices. Consequently a matching
+`cpu.max` value alone does not prove either zero configured burst or a strict
+single-period execution ceiling; default values are not an observation. The
+[v6.18 cgroup interface](https://github.com/torvalds/linux/blob/v6.18/Documentation/admin-guide/cgroup-v2.rst)
+also documents the relevant quota and `memory.oom.group` files as non-root
+interfaces. Do not demand those files at cgroup root2 or assume a root quota.
+This is a source-derived question about the accepted policy's exact meaning,
+not evidence of a nonzero burst or of the selected kernel's configuration.
+
+Before code, determine which local and inherited settings the installation
+contract actually pins for each affected non-root role, whether a burst or
+scheduler constraint is required by that policy, and what liveness can be
+guaranteed when siblings compete for an ancestor's finite resources. Specify
+bounded reads, original identities, missing/unsupported-file handling and the
+existing final recheck, then obtain independent interface review. Neither a
+zero-burst refusal nor an unbounded keeper-local value is accepted here. No
+cgroup setting, live manager or native runtime was inspected or changed.
+
+### G6 fixed-call and reachable-output source trace
+
+The scoped G6 reviewer traced the proposed continuation against the current
+native sources. Today qualification main enters supervised inputs; its child
+acquires and abandons held inputs, then exits125. Persistence has no native
+caller. The proposed fixed graph is original launch/clock and authenticated DECL
+ACK -> held preparer -> a single persistence owner -> fixed preparer preclaim
+check while persistence retains its own role5 directory -> maintenance lookup
+and one-shot writes. Each owner drains its own slots and launch abandons its
+gate/clock on failure. This graph is a candidate, not present implementation.
+
+The alias proof must cover every linked reachable entry, including legacy stages:
+launch admission/validation/supervised paths, preparer held/abandon/legacy stages,
+and persistence open/abandon have output initialization before all relevant
+phase or owner checks. Persistence's own binding/output overlap test does not
+prove disjointness from the other owners' storage. The fixed artifact needs
+distinct, statically identified owner result storage and immutable binding,
+with a closed call graph and a proof for each internal result destination.
+Owner-controlled nested error subobjects are legitimate: for example persistence
+passes its own launch subobject into the admission clock check. Do not replace
+this with a blanket ban on nested subobjects. Other reachable entrypoints must
+either be proven unreachable in the linked artifact or reject/fence before
+touching caller output and prove the remaining destinations disjoint and live.
+Visibility alone does not prove an internal function unreachable. Account for
+same-thread reentry and foreign threads, and establish rather than assume the
+absence of relevant callbacks and handlers.
+
+There is also a fork-specific phase obligation: current launch stores
+`LAUNCH_ADMISSION` unconditionally in the child after fork. The existing
+single-owner/no-handler premise must be demonstrated for that interval, or a
+future transition must prevent overwriting a child-side fence. A parent atomic
+after fork does not by itself update the child's separate memory. Finish the
+per-phase transition/interleaving and linked-artifact proofs before source;
+these observations do not accept the interface or close G6.
+
+Minimum independent mock cases for the eventual coupled implementation must use
+scheduled barriers and an externally observed syscall/packet log, not assertions
+derived solely from internal phase values:
+
+1. Fence launch after the preparer's last live check but before its CHECKED CAS,
+   and after persistence's last live check but before HELD CAS. Even if either
+   CAS succeeds, the fixed consumer emits no next effect or ACK, and each
+   original owner drains only its own slots once.
+2. Fence persistence while the original caller is nested in the preclaim check,
+   and conversely fence preparer while persistence owns its original directory.
+   If the shared fence precedes the next live check, that check must refuse the
+   next effect. Also schedule the fence after the final live check but before
+   syscall entry: the call may enter, so retain its actual or unknown disposition
+   and stop further positive work once the original owner observes the fence.
+3. Reenter each reachable entry with its output aliasing each live capsule,
+   nested error subobject, binding and owner storage; rejected calls cannot
+   modify those bytes or close any active owner's slot. Separately exercise
+   valid owner-controlled nested outputs, which must remain usable.
+4. Inject a fence while each one-shot `active`/`claim` syscall is already
+   entered. Separately return success, return failure, or simulate no observed
+   return. Record the actual entered/returned bits and results; when return or
+   creation is unknown, retain UNKNOWN without asserting object existence.
+   No later effect, unlink or retry is permitted.
+5. Check fork-separated states explicitly: a parent-only fence is not treated as
+   a child update. Exercise the documented child transition and any permitted
+   child-side reentry without resetting either process's original clocks.
+6. Race fixed-name maintenance lookup and original directory/instance identity
+   failures with preclaim completion; definite absence and unchanged held/named
+   identity are necessary, but simulated external exclusivity cannot establish
+   actual installer/manager exclusion. Cover close and clock failures without
+   replacing the first error.
+
+These cases specify future fixture behavior. They do not prove actual syscall
+interruption, manager exclusion, kernel behavior or real crash recovery.

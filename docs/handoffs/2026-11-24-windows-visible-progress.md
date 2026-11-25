@@ -1736,3 +1736,119 @@ each affected interface before source; do not turn this scoped layout review int
 whole-boundary acceptance. Current publication, final hashes and ownership release
 belong to protected `arena-layout-stop-20261125.json`, which must be verified
 against the checkout before any later owner writes.
+
+## 25 November: path facts, automount and preclaim review
+
+After the user asked to finish the entire work, the same Main `/root` resumed in
+chat `01a21405-bc39-7603-a1ad-c56b19fe6056`. Main verified the previous
+`arena-layout-stop-20261125.json`: clean main/index, HEAD `1ef6ca7`, all321
+tracked hashes/modes and User Admin HEAD/status/dirty hashes matched. The former
+writer explicitly released ownership; no matching test/build process was seen.
+Renewed sole runner writer ownership is protected in
+`arena-path-resumption-570b67ec-6297-4b40-b4d2-2b582e5e6e76.json`
+under the release-admission evidence root. RNR-D00, task/naming history and
+UNKNOWN numeric Main ownership/next Issue Lead counter remain unchanged. This
+chat has one confirmed compaction under supported-notice tracking; no rollover
+is triggered by the first confirmed compaction alone.
+
+The existing admission contract now contains a proposed path-fact record grammar,
+per-call source map, bounded serial descriptor roles and later-pass matching
+against immutable original indexes. Main reused the same previously authorized
+G1 read-only reviewer `/root/rnr_d00_arena_layout_reviewer` for that same scope.
+Its P2 finding on missing fact-chain operation boundaries and tuple ownership was
+corrected and independently closed; two source-table P3 wording errors were also
+corrected and independently closed. Current-pass inclusion is checked before
+the original index, and per-directory completion uses a bounded contiguous range.
+The added filesystem-type fact fits the existing128-byte row and was reviewed.
+These are design results: exact source implementation, all-phase resource and
+deadline proof, selected manager cache/target/identity and expected Wants remain
+open. The source call table explicitly distinguishes Main's CWD from PID1's.
+
+A further source-based concern is that existing multi-component search/overlay
+opens may encounter automounts before durable claim. The independent reviewer
+confirmed the concern without a host probe. Upstream Linux v6.18 source shows
+negative automount dentries can reach automount handling even without ordinary
+open lookup flags; `LOOKUP_NO_XDEV` avoids that invocation but also refuses
+ordinary mount crossings. This does not prove the running WSL kernel's behavior,
+an actual incident, or a compatible complete mitigation. No blanket symlink or
+mount-crossing refusal was approved. A no-trigger solution and actual selected-
+kernel/filesystem evidence remain prerequisites before affected source use.
+
+At Main's specific request the user explicitly allowed **one fresh G6 reviewer
+to inherit this chat's model and reasoning settings for the read-only G6 review**.
+Canonical `rnr-d00-preclaim-fence-reviewer`, actual
+`/root/rnr_d00_preclaim_fence_reviewer`, supervisor `/root`, assignmentv1,
+independently found three prospective G6 design gaps: separate phase atomics
+can publish after launch fencing; a losing call may alias an active error capsule;
+and failure-stage ownership plus exact authenticated binding lifetime were not
+closed. Main documented tentative-only publication, paired checks, output alias
+requirements and an ownership table; the reviewer closed these as **requirements**,
+not as implemented interfaces or source approval. Its later buffer-lifetime review
+found P1 original bytes must survive capsule sealing, including media-fork copies,
+and P2 native ACK and Python FACT receiver address spaces were conflated. Main
+corrected and the reviewer rechecked both. Exact call graph, alias behavior,
+interleavings, helper closure, packet fixtures and resource evidence remain open.
+Both reviewers explicitly completed/stopped all operations, with no writes,
+tests, builds, host/runtime/manager/provider calls or uncertain effects.
+
+Protected `path-facts-continuation-20261125/` contains source hashes/trace and the
+scoped G1/G6 review and recheck records; their exact snapshot/limitations, not
+agent availability, are the handoff authority. Supported locked MCP stdio again
+returned User Admin request73 pending and inbox empty. Its original dirty edits
+remain preserved; the separate-checkout exception remains unanswered. There was
+no enrollment, provider call, trial, native qualification or activation. Native
+source/resources remain unchanged; exit125 and all original G1–G6/five operational
+gates remain open. No runtime test or build is claimed for these design changes.
+
+Next: close a compatible no-trigger traversal for actual selected mount topology,
+without silently adopting `NO_XDEV` refusal; complete path role/operation source
+correspondence and linked FD/stack/deadline proof; establish actual manager
+identity, expected Wants and maintenance exclusion under separately authorized
+operational scope. Freeze and independently review the G6 fixed private call/
+capsule/buffer interface and failure interleavings before affected code. Then
+implement in dependency order, run focused and required integrated checks, and
+retain the native fence until every original release gate is actually evidenced.
+At the next owner transfer, verify the latest protected stop receipt and current
+checkout rather than treating this paragraph as proof of a release or a push.
+
+### Continued source traces after the first confirmed compaction
+
+Main traced the dormant Python root/provider route: `_prepare_original` remains
+private, `_entry` is disabled, and the real provider design still lacks accepted
+authentication, bound request history, process/socket membership and finite
+I/O closure. A standalone codec would not establish the original vertical gate.
+Main also traced actual cgroup roles and found that existing policy-unit control
+reads do not establish keeper-local resource ceilings. Upstream v6.18 documents
+`cpu.max.burst` separately from `cpu.max`, and non-root exceptions matter. The
+contract records the open policy/reader questions without inventing keeper caps,
+requiring a new refusal or claiming selected-kernel behavior.
+
+The previously approved G1 reviewer was resumed only for its read-only scope and
+identified `RESOLVE_CACHED` component acquisition as a candidate that can cross
+existing mounts without automatically allowing the ordinary uncovered automount
+path in the traced upstream kernel. Its `EAGAIN` refusal can affect safe uncached
+paths and is **not** covered by the owner's earlier cache-omission decision.
+Filesystem callbacks, subsequent operations, complete path semantics, selected
+kernel and resource bounds remain open. No solution or broader refusal is
+accepted. Subsequent upstream autofs source tracing found that its RCU `d_manage`
+can update `last_used` when strict expiry is disabled, even without an ordinary
+mount request; the G1 reviewer independently confirmed the callback precedes
+crossing an already covered mount. Selected paths and actual effects remain
+unobserved. The owner explicitly allowed the distinct G1 uncached-path refusal,
+with no unrestricted retry or cache warming. That decision does not approve
+other refusals or establish the no-effect proof. G6 was briefly resumed while G1 was active, then immediately interrupted
+to restore the one-active-reviewer limit; it resumed after G1 stopped. G6 traced
+the prospective fixed call graph, reachable
+legacy outputs and legitimate nested errors; it identified the child-side
+post-fork phase store as another monotonic-fence obligation. Its subsequent
+fixture-design review found an overclaim about a fence between the final check
+and syscall entry and an ambiguous unknown return. Main corrected both and the
+reviewer independently closed them as fixture requirements. That reviewer
+also stopped. Both assignments were read-only and no native operations ran.
+
+Protected `path-facts-continuation-20261125/followup-source-reviews.json` records
+source hashes, review scope and limitations. At this checkpoint the existing
+locked durable sender again saw User Admin request73 pending and inbox empty;
+the separate checkout exception remains unanswered. No operational gate has
+closed and exit125 remains. The current changes remain under Main's verified
+sole writer ownership; a stop receipt is required on any later transfer.
