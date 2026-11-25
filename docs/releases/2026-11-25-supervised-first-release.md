@@ -7,6 +7,29 @@ authorized the completed synthetic fixture qualification. Another project still
 needs its own enrollment, opt-in, reviewed task/checks and foreground approvals.
 No unattended service or autonomous task selection is offered.
 
+## Scope freeze and implementation closure
+
+The owner accepted closing v0.1 as the supervised runner and reserving autonomous
+operation for v0.2. **Release implementation is closed** at delivered source
+`27519eef206d649e0e4a50c1360f9cac82325773` and the corrected wheel identified
+below. Reopen only for a demonstrated defect preventing supervised use; further
+features and hardening are deferred. This v0.1 scope label does not create a tag
+or change the unpublished package version `0.1.0.dev0`.
+
+The original RNR-D00/G1–G6 requirements and five operational gates remain open in
+the existing [requirements index](../requirements.md) and
+[admission contract](../superpowers/plans/2026-11-19-persistent-admission-contract.md).
+They are retained autonomous follow-up work, not waived requirements or claims
+of v0.2 readiness. Keep the native unconditional abandon/exit-125 fence.
+
+First-project acceptance is a separate use checkpoint. The prepared User Admin
+documentation task and config remain unchanged; revision2 adds only explicit
+`gpt-6.1-sol` / `medium` checks settings. Execution is pending a specific decision
+on the separate-checkout exception, local setup commit, project enrollment/opt-in
+and one foreground provider run. The accepted recommendation explicitly called
+for resolving those approvals first. No first-project acceptance is claimed.
+Protected proposal: `/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/revision2/proposal.json`.
+
 ## Artifact and supported environment
 
 The source was qualified from a working snapshot of `/home/faris/agent_runner`,

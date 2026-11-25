@@ -2084,3 +2084,67 @@ provider call, native runtime qualification or automatic activation occurred.
 Original autonomous G1–G6 and all five operational gates remain deferred/open;
 the unconditional native abandon/exit125 fence is preserved. Further improvements
 remain later-version work under the owner's fast-first-release instruction.
+
+
+## 25 November: v0.1 scope frozen; first-project use approval checkpoint
+
+The owner accepted the recommendation with “ok pls proceed and close it”: close
+v0.1 as the supervised runner, do one small User Admin documentation task after
+resolving its checkout exception and obtaining enrollment/live-run approval,
+review output/checks/recovery, and retain autonomous work for v0.2 with exit125.
+The same delivery chat `01a21466-7236-7812-9368-f2bd6002babb` resumed as Main and
+sole execution owner. The original chat explicitly disclaimed source/runtime
+writes. Before writes Main verified `supervised-model-delivery-stop-20261125.json`
+against main27519ee, clean index/status/diff, all321 tracked hashes/modes and
+User Admin HEAD/status/both original dirty hashes. Former owner stopped and
+continuing operations were empty. Protected `user-admin-first-use-20261125/ownership.json`
+records acquisition. This chat still has zero observed compactions; RNR-D00,
+task IDs/history and UNKNOWN numeric Main/Issue Lead counters remain unchanged.
+
+The release record freezes v0.1 implementation at27519ee and corrected wheel
+SHA2561c2306d43d4d741539a942c00d97022fc1d2d804509d9db022e3b9c289362cb7.
+Only defects preventing supervised use justify reopening it; additional hardening/
+features and original autonomous G1–G6 remain later-version work in the existing
+requirements/contract. No architecture investigation or valid suite/package
+check was repeated. Implementation closure is distinct from real-project use.
+
+The original frozen three proposal hashes still match. Main prepared immutable
+`/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/revision2/`:
+task/config remain byte-identical; checks add only explicit gpt-6.1-sol/medium.
+The current runner parser accepts them. The existing links command again
+found20 current baseline local links with none missing; no product suite ran.
+The concrete setup content is retained under revision2/setup, derived from
+committed db10197 rather than the two original dirty files. No consumer checkout,
+installation, setup commit, enrollment, initialization or provider run occurred.
+
+User Admin AGENTS explicitly says “Work only in the native Ubuntu checkout
+/home/faris/user_admin.” The reviewed runner requires a clean disposable checkout;
+the authoritative checkout remains dirty. Latest acceptance says to first resolve
+the exception and obtain enrollment/live-call approval, so it is not silently
+interpreted as having resolved those conditions. Main asked one combined specific
+decision covering the local existing-main clone at
+`/home/faris/.local/share/agent-runner-trials/user-admin-20261125`, reviewed local
+setup/config/backlog/ignore commit, installation and isolated project enrollment/
+opt-in, then exactly one900s foreground docs task with180s/check, requested
+Sol/Medium, no runner retry/fallback and the documented account/network/cost limits.
+No new branch/worktree, User Admin push, original dirty-file change, service,
+native qualification, deployment or activation is included. Pause only these
+restricted actions; continue independent release closure. Record the user's
+actual response before acting. No reply is approval.
+
+Locked official MCP stdio under the existing durable runner-trial-preparation
+sender again returned request73 pending and inbox empty; protected
+`user-admin-first-use-20261125/coordination.json` retains it. No new request was
+sent and no policy exception is inferred from messaging. The original User Admin
+HEAD isdb10197; both dirty files and frozen proposal remain unchanged. A pending
+owner-chat reply is not a substitute for the user's trial authorization.
+
+Next: apply the actual scoped approval if received; otherwise retain the frozen
+v0.1 implementation closure and mark first-project acceptance pending. Once
+allowed, use the exact delivered wheel, record the local setup commit/config
+hash, establish project-owned dependency/runner environments, inspect existing
+fixed state before enrollment/init, and perform one foreground invocation only.
+Review exact allowed diff, requested/effective settings, unit/link results and
+post-exit status/clearance before claiming acceptance. Preserve UNKNOWN and
+reconcile any uncertain attempt without retry or reinitialization. Actual final
+publication/ownership state is in the newest protected first-use receipt.
