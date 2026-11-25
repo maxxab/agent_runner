@@ -1377,3 +1377,281 @@ Final checkpoint source/index/remote hashes, protected artifacts and ownership
 release are recorded in `user-admin-review-stop-20261125.json` at the established
 external evidence root. Read it before further overlapping writes. No rollover
 or automatic new-chat dispatch was triggered; this is an ordinary work checkpoint.
+
+## 25 November: autonomous gate continuation and refreshed trial draft
+
+Following the user's request to complete the five original gates and prepare the
+User Admin trial, Main verified `user-admin-review-stop-20261125.json`, its
+manifest and 321 tracked file hashes/modes, clean index/worktree, runner HEAD
+`88a0f00` and remote equality before writes. Fresh sole Main ownership is in
+protected `autonomous-gates-continuation-ownership-20261125.json`. Prior agents
+remain historical; numeric ownership version and next Issue Lead counter remain
+UNKNOWN. The earlier F1 correction and documentation are now separately pushed
+in User Admin through `db10197`; its original dirty backlog/race fixture remain
+preserved. Do not replay the already completed F1 task as the trial.
+
+Main rehashed the retained source and Ubuntu patch archives and inspected the
+actual path-prefix, path-cache, manager-load and dependency-addition flows. The
+new bounded evidence and patch-hit manifest are external at
+`autonomous-gate-helper-trace-20261125/`; conclusions are added to the existing
+persistent admission contract under “Follow-up: patched prefix helper, path
+cache and loaded-unit boundary”. The specific patched prefix-wrapper flag
+semantics were traced, and source shows the manager may reuse a cached directory
+set and previously loaded unit identity. A new filesystem scan alone therefore
+cannot establish the manager's current effective dependency graph. Actual
+cache/target equivalence, fixed resources, manager integration and all original
+G1–G6/five gates remain open. A fresh read-only independent reviewer confirmed
+the traced source observations within their stated limits, and found two
+description errors: self-edge logging depends on dependency type, and set
+equality cannot detect duplicate observations. Main corrected both; duplicate
+policy and loaded-unit identity mapping remain open. This is not a runtime
+qualification. Native unconditional exit-125 remains unchanged.
+
+A replacement documentation-only User Admin task and matching proposed config/
+checks are private mode0600 drafts in
+`/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/`.
+The task edits only the selected clean disposable checkout's developer index
+and a new backlog entry; it explicitly prohibits touching the authoritative
+checkout when different or running operational commands. The old F1 draft is
+historical. Runner's own `_checks` parser accepted the new ordered `unit` and
+`links` checks with 900/180 second limits; the link command passed against the
+current baseline (20 local links); it does not validate all Markdown syntax or
+anchors. The independent reviewer also identified the User Admin instruction
+requiring work only in `/home/faris/user_admin`, which conflicts with the separate
+checkout, and its GPT-6.1 Sol/Medium instruction. The runner's current CLI call
+does not explicitly pin those model settings. Current global Codex config names
+Sol/Medium, but the selected checkout, environment, precedence and effective
+provider selection must still be checked before any trial. This is draft validation, not a supervised
+trial, environment qualification or authorization to opt in. Exact draft hashes,
+current host/checkout observations, prerequisites and approvals remain in that
+private draft directory's proposal receipt. No consumer checkout, enrollment,
+provider call, service, native workload or live activation was created/run.
+
+The user has been asked whether to authorize a single separate disposable
+checkout at `/home/faris/.local/share/agent-runner-trials/user-admin-20261125`
+and preparation, or retain the checkout restriction. No answer is assumed.
+This exception would not itself authorize enrollment, provider use, or a trial.
+The User Admin owner was queued project-scoped review request 73, replacing
+request 72 whose sender lacked a durable identity; the resumable sender is
+`runner-trial-preparation` in project `codex-memory`. Queued delivery does not
+prove the other chat has acted. This active continuation has had one
+confirmed compaction; prior chat counts and UNKNOWN counters remain as above.
+
+At the ordinary stopping checkpoint, request 73 remained pending and the durable
+sender's inbox was empty. Independent review also checked the raw-dirent sizing
+arithmetic; it does not establish a feasible resource strategy. The current
+global Codex configuration specifies Sol/Medium, but this is not proof of the
+trial's effective settings. The completed F1 commit remains at User Admin HEAD
+and its two original dirty files remain intact. Runner source-design and this
+handoff are the only tracked changes; they are uncommitted. Main releases its
+sole-writer ownership at protected `autonomous-gates-continuation-stop-20261125.json`;
+reviewers are stopped. A successor must verify that receipt and the current
+worktree before writing. Focused durable blocker memory is `agent-runner` #224.
+Do not mark any original operational gate closed or run the proposed trial on
+the basis of this checkpoint.
+
+## 25 November: autonomous source work resumed
+
+The user asked why work stopped; Main resumed independent authorized gate work
+without waiting for the separate User Admin checkout decision. The preceding
+stop receipt, all 321 tracked hashes/modes, unstaged diff and empty index were
+verified before recording sole ownership in protected
+`autonomous-gates-resumed-ownership-20261125.json`. Current Main remains the
+sole runner writer; the existing one-compaction count and UNKNOWN counters
+continue. A read-only reviewer independently checked concrete name-filtering,
+template and dangling-link examples, then the load-queue and D-Bus property paths.
+
+The retained source can add a dependency to a distinct failed-load unit, or to
+a still-queued stub during reentrant dispatch; a failed fragment load therefore
+does not establish edge absence. If the failed unit remains in the dependency
+map, the `Wants`, `Requires` and `Upholds` getters can emit its current ID without
+a load-state filter. These are source consequences, not live manager evidence.
+The existing contract now records them and their conditions. The resource,
+cache and effective-identity boundaries and all original release gates remain
+open; the native exit-125 fence remains. User Admin owner request 73 remained
+pending at the resumed checkpoint. No checkout, enrollment, provider call or
+live activation occurred.
+
+Further independent source review confirmed the proposed G6 check must use the
+same private project-directory role as `active`, with the original final sweep
+and an actual maintenance-exclusion premise. The contract records this as a
+candidate, including original deadline, manager budget, ownership and failure
+rules. It also distinguishes shadowed filesystem basenames from duplicate
+manager reply elements. The current held-input phase cannot invoke its existing
+reader helpers; a coupled final-sweep/persistence phase is still unimplemented.
+The 44-request schedule was separately traced against the existing reader, and
+an independently checked GCC 13 compile-only sizing baseline was retained at
+`g1-stack-sizing-20261125/`. The baseline reports the current per-function frames
+and 4,492,320-byte `input_owner` object, not whole-process memory or execution
+evidence. No native binary was run.
+
+The owner explicitly approved a 4 MiB aggregate inventory limit, reusing the
+existing buffer only if independently reviewed, with complete original records
+retained through the last comparison and overflow refused. This narrows
+acceptance of large host configurations. Buffer lifetime, clearing before a
+later fork, record encoding, resource/deadline proof and manager identity
+coupling remain open; this decision does not authorize a trial or activation.
+The decision was saved as project memory `agent-runner` #225. Main drafted an
+in-arena offset/index/match-bit comparison without digest-only replacement;
+independent review corrected the required singleton-before-scopes ordering and
+absent-directory handling. Exact record inclusion, alias/cache semantics,
+resource bounds and safe lifecycle remain unclosed before source implementation.
+
+Further source review distinguished name-map, cache-path and per-unit dependency
+winner roles, and defined a candidate record for an entry shadowed in every
+applicable dependency map without reading its target solely for that shadow.
+An entry winning any map or serving another role retains that role's required
+details. The systemd userspace path chase follows at most 31 symlinks before
+rejecting the 32nd, but direct stat/opendir shortcuts have separate behavior.
+These refinements and the 704-directory/35,904-getdents conservative candidate
+bound were independently checked; the bound excludes existing `.d` scans and
+is not timing or host qualification.
+
+Independent cache review found that a lower filesystem entry cannot be proved
+shadowed if the manager cache may omit its earlier directory. On 25 November the
+owner explicitly authorized scoped conservative refusal when uncertainty could
+expose an unexpected lower dependency, accepting that some safe configurations
+may be refused. This does not reject all symlinks or authorize activation.
+Target identity, manager-state stability and final-sweep proof remain open; the
+four `Wants` values remain unknown.
+
+Source review also found conditional automatic `Wants` additions from private
+`/tmp`, managed OOM and image/device policy. The selected property requirements
+rule out the specific managed-OOM branch under the stated settings, but do not
+establish every relevant execution-context setting or the live graph. This does
+not establish the four expected `Wants` sets or authorize a manager query.
+
+## 25 November: unexpected second compaction and continuation
+
+Current chat `01a21121-1f66-7913-8f23-39e6b2a96225` on host
+`remote-wsl:Ubuntu-24.04` unexpectedly reached its second confirmed compaction.
+Predecessor compaction history remains above; successor starts its own count.
+RNR-D00, prior task identities and naming history remain unchanged; Main's
+numeric ownership version and next Issue Lead counter remain UNKNOWN, not reset.
+`/root/gate_source_review` completed its read-only assignment and
+`/root/user_admin_f1_fix` completed and released writes. Both are historical and
+unavailable to a successor; their material findings and checks are recorded
+above. No additional agent job or uncertain mutation is known to be running.
+
+The owner approved both the 4 MiB inventory limit and the scoped conservative
+cache refusal described above. The separate proposed User Admin checkout
+exception remains unanswered; do not infer consent. Read the preceding sections
+for original project restrictions, trial proposal, request 73, pending gates,
+source evidence and explicit operational authorization limits. Current status is
+source/design preparation only: no native code change, runtime qualification,
+User Admin trial or autonomous gate closure. Existing native exit-125 fences
+remain. Both modified runner documents are uncommitted; preserve all unrelated
+dirty User Admin files. The previous stop/ownership receipts are historical.
+
+For the next owner: verify the fresh protected stop receipt named
+`autonomous-gates-second-compaction-stop-01a21121.json`, tracked hashes, diff,
+HEAD, empty index and User Admin state before acquiring sole write ownership.
+Then continue G1 inventory and G6 owner-phase design and implementation only
+within the accepted contract and source evidence. Close exact record layout,
+buffer lifetime/clearing, cache-omission handling, resource/deadline bounds,
+manager graph/identity and maintenance exclusion before claiming runtime
+qualification; retain the unconditional native fence. The 44-call final sweep
+does not reread Names, Requires or Upholds, and initial expected Wants are not
+established. Independently review changes and run appropriate checks. Review
+User Admin request 73 at a meaningful checkpoint, without inferring that an
+idle chat executed it. Continue independent authorized work while the checkout
+exception is unanswered. Do not repeat valid completed tests or use runtime
+records/evidence in Git. No live provider calls, project enrollment, native
+qualification, trial or automatic activation are authorized by these decisions.
+
+Invoke `teamwork` from `/home/faris/development-standards/skills/teamwork/SKILL.md`
+and follow the canonical workflow in
+`/home/faris/development-standards/docs/development-document-workflow.md`. Read
+project `AGENTS.md`, canonical `POLICY.md`, canonical `agent-runner/SKILL.md`,
+`docs/handoffs/2026-11-19-extraction.md`, this handoff and the persistent
+admission contract in that order, then verify the fresh stop receipt and current
+source before accepting ownership. Predecessor agents are not available; use
+saved evidence and fresh owners only if needed. The protected prompt file
+`autonomous-gates-continuation-prompt-01a21121.txt` is the copy-ready request.
+
+At the final coordination checkpoint, User Admin request 73 remained pending
+and the durable sender's inbox was empty; this is not evidence of execution.
+`git diff --check` passed after the decision updates. User Admin remains at
+`db10197fe11c1b99e24412e85db26c8305bf4f46` matching origin/main, with the two
+pre-existing dirty files `BACKLOG.md` and
+`tests/test_role_revocation_postgres.py`. The native runtime was not changed or
+run in this resumed work.
+
+
+## 25 November: successor cache-winner and arena-lifetime review
+
+Fresh Main `/root` resumed RNR-D00 on the same Ubuntu host and existing main.
+Before writes, the second-compaction stop receipt matched HEAD `88a0f008`,
+all 321 tracked hashes/modes, the full binary diff, status and empty index.
+User Admin HEAD/status and both original dirty hashes also matched. The stopped
+owner explicitly released writes and both historical agents completed/released;
+a scoped process check found no pending runner test/build job. Main acquired
+sole runner source/docs/Git ownership in protected
+`autonomous-gates-owner-continuation-20261125.json`. Numeric Main ownership and
+next Issue Lead counter remain UNKNOWN. No Issue Lead was allocated, no
+predecessor resumed, and this chat has zero observed confirmed compactions.
+The runtime does not expose a supported current thread identifier.
+
+Current stage is existing G1/G6 source-design continuation, using the canonical
+development-document-workflow and accepted admission contract. The new final two
+contract sections make the approved cache refusal concrete as a conservative
+union of possible first winners, without enumerating cache subsets. Unknown
+cache membership cannot prove a lower occurrence shadowed. A possible winner
+needs full facts in every applicable map; a symlink with independently proved
+accepted effect is not refused merely for being a symlink. Exact target/loaded-
+unit identity, original expected Wants and actual manager-state correspondence
+are still unclosed.
+
+The lifetime candidate retains full original records in the existing 4 MiB
+array through final comparison, then requires original-owner clearing before
+first claim mutation and later helper fork. It keeps media length separate,
+charges index/scratch to the aggregate cap, forbids losing/reentrant erasure and
+preserves failure/once-cleanup ownership. Source trace confirmed the first media
+helper forks before `media_pad` fills the array, so overwrite-on-read would be
+too late. No implementation was added: exact field layout, whole resource and
+deadline proof and coupled held-to-preclaim transitions still block source.
+
+One fresh read-only reviewer, canonical `rnr-d00-inventory-lifetime-reviewer`,
+tool `/root/rnr_d00_inventory_lifetime_reviewer`, supervisor `/root`, assignment
+v1, independently challenged these two candidates. Same-parent settings were
+explicitly selected through supported inheritance; effective identifiers are
+not exposed, so the canonical skill's explicit named-settings requirement
+cannot be independently verified. No model/effort increase or global setting
+change was requested. The reviewer found P2 wording that could imply all
+property sets are reread finally. Main corrected it to initial equality for the
+original matrix, final equality only for fixed44 (Wants-only dependency rereads),
+and continued exclusion premises for Names/Requires/Upholds. Independent recheck
+closed P2 at contract SHA256
+`320b440167d29476602ea97ae091673a936073d2faa983c2242665bd99fc247e`.
+The remaining scoped design verdict is sound within its stated limits, not
+implementation readiness. Reviewer explicitly finished all operations with no
+writes or running/uncertain job.
+
+Protected evidence is
+`/home/faris/.local/state/agent-runner/release-admission-20261119/inventory-lifetime-continuation-20261125/`:
+`review-snapshot.json` retains source hashes/manual flow trace and initial review
+snapshot; `independent-review.json` retains finding, correction, recheck and limits.
+The earlier snapshot precedes the P2 correction; use the corrected contract hash
+for that review. No native fixture, default suite, build, manager query, provider
+call, native qualification, enrollment, User Admin trial or activation was run.
+Existing source/package evidence was not repeated for prose-only changes.
+
+At this meaningful coordination checkpoint, supported MCP stdio calls through
+the existing locked durable `runner-trial-preparation` identity verified request
+73 remains pending and its inbox empty. No new chat, worker or service was
+started; no capability value was printed. The connected runner MCP session
+cannot switch to `codex-memory`; its cross-project request was refused, then
+the established sender route was used. This is no evidence of User Admin review
+execution. The separate checkout exception remains unanswered and no restricted
+project preparation was attempted. Both original User Admin edits are preserved.
+
+Next source task remains exact bounded observation layout/path-fact retention,
+scratch/index/stack/FD and computation bounds, then target/manager correspondence
+and the fixed G6 held-to-preclaim transition. The reviewed union/lifetime rules
+are reusable inputs; do not repeat the completed helper research or this scoped
+review. All G1–G6 and five original gates remain OPEN. Native exit125 is unchanged.
+Actual integrated success/failure/recovery and release qualification cannot be
+claimed from this source-only work; the current authorization still excludes
+native runtime qualification, provider calls, trials and automatic activation.
+Publication/stopping results belong to the next protected checkpoint receipt,
+not to an assumed commit hash in this document.

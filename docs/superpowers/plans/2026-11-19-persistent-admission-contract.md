@@ -964,6 +964,20 @@ acceptance; do not infer empty sets merely from this amendment. This supplements
 rather than replaces, filesystem inventory of `.wants` directories. The older
 275/40/316 figures below and in earlier evidence are historical.
 
+Further source trace illustrates why those sets cannot simply be assumed empty.
+For a system manager, an execution context with `PrivateTmp` can attempt both
+`After` and `Wants` on `tmp.mount`. A separate branch can add both for
+`systemd-oomd.service` when default dependencies and managed-OOM kill are enabled;
+the required `DefaultDependencies=false` and managed-OOM `auto` each exclude that
+particular branch under the observed settings. A device-policy branch can attempt
+both for three modprobe services when `RootImage` **or** `MountImages` is set;
+the required empty `RootImage` does not itself establish empty `MountImages`.
+`PrivateTmp` and `MountImages` are not in the accepted property table. A retained,
+distinct unexpected `After` would be rejected by that table, but these examples
+are not an exhaustive list of `Wants` producers and do not prove the four sets,
+the loaded manager state, or the outcome of an attempted addition. Exact original
+unit bytes, relevant source semantics and selected-manager evidence remain needed.
+
 The draft128serial cap is INSUFFICIENT and superseded by512totalserials, no resets.
 Immediately before durable claim, repeat GetUnitByPID and .Unit Id/LoadState/
 ActiveState/SubState/InvocationID/Job on all4objects, .Service MainPID/ControlPID,
@@ -2132,6 +2146,61 @@ no automatic roll-forward, rollback, receipt adoption or deletion. An interrupte
 retirement needs a new explicitly scoped offline reconciliation, not a retry of
 old live action rights. Old boot/clock expiry alone never authorizes retirement.
 
+**G6 preclaim interface, source-design candidate:** The existing uninvoked
+Revision B call keeps project directory role 5 private, validates its original
+chain and immediately creates `active` in one call. An earlier check by a
+separate caller opening the same pathname cannot prove it used that same held
+directory. A future fixed internal sequence can acquire and retain the original
+project/store/instance handles without effects; after the valid, timely keeper
+declaration ACK, it must run the original final 44 manager requests and required
+path/kernel/identity rechecks, including the unresolved G1 overlay and inventory
+comparisons, recheck held and named store ancestry, then inspect literal
+`maintenance.lock` with a nofollow lookup through that exact role-5 descriptor
+and immediately perform the existing one-shot `active` creation through it.
+Only a definite `ENOENT` on the verified directory passes the lock check; any
+entry, including a dangling symlink or special file, and any other error or
+uncertainty fences. Do not open, remove or repair the lock. Preserve the original
+SETUP15 deadline with checks before and after each relevant syscall, no clock
+refresh or retry, and the original 324-request total without a serial reset.
+The persistence/preclaim owner remains one original owner/TID; the keeper remains
+its distinct original actor. Preserve failure and once-close rules and existing
+create disposition and durability observations. No caller-selected pathname,
+descriptor or general callback is introduced.
+
+Absence is not a lock: an installer or maintenance actor could create the name
+after the lookup and before `active` creation. The existing trusted exclusive
+maintenance premise must actually exclude those actors and manager changes
+throughout the sequence; a separate enforced exclusion, or other independently
+reviewed race-free protocol, would be needed if that premise cannot be established.
+The precise fixed cross-module owner/phase transitions, error/FD peaks, whole
+final-sweep coupling and physical exclusion evidence remain open. This candidate
+does not alter Revision B, authorize runtime effects or close G6.
+In particular, today's `live_input` accepts admission acquisition but not the
+published `PREPARER_ADMISSION_INPUTS_HELD` phase. Existing reader helpers cannot
+simply be called from the held phase for the final sweep. A future one-shot
+transition must account for active/fenced/abandon states, original PID/TID and
+clock ownership, concurrent fencing and cleanup, and compare against retained
+original observations without overwriting them. Its interface remains to be
+designed and reviewed with the persistence transition as one coupled boundary.
+
+The fixed final schedule is 44 requests: keeper lookup and UnitPath (2), six
+unit properties on each of four units (24), Slice/ControlGroup/ControlGroupId
+on each (12), service MainPID/ControlPID (2), and four Wants reads (4). The
+current lookup and UnitPath routines already compare against retained/derived
+expectations. The other fixed status, job, slice, path and PID comparisons exist
+only inside the initial monolithic reader. Its InvocationID and ControlGroupId
+branches write the four retained originals, so a final reader must compare
+without overwriting them. Four Wants reads and their exact expected sets remain
+absent. A future fixed schedule must preserve the existing serial/receive/poll
+budgets and kernel-ID correlation rather than rerun the full initial loop.
+The existing 316-byte initial reply buffer and empty/singleton dependency decoder
+do not establish support for the approved larger bounded Wants arrays; their
+exact decoded size, storage and stack costs must be closed before implementation.
+The final 44 include Wants but not Names, Requires or Upholds. Those latter
+properties are checked initially; using them throughout the interval requires
+the accepted unchanged-manager/maintenance and autonomous-action exclusion,
+not an assertion that the final sweep rereads them.
+
 The fixed JSON receipt is evidence for offline review, not a new acceptance source.
 An owner acknowledgement alone does not prove the observed closure. Physical
 recovery acceptance must show successful closed retirement AND blocking of torn,
@@ -2250,11 +2319,20 @@ to admit aliases would need a separately closed algorithm and manager matrix.
    systemd's warning-and-continue behavior. Record an attempted dependency addition by its basename even when the target
    spelling only produces a compatibility warning. Do not equate an attempted
    addition with a successfully loaded canonical edge; target resolution/addition
-   must be proved before calling this an effective dependency set. Compare proved sets with the exact accepted expected sets, including the
-   separately unresolved four `Wants` sets. Set equality rejects duplicates and
-   unexpected members without changing the manager's 324-request budget.
+   must be proved before calling this an effective dependency set. Compare proved
+   sets with the exact accepted expected sets, including the separately unresolved
+   four `Wants` sets. Set equality rejects unexpected members but cannot detect
+   duplicate observations or edges coalesced by `Unit *`. Within the same unit
+   and suffix winner map, a repeated eligible basename in a lower-priority
+   directory is shadowed, not automatically an error; preserve it for drift
+   evidence. Do not infer shadowing across different maps or from an entry
+   filtered before selection. The already accepted manager-array
+   rule separately rejects duplicate wire elements. Whether multiple effective
+   entry names resolving to one `Unit *` are permitted, and how their identities
+   are proved, remain open; preserve all attempted additions until resolved.
+   No change to the manager's 324-request budget is proposed.
 5. Retain a deterministic, length-delimited record of original order, winners,
-   names, link bytes, classifications and named/held identities. At the existing
+   names, required observed link bytes, classifications and named/held identities. At the existing
    post-bind point compare against those original observations; the later final
    pre-claim sweep must compare again, never replace them. Register temporary FDs
    before post-call clock checks, close serially, preserve the initiating error
@@ -2277,6 +2355,58 @@ suffix/pass, and is outside this proposal. These ceilings count shadowed,
 invalid and dot entries too, not merely accepted dependencies. They are refusal
 ceilings, not a claim that the selected host can finish within its deadline.
 Preserve byte/name/path limits without truncation. Exhaustion fences.
+The same arithmetic bounds logical directory enumerations to 704 per pass
+(32 name-map plus 3×32×7 suffix directories), or 2,112 over three passes.
+At at most 17 `getdents64` calls per present directory, that is 35,904 such
+calls across those three passes. Absences and refusals may end earlier. This
+excludes the separate `.d` overlay scans already performed during initial and
+post-bind checks, whose final integration or sharing remains open. It also
+excludes directory opens/reopens, metadata, link resolution, sorting, manager
+requests and all other work; it is not a deadline or performance guarantee.
+
+As a sizing check only, 16 nonempty reads of at most 4096 bytes across each
+logical directory give a per-pass raw-dirent byte ceiling of 2,097,152 for the
+32 UnitPath scans and 14,680,064 for each 32-by-7 suffix scan: 46,137,344 bytes
+for one name-map plus three suffixes, before link targets, metadata, maps, stack
+or descriptor ownership. Retaining all three passes as raw bytes would have a
+138,412,032-byte raw-dirent ceiling. These are arithmetic upper bounds, not
+allocations, a required retention strategy, or proof that any such strategy is
+acceptable. Comparing raw `getdents64` buffers is not by itself a closed
+semantic comparison: enumeration order and record layout are not the desired
+winning-name or identity contract. An actual design must specify bounded
+canonical observations and original-versus-later comparison, with its real
+peak storage, stack and FD ownership, before implementation.
+
+A compile-only sizing baseline, independently checked, is protected at
+`g1-stack-sizing-20261125/` under the evidence root. GCC 13.3.0 with the recorded
+private-qualification `-O2` flags reports a 16,816-byte `manager_unit_path`
+frame and a 2,864-byte dynamic-bounded `rnr_stage0_prepare_held_inputs` frame;
+its `input_owner` object symbol is 4,492,320 bytes. The 16,816 already includes
+that function's local buffer, and the object-wide data total already includes
+`input_owner`; neither should be added twice. The compiler inlined/transformed
+other functions, and these are single-object observations, not a final linked
+executable, call-chain peak, runtime resident measurement, host limit or evidence
+that a proposed inventory fits. Any eventual solution must measure its actual
+compiled call chain and account for other translation units and runtime limits.
+The existing 4 MiB media-data buffer has no current preclaim accesses, but that
+alone does not authorize reusing it: original observations must survive until
+the final comparison, a 4 MiB aggregate inventory cap would be stricter than
+the listed per-directory ceilings, and a media helper forks before the buffer is
+overwritten. Any proposed reuse needs a reviewed encoding/refusal rule, phase and
+failure ownership, and a timely clearing/data-lifetime plan before that fork.
+Touching or clearing preallocated pages also has unmeasured runtime cost.
+For scale, one suffix's 224 logical directories could each contain 150 distinct
+valid names with 200 variable prefix bytes and a `.service` suffix: 33,600 names
+and 6,720,000 prefix bytes, before metadata or links, while each directory remains
+within the proposed entry and read ceilings. This example is not a proof that
+every exact encoding needs that many bytes; it demonstrates why a universal
+4 MiB fit cannot be assumed from the local limits. The calculation does not
+authorize replacing original observations.
+A generic temporary-directory fixture with 150 such-length names used nine
+nonempty 4096-byte `getdents64` reads and returned 34,848 bytes including dot
+entries; its protected receipt is `g1-stack-sizing-20261125/synthetic-dirent-fixture.json`.
+It did not exercise systemd or the runner and does not prove compression limits
+or actual-host compatibility.
 
 Before treating this as implementation-ready, close the exact fixed storage and
 stack/FD peak against the accepted native budget, unit-name/ignored-dirent grammar, mask handling for dangling links
@@ -2287,11 +2417,145 @@ shadowing winner. No numeric memory allocation or new native dependency is
 authorized by the raw-entry arithmetic above. Keep actual installed name map,
 contents, `Wants`, running PID1 and timing compatibility as separate evidence.
 
+**Owner decision, 25 November:** The owner explicitly allowed a 4 MiB aggregate
+inventory limit using the existing buffer, provided complete original records
+survive through the final check and overflow safely refuses. This is a scoped
+acceptance of an additional refusal condition, not a claim that all inputs
+within the per-directory ceilings fit, nor approval to activate a runner or run
+a trial. Reuse, exact encoding and index/scratch accounting, comparison,
+clearing before later fork, error/fence ownership and deadline feasibility
+still require a concrete independently reviewed design before implementation.
+
+#### Four-MiB exact-observation candidate
+
+Status: **design for challenge, not implementation approval or gate closure**.
+The single original admission owner may use the existing
+`input_owner.data_bytes[4194304]` as a private arena until the final comparison.
+Charge directory/presence rows, original entry records, names, required nofollow
+metadata and link bytes, index tables, match marks and inventory-specific byte
+scratch to those same 4,194,304 bytes. Reserve scratch before admitting records;
+do not hide a second data-dependent array or allocate a heap/file. Every length,
+offset, alignment and count operation is checked before use; insufficient space
+fences without truncation, retry or partial acceptance. Fixed syscall argument
+structures and call frames must also be accounted for in the separate stack/FD
+and deadline proof. Existing per-directory and total-attempt limits still apply.
+
+During the initial pass, append complete length-delimited observations under a
+stable logical directory key and original search-priority rank. Preserve original
+enumeration ordinals for evidence, and retain ignored and shadowed observations
+where the contract requires them; every raw dirent counts toward its directory
+limit. Store exact bytes, not digest-only substitutes. Directory rows include
+original presence and required named/held identity, mount and ancestry evidence;
+entry rows include the name and the exact type, metadata, link and classification
+facts required by their respective roles. Resolve `DT_UNKNOWN` and relevant links
+without opening arbitrary FIFO or device contents; any unproved classification,
+path, relevant target or identity fences. Final field definitions and the set of
+observations required for each entry type are not yet closed.
+
+Stage initial capture: first scan the UnitPath name-map directories, index
+their immutable original records, resolve relevant aliases and prove the
+selected singleton name sets. Only then generate and scan the seven canonical/
+type/prefix dependency scopes and build separately keyed per-unit/per-suffix
+winner maps. This is still one scan per logical directory key, not an extra
+filesystem pass. Sort a bounded array of offsets inside the same arena by
+logical directory key and exact unsigned name bytes, with a fixed in-place,
+nonrecursive algorithm; reject duplicate keys or inconsistent record framing.
+Retain original ordered search ranks. Do not use lexical name order as directory
+precedence, share a global winner map between units or suffixes, or discard
+shadowed entries. Preserve the eight-lookup alias bound and existing singleton
+policy. Exact winner/alias and manager identity predicates remain open.
+
+At each later pass, check every logical directory once under the same bounds and
+original clock. An originally absent directory must remain proved absent; an
+absence/presence change, access error or uncertain parent identity fences. For
+each present directory, apply the same still-to-be-frozen inclusion rule, find
+each included entry's original record by key, compare the required fields and
+exact bytes, and set a bounded match bit; duplicate, missing, extra, changed or
+uncertain included entries fence. At EOF require every original included member
+matched and exact counts, then clear only match bits for the next pass, never
+original records. Every raw entry still counts against scan ceilings, and no
+entry potentially affecting an alias or shadowing winner may be omitted. Freeze
+which filtered or irrelevant entries must be retained and compared before
+implementation; do not infer they are effective winners. Original order means
+recorded directory/search precedence and retained enumeration ordinals for
+evidence, not equality of later `getdents64` iteration order or padding. This
+does not substitute for retained manager properties, cache/identity proof or the
+final coupled sweep.
+
+**Inclusion refinement for review:** In UnitPath name-map scans, retain valid
+unit-name candidates and the selected scopes' relevant full cache paths, their
+search ranks, normalized eligibility and shadow observations. The first
+name-map winner must be an eligible regular file or symlink; a directory or
+device with a valid-looking name is not itself a unit-name winner. Resolve all
+potential winning aliases needed to prove the selected singleton, including
+names that initially look unrelated. Cache-directory candidates are keyed by
+their full UnitPath/scope path and must not be dropped merely because a basename
+is shadowed in another path. Their relative symlink targets require the separately
+unclosed manager-CWD/cache analysis.
+
+For dependency directories, `suffix=NULL` and flags zero make every non-hidden,
+non-backup basename a candidate regardless of entry type. Retain those names,
+directory ranks and shadow status for each applicable unit/suffix map; a regular
+file, mask, directory or special node can be the first basename winner. Once
+all maps are determined, capture required nofollow/target metadata, link bytes
+and mask/classification facts for any entry winning at least one map. An entry
+proved shadowed in every applicable map has a complete original shadow record
+consisting of its exact name, logical directory key, search rank, original
+enumeration ordinal and per-map shadow classification. Compare its name, key,
+rank and shadow classification on later passes; keep the ordinal as evidence,
+not an equality requirement. Do not read or store its link target or treat its
+unneeded dirent type as a comparison field solely for that shadow. An entry
+that wins any map must instead have the required complete winner details, even
+if it is shadowed in another map. If that path also serves a name-map or cache
+role, retain and compare all observations required by that separate role.
+Recompute all applicable winner/shadow classifications on each pass; a changed
+earlier winner or uncertain cache/identity result fences. The
+shadow-name comparison can fence on drift even when the current manager would
+ignore that shadow; this follows the existing retained-drift requirement, not
+the new size limit. All raw entries still count, `DT_UNKNOWN` is resolved
+before filtering as required by the source, and an unproved relevant result
+fences. These rules do not establish that an uncertain winner is inert.
+
+An entry is **not** proved shadowed merely because an earlier matching basename
+exists in the current filesystem. The manager's non-NULL path cache can omit
+that earlier full directory path. Until its relevant membership is established,
+the later entry may be a winner and its full applicable winner facts, including
+link bytes, must be retained and compared or admission must fence. For example,
+an earlier filesystem mask does not prove a later symlink is ineffective if
+the manager might have skipped the mask's directory. Considering every possible
+cache omission is a potential conservative design. On 25 November 2026 the
+owner authorized a scoped refusal when an unprovable earlier cache membership
+could expose an unexpected lower dependency; some safe configurations may be
+refused. This decision does not reject all symlinks. The concrete algorithm,
+target identities, resource cost and full soundness remain to be established;
+the decision does not prove the manager graph or authorize activation.
+
+Grouping winner-detail reads by logical directory can avoid another `getdents`
+enumeration, but reopening/chasing/statting directories and reading links are
+additional bounded I/O. Account for those operations and the original deadline;
+compare reopened names, mounts, ancestors and identities to the original, never
+refresh the baseline. The exact fields compared for ignored entries and shadowed
+entries with other roles, inode-reuse protection, held-FD peak, and exclusive-maintenance
+premise remain to be closed. A reopened matching inode alone is not a general
+same-object proof. None of this establishes the live manager cache or graph.
+
+Keep the original records intact through that final comparison. After they are
+no longer needed, a fixed original-owner cleanup must clear the arena before any
+later media helper fork or media use, including appropriate failure/fenced paths;
+it must not race an active reader or erase evidence still required downstream.
+The implementation must prove the clearing is not optimized away, that the
+original deadline and once-only cleanup semantics are respected, and that later
+media reads cannot consume stale inventory bytes. Overflow, sorting/comparison
+cost, path/metadata resolution, actual stack and descriptor peaks, and final
+manager/cache correspondence all need focused tests and independent review.
+No feasibility, live-host compatibility or positive admission is implied.
+
 Independent source examples for the proposed predicate (not executed tests):
 
 | Input under a selected unit | Selected effect | Required conclusion |
 | --- | --- | --- |
 | Valid symlink `extra.service` in winning `.wants`, loadable target, successful add, no ordering directive | Adds `Wants=extra.service`; `After` may stay unchanged | Unexpected dependency rejects; failed/unknown target load is not proved absence |
+| Winning `missing.service` symlink, no loadable fragment, and successful add to a distinct not-found unit | A dependency edge may still exist despite the failed target load | Do not treat the missing fragment or failed load as proof of no dependency |
 | Earlier canonical basename and later generic basename point at different units | Earlier canonical entry wins even across UnitPath priorities | Classify the winning basename once; retain shadowed observation |
 | Earlier `extra.service -> /dev/null`, later effective-looking same basename | Mask winner occupies basename; later entry is shadowed | No dependency from either entry; preserve proved mask, never fallback |
 | High-priority anchor dash-prefix entry versus low-priority exact anchor entry, same basename | High-path prefix wins because recursion occurs inside each UnitPath call | Do not globally sort exact scopes ahead of every prefix |
@@ -2323,15 +2587,18 @@ old and new. `readdir_ensure_type` resolves DT_UNKNOWN with nofollow/no-automoun
 metadata; only a vanished entry is skipped. A native observer must preserve its
 own stricter uncertainty/identity refusal rather than assume DT_UNKNOWN means
 irrelevant. Raw-entry ceilings count filtered names too.
+For example, `.hidden.service` can be a valid name-map entry but is filtered
+before dependency-list winner selection; an ignored entry cannot shadow a
+later dependency-list basename.
 
 `unit-name.c:unit_name_is_valid` and `unit-name.h` bound names to 1..255 bytes,
 require a nonempty prefix and a recognized final unit-type suffix, and restrict
 prefix characters to ASCII digits/letters plus `:-_.`, backslash and `@`.
 The first `@` cannot begin the name; flags distinguish plain/instance/template.
-Do not add an unverified “exactly one @” predicate merely from a source comment;
-follow the actual grammar and applicable validation path. The four admitted
-canonical names remain plain fixed names. Complete type/name normalization and
-downstream dependency loading still need the selected helper path traced.
+Additional `@` characters can occur in the instance: `x@a@b.service` is valid
+for `UNIT_NAME_ANY`. Do not add an “exactly one @” predicate from a source
+comment. The four admitted canonical names remain plain fixed names. Validity
+does not prove that a named unit loads or that the runner admits its identity.
 
 `stat-util.c:null_or_empty` considers empty regular files **or any character
 device** masks; it is not limited to `/dev/null`'s device number.
@@ -2340,7 +2607,9 @@ device** masks; it is not limited to `/dev/null`'s device number.
 `process_deps`; subsequent link/add processing can still be attempted. Design
 mask observations around bounded path/link metadata, never reading/opening device
 or FIFO contents. Unknown/unsupported resolution fences; it must not become a
-proved inert entry. Actual effective target resolution remains separate.
+proved inert entry. A template dependency is resolved with the source unit's
+instance, or its prefix when it has no instance, before manager loading. The
+actual effective target and loaded-unit identity remain separate questions.
 
 Patch scan found two active patches touching `path-util.c`:
 `CVE-2026-29111-1.patch` and `CVE-2026-29111-2.patch`. Their hunks alter
@@ -2352,3 +2621,241 @@ correspondence to equivalence of their entire helper closure. The extracted
 helper files are explicitly original-archive bytes, not a patched build tree.
 Retain this as an implementation-readiness gap alongside static memory/FD and
 cache/target semantics; do not implement a known-unclosed approximation.
+
+#### Follow-up: patched prefix helper, path cache and loaded-unit boundary
+
+The retained source-package and patch archives were rehashed against
+`ubuntu-systemd-source-package-01a20fb2.json`. Source and patch-hit manifest:
+`/home/faris/.local/state/agent-runner/release-admission-20261119/autonomous-gate-helper-trace-20261125/manifest.json`.
+These observations constrain the design; they do not close implementation or
+prove the running manager's binary, cache contents or current unit state.
+
+- In the original `path-util.c`, `path_startswith_strv` returns the first
+  non-NULL result of `path_startswith` over the ordered expanded search-path
+  list. In the two active path-util patches the wrapper changes from
+  `path_startswith_full(..., true)` to flags `0` after inverting the dot-dot
+  flag. The two patches were also applied in order, with `git apply --check`, to
+  isolated copies of `path-util.c/h`; the copied results and digests are in the
+  external trace manifest. Both versions request acceptance of dot-dot components; the
+  other new flag requests a leading slash and is not used by this wrapper.
+  This supports that specific wrapper call's flag equivalence, not equivalence
+  of every helper or a reproduced patched build. `unit_file_resolve_symlink`
+  first calls `chase` with `CHASE_NOFOLLOW | CHASE_NONEXISTENT`, then uses this
+  first matching path prefix to classify alias versus linked file. It validates
+  alias names and returns the destination unit basename for the map; a
+  no-prefix linked file instead maps to the original source path. Errors can be
+  skipped by the manager during map construction. A stricter observer must
+  retain uncertainty and fence; it cannot infer absence from an error.
+- In the retained `chase` userspace traversal, `CHASE_MAX=32` is predecremented
+  before each followed symlink: at most 31 are read and followed, and the 32nd
+  returns `ELOOP` before its readlink. A final component deliberately left
+  unfollowed by `CHASE_NOFOLLOW` does not consume this count. The source-link
+  read in `unit_file_resolve_symlink` precedes its separate destination chase,
+  so it is not one of that chase's 31 follows. Each chase has its own counter;
+  this is distinct from the eight name-map lookups above. Search-path expansion,
+  drop-in directory resolution, alias destination chase and the relevant
+  `conf_files_list_strv` directory chase request resolved paths and enter that
+  userspace traversal. Other callers use direct kernel `opendir`/`stat` paths,
+  including the null/empty stat shortcut, so do not impose this one counter on
+  every operation or assume one `openat2` result proves identical traversal.
+  The active Ubuntu patch scan found no `chase.c`/`chase.h` changes; transitive
+  helper and selected-host equivalence remain separate.
+- `unit_file_build_name_map` creates a path cache alongside name maps when
+  requested. Its directory-name predicate accepts valid unit names or unit
+  types ending in `.wants`, `.requires`, `.upholds` or `.d`. Directory entries
+  and eligible directory symlinks can enter the set; the source checks the
+  symlink target with `is_dir(target, true)`. The retained `stat-util.h/c`
+  implementation calls `fstatat(AT_FDCWD, target, ..., 0)`, so a relative
+  target is interpreted against the manager process current directory at that
+  point, not by `dirfd(d)` in that call. This source observation does not prove
+  the actual manager current directory or cache membership.
+  `unit_file_find_dirs` consults the
+  cache using the constructed original path and calls `chase` only when the
+  cache is NULL or contains that path. An observer must not assume every
+  filesystem-visible path is necessarily consulted by the manager. Resolve
+  relative-target interpretation, path equality and cache membership proof
+  against the full supported caller/host boundary before an equivalence claim.
+- The map builder may reuse its existing maps when a hash of eligible lookup
+  path mtimes matches. Its timestamp scan excludes generator, transient and
+  control paths and skips failed `stat` calls; it is not a comprehensive
+  snapshot of every dependency directory. `unit_write_setting` can add a
+  manager-created drop-in directory to an existing cache. Cache construction,
+  later mutations, reloads and the selected host's current cache remain
+  separate facts. Neither a timestamp hash nor a fresh external scan establishes
+  the manager's effective cache or proves a concurrent stable view.
+- `unit_add_dependency_by_name` resolves templates, asks `manager_load_unit`
+  for the dependency and then calls `unit_add_dependency` with the returned
+  `Unit`. `manager_load_unit_prepare` can return an already loaded unit without
+  loading disk again; automatic retry is restricted to certain previously
+  not-found stubs. For newly queued units `manager_load_unit` dispatches the load
+  queue and follows a merged unit. `unit_add_dependency` follows merged units
+  on both sides and drops a resulting self-edge without an error, logging a
+  warning for certain dependency types; its per-type dependency map is keyed
+  by `Unit *` and combines origin masks for an existing edge. Thus even
+  successful processing does not imply one distinct edge per entry basename.
+  A dependency entry basename, the current
+  filesystem target and the manager's actual `Unit` identity are distinct
+  observations. Existing manager properties and exact source/held-state
+  evidence must be coupled at the original pre-claim boundary; a disk-only
+  reconstruction cannot independently prove the current effective graph.
+- A failed target load does not necessarily prevent an edge. The retained
+  `manager_load_unit` returns an existing unit directly or queues a new one,
+  invokes `manager_dispatch_load_queue` and returns success. That dispatcher
+  does not propagate `unit_load`'s individual error. A failing load can leave
+  the target in `UNIT_NOT_FOUND`, `UNIT_BAD_SETTING` or `UNIT_ERROR`; the
+  name-based addition checks the manager call's return and then attempts
+  `unit_add_dependency` without a general `UNIT_LOADED` requirement. Thus an
+  edge to a distinct failed-load unit is possible if the other checks and map
+  allocations succeed. `UNIT_NOT_FOUND` is a state name, not proof every
+  underlying failure was `ENOENT`. During reentrant dispatch a newly queued
+  target may still be a stub at addition; later loading or merging can affect
+  its identity and edge. Preparation, compatibility, identity or edge-addition
+  failures can also prevent an edge. This is source analysis, not an observed
+  state of an installed manager.
+- The selected source's D-Bus getter for `Wants`, `Requires` and `Upholds`
+  iterates the corresponding dependency map and emits each target `Unit`'s
+  current `id` without checking its load state. If a failed-load target remains
+  a map key when that getter runs, its ID can therefore appear in the property
+  reply. This does not prove an edge survives loading, merging, garbage
+  collection or reload, or that any particular live property has that value.
+
+The active Ubuntu manager patches scanned for this trace change timezone path
+handling and notification logging; the active load-fragment patch changes
+`patch_var_run` logging. They do not alter the quoted cache or dependency paths
+in those files. Other transitive helpers, relative path semantics, cache
+lifetime/observability, canonical target identity, memory/FD proof, installed
+host state and the pre-claim coupling remain unresolved. No claim of a closed
+G1 gate or implementation-ready inventory follows. No manager query, provider
+call, host activation or executable change was performed by this trace.
+
+
+#### Successor refinement: cache uncertainty without enumerating cache subsets
+
+Status: **bounded design candidate for independent challenge; source and physical
+acceptance remain open**. This specifies the owner-approved conservative refusal
+more narrowly. It neither proves the manager cache nor changes the 324 requests.
+Main remains the sole writer; RNR-D00 and UNKNOWN ownership/counter values persist.
+
+For one selected unit and dependency suffix, generate the existing ordered scope
+list only after the selected singleton name proof. Each logical directory has a
+cache-eligibility state: proved consulted, proved skipped, or unknown. A state
+requires evidence about the manager's relevant cache at this admission interval;
+filesystem existence, a directory mtime or a fresh observer scan cannot establish
+it. NULL cache means the source does not apply the cache-membership filter; it
+does not establish successful directory resolution. Current work has no proof of
+any installed cache state. Resolve presence, paths and classification separately;
+any uncertain relevant observation fences as already required.
+
+For every eligible dependency basename, walk its directory occurrences in actual
+scope/search precedence. Ignore only a proved-skipped occurrence. An occurrence
+in an unknown directory is a **possible first winner** unless an earlier proved-
+consulted occurrence of that basename necessarily occupies the winner map. Include
+that possible winner's complete applicable facts. The first proved-consulted
+occurrence is itself a possible winner and ends this walk; later occurrences are
+proved shadowed for this map. A filtered basename never occupies the map. The
+proof that a consulted occurrence occupies the map also needs the source's actual
+successful listing/classification premises; a cached directory name alone is not
+that proof. Allocation/read/identity uncertainty is not an inert classification.
+
+This is a conservative union over possible winners, computed by one ordered walk,
+not a powerset of cache contents. It can admit a configuration whose cache is
+unknown when every possible winning occurrence has independently proved harmless
+or accepted effects. It can refuse a safe configuration when an omitted earlier
+mask could expose an unexpected lower dependency, as the owner approved. A mask,
+ordinary non-symlink or invalid dependency name can occupy the basename without
+adding an edge under the traced source predicates; a symlink is not rejected just
+because it is a symlink. A potential dependency with unproved target/addition
+identity remains uncertain, including a failed-load or merged unit. Do not
+substitute its basename or current filesystem target for the manager's Unit ID.
+
+Retain every attempted addition and its independently proved possible identity
+set. Before acceptance, each possible added identity must belong to that selected
+unit/suffix's exact accepted expected set. This subset condition does not prove
+the entire expected graph: configured/implicit dependencies may add members absent
+from these directories, and masks/no-add cases may omit them. Require exact
+initial equality for the original property matrix and final equality only for
+the fixed 44-request matrix, whose dependency rereads are Wants only. Names,
+Requires and Upholds are not reread finally; their continued validity depends on
+the unchanged-manager/autonomous-action exclusion premise. Complete configuration/
+automatic-addition semantics and target/loaded-unit correspondence also remain
+mandatory. Several names coalescing to one Unit must
+retain their distinct entry observations; wire-array duplicate refusal remains a
+separate rule. No expected Wants set is invented by this procedure.
+
+A physical entry used by multiple selected-unit maps retains the union of their
+roles. Full facts are required if it is a possible winner in any map, even if it
+is proved shadowed in another. Only an entry proved shadowed in every applicable
+map, with no independent name-map/cache role, qualifies for the earlier compact
+shadow-name record. At each later comparison recompute these classifications
+against the original evidence; do not turn an unknown membership into a proved
+one from the new filesystem pass. Preserve complete original observations and
+refuse on changed or uncertain facts. This refinement supersedes any reading of
+the earlier single-winner wording that treats an unproved earlier cache entry as
+sufficient to omit a lower candidate's target facts.
+
+| Ordered occurrences of one basename | Cache evidence | Required candidate result |
+| --- | --- | --- |
+| Earlier mask, lower unexpected symlink | Earlier unknown, lower not proved skipped | Retain both possible winners; the unexpected possible edge refuses |
+| Earlier mask, lower unexpected symlink | Earlier proved consulted and occupying the map | Earlier mask is the only possible winner; retain lower shadow name |
+| Two symlinks, each independently mapped to an accepted identity | Both unknown | Both full observations required; cache ambiguity alone does not refuse |
+| Earlier filtered backup, lower unexpected symlink | Any | Backup cannot shadow; unexpected possible edge refuses |
+| Earlier ordinary file, lower dangling symlink | Earlier unknown | Dangling target is not proved edge absence; uncertainty refuses |
+| Same entry wins one map and is shadowed in another | Per-map evidence differs | Retain full facts and both per-map classifications |
+
+#### Successor refinement: arena lifetime and owner cleanup
+
+Status: **design candidate; not implemented**. Use the existing media data array,
+with no heap, temporary file or second data-dependent buffer. Keep inventory
+lifetime separate from `data_length`, which belongs to later media reads. Inventory
+state is private to the original preparer owner: EMPTY -> BUILDING -> RETAINED ->
+COMPARING -> RETAINED (post-bind only), then COMPARING -> CLEARING -> CLEARED after
+the final preclaim comparison. Any failed/incomplete step fences; there is no
+reset, recapture or reuse of an inventory baseline within the attempt.
+
+All directory/entry/path facts, name/link bytes, offset indexes, match flags and
+inventory scratch are charged to the same 4,194,304-byte array. Initial records
+are immutable after publication; only explicitly separate comparison marks and
+scratch may change. Offsets and sizes are checked before arithmetic, alignment,
+index access and insertion. Refuse before any write crossing the reserved regions;
+never publish a partially recorded member. Freeze exact C field layout, scratch
+reservation and full path/identity evidence before code; the previous candidate
+has not yet closed these and this lifetime refinement does not pretend otherwise.
+
+After the successful final comparison, the original owner clears the WHOLE array
+before first latch/claim mutation and before any later helper fork. This retires
+only the in-memory inventory; it does not erase protected runtime evidence, claim
+bytes, original installation/task/policy bytes or resources. Those independently
+needed objects remain in their existing storage. A successful clear is a required
+precondition of later media preparation; later media reads set their own length
+and cannot infer inventory retirement from `data_length == 0`.
+
+Use the existing owner/fencing/once-drain discipline. Losing, foreign or reentrant
+calls may fence atomics but may not erase a buffer still used by its owner. The
+owning failure/abandon path invalidates inventory continuation and clears private
+bytes before it returns to the fixed abandon/exit125 wrapper. No failed, expired
+or partially cleared inventory permits a media helper or another acquisition.
+Clearing uses compiler-preserved writes in bounded chunks under the original
+setup-clock checks on the success path. If a check expires during clearing,
+retain the initiating failure, complete only private-memory/descriptor cleanup
+and exit; do not treat completion of cleanup as a fresh positive grant or wait
+for external work. This makes no scheduling or post-deadline resource-effect
+claim. The final compiled artifact must demonstrate that erasure survives
+optimization and that no fork bypasses its completed-state check.
+
+Current-source trace: admission acquisition publishes
+`PREPARER_ADMISSION_INPUTS_HELD`; the fixed wrapper immediately abandons it and
+exits125. `drain_inputs` owns descriptor cleanup, while later legacy media helpers
+fork before `media_pad` first fills `data_bytes`. Thus overwriting on media read
+is too late to prevent inheritance. The future coupled owner must join inventory
+retirement to the held-to-preclaim transition, not merely insert a memset in
+`media_pad`, erase in a losing abandoner, or enable legacy preparation from the
+admission-held state. Revision B storage preparation stays unchanged until that
+whole authenticating boundary is closed.
+
+Required focused proof before source acceptance: complete records survive both
+comparisons; exact overflow refuses without overwrite; reordered enumeration is
+accepted but missing/extra/duplicate/changed included records refuse; possible-
+winner facts are retained under cache ambiguity; once-owner clearing covers
+capture, comparison, expiry and abandon failure paths; and no later helper fork
+can inherit inventory bytes. Stack/FD/call costs and actual original-deadline
+feasibility remain open. These candidates close no G1–G6 or operational gate.
