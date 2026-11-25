@@ -1852,3 +1852,18 @@ locked durable sender again saw User Admin request73 pending and inbox empty;
 the separate checkout exception remains unanswered. No operational gate has
 closed and exit125 remains. The current changes remain under Main's verified
 sole writer ownership; a stop receipt is required on any later transfer.
+
+After that checkpoint, Main and the scoped G1 reviewer challenged using an
+authenticated mountinfo scan before path traversal. It may corroborate a
+qualified topology but does not itself freeze later mount operations or expose
+all callback-capable dentries; namespace/root, hidden stacks, symlinks and
+autonomous producers remain material. Main also traced upstream filesystem
+show callbacks during mountinfo rendering. A limited qualified installation
+topology remains a direction, not an accepted new compatibility restriction.
+The scoped G6 reviewer clarified that alias-injection fixtures apply to
+reachable caller-output interfaces; removed interfaces instead need linked-
+artifact reachability evidence, and fixed-output interfaces still need reentry
+and fencing tests. No fixture or runtime operation ran for this clarification.
+The two scoped reviews and their pre-reference document hashes are retained at
+`path-facts-continuation-20261125/mountinfo-and-fixture-review.json` under the
+protected release-admission evidence root.

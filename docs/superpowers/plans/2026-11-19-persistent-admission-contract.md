@@ -3543,6 +3543,23 @@ the updated timestamp unless immediate expiry applies. A post-crossing
 filesystem-type check cannot undo the earlier callback. This does not establish
 that expiry actually changed or that the selected kernel behaves identically.
 
+The same reviewer challenged a preliminary bounded mountinfo scan. It can be
+corroborating evidence but cannot alone establish this premise: the proc view is
+relative to a particular task's retained root/namespace; rows do not expose every
+managed-dentry callback; the kernel iterator releases namespace exclusion before
+later path operations; and symlink/`..`/bind/stack transitions expand the paths
+that must be considered. A later comparison cannot undo an earlier effect. The
+authenticated proc acquisition, bounded parsing/escaping, stack relationships,
+resource/deadline cost and all mount producers require their own proof. Upstream
+`show_mountinfo` also invokes filesystem `show_devname`/`show_options` hooks, so
+the scan itself must not be assumed effect-free on arbitrary filesystems.
+A conditional direction is a precisely qualified installation topology and
+source-reviewed filesystem set under effective exclusion, with mountinfo only
+as corroboration; no such topology, set, additional refusal or physical
+qualification has been accepted here. Do not build a universal mount interpreter
+or assume a narrower supported set without demonstrating the need and obtaining
+the applicable decision.
+
 ### Remaining cgroup control correspondence: source trace, not a closed design
 
 The current held reader's fixed directory roles are cgroup root2, project
@@ -3629,10 +3646,14 @@ derived solely from internal phase values:
    next effect. Also schedule the fence after the final live check but before
    syscall entry: the call may enter, so retain its actual or unknown disposition
    and stop further positive work once the original owner observes the fence.
-3. Reenter each reachable entry with its output aliasing each live capsule,
-   nested error subobject, binding and owner storage; rejected calls cannot
-   modify those bytes or close any active owner's slot. Separately exercise
-   valid owner-controlled nested outputs, which must remain usable.
+3. At each reachable entry that accepts a caller-selected output, reenter with
+   that output aliasing each live capsule, nested error subobject, binding and
+   owner storage; rejected calls cannot modify those bytes or close any active
+   owner's slot. Separately exercise valid owner-controlled nested outputs and
+   permitted reentry into entries without caller-selected outputs. For removed
+   entrypoints, review the actual linked artifact, build inputs, direct/indirect
+   call reachability, callbacks, signal handlers and applicable dynamic lookup;
+   symbol visibility or absence alone is not a reachability proof.
 4. Inject a fence while each one-shot `active`/`claim` syscall is already
    entered. Separately return success, return failure, or simulate no observed
    return. Record the actual entered/returned bits and results; when return or
