@@ -50,6 +50,7 @@
 - **admission:** specify bounded inventory layout and preclaim sequence ([6c42cf0a4de3](https://github.com/maxxab/agent_runner/commit/6c42cf0a4de31bf05d427ca3cf947acc0092a47f))
 - refine admission safety boundaries ([09cea549090a](https://github.com/maxxab/agent_runner/commit/09cea549090a7d8a1acb0b09fbe007c24f872a08))
 - **admission:** clarify mount and alias evidence ([d7fb85b8b5d7](https://github.com/maxxab/agent_runner/commit/d7fb85b8b5d7b3360f422ee77b53a1c28e6a7e13))
+- **release:** freeze supervised v0.1 implementation scope ([65725aa06b4c](https://github.com/maxxab/agent_runner/commit/65725aa06b4cebcd115c5c60c632cbd878e4a321))
 
 ### Testing
 
