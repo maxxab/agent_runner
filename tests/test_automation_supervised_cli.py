@@ -98,6 +98,18 @@ class SupervisedRunCliTests(unittest.TestCase):
         self.assertEqual(self.fixture.count_marker.read_text(), "x")
         self.assertEqual(self.fixture.check_marker.read_text(), "checked")
 
+    def test_requested_model_settings_are_in_final_report(self):
+        source = self.fixture.inputs
+        source.check_data.update(codex_model="gpt-6.1-sol", codex_reasoning_effort="medium")
+        source.save_checks()
+        result, output, error = call_cli(self, self.arguments)
+        self.assertEqual(result, 0, error)
+        # Approval and final report each expose the explicit request.
+        self.assertEqual(output.count('"codex_model": "gpt-6.1-sol"'), 2)
+        self.assertEqual(output.count('"codex_reasoning_effort": "medium"'), 2)
+        self.assertEqual(output.count("Requested settings; null uses CLI defaults. "
+                                      "Verify effective settings in CLI output."), 2)
+
     def test_terminal_result_is_notified_only_after_the_report_flushes(self):
         report = {"mode": "supervised", "status": "completed", "attempt_id": "a" * 32}
         output = FlushingTerminal()

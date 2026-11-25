@@ -137,6 +137,16 @@ requiring only `unit`:
 Each timeout must be an integer from 1 to 86400 seconds. The task and checks
 files are each limited to 131072 bytes; the checks file must be operator-owned
 and not group/other writable. Neither file may be a final-component symlink.
+When a project requires a particular model and reasoning level, add both
+`"codex_model":"gpt-6.1-sol"` and `"codex_reasoning_effort":"medium"` to the
+top level of the checks JSON, replacing those example values with the project's selection.
+The two fields must be supplied together. Supported effort names are `low`,
+`medium`, `high`, `xhigh`, `max` and `ultra`; the actual selected model/client
+may support fewer. The approval summary and final report identify these as
+requested settings. The runner passes them explicitly to the CLI, without
+selecting a provider, retrying or supplying a fallback. Availability and actual
+effective settings still require checking the selected CLI's output. Omit both
+fields to retain the CLI's existing configuration defaults.
 The runner uses the selected `codex` executable and an explicit environment
 allowlist: `PATH`, `HOME`, `CODEX_HOME`, `LANG`, `LC_ALL`, `TERM`,
 `XDG_CONFIG_HOME`, `XDG_CACHE_HOME` and `TMPDIR` when present. It does not copy

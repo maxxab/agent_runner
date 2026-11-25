@@ -1867,3 +1867,220 @@ and fencing tests. No fixture or runtime operation ran for this clarification.
 The two scoped reviews and their pre-reference document hashes are retained at
 `path-facts-continuation-20261125/mountinfo-and-fixture-review.json` under the
 protected release-admission evidence root.
+
+## 25 November: fast first-release correction scope
+
+The owner asked to fix issues for a fast first release and defer further
+improvements to a later version. Main resumes the already approved supervised
+single-task release scope. Original RNR-D00/native G1–G6 work and its exit125
+remain preserved as later-version work; they are not prerequisites for the
+narrow supervised release and are not being represented as completed.
+
+Before writes, Main verified protected `path-facts-stop-20261125.json` against
+HEAD `2c21124`, clean main/index/diffs, all321 tracked hashes/modes, explicit
+former-writer release and User Admin's original HEAD/status/dirty hashes.
+Sole writer ownership is protected in
+`first-release-fixes-ownership-dbadd53e-fa17-4350-84af-8e68059a948f.json`.
+Numeric Main ownership and next Issue Lead counter stay UNKNOWN; one confirmed
+compaction is retained. Main alone writes source/docs/Git.
+
+The supervised input-to-command trace found one concrete User Admin preparation
+gap: the checks file cannot request the project's required model/effort, so the
+current command relies on ambient configuration. A small correction is specified
+in the existing supervised design: optional paired model/effort fields, captured
+and shown to the operator, fixed CLI arguments and unchanged state/recovery.
+The parser's rejection was reproduced without a provider call. A fresh read-only
+first-release reviewer requires its own inherited-settings exception; that
+request is pending, not covered by the earlier G1/G6 exceptions. Independent
+interface challenge precedes dependent source.
+
+At the coordination checkpoint request73 remained pending and the durable sender
+inbox was empty. No new checkout, enrollment, trial or provider operation is
+authorized by the fast-release instruction. The separate User Admin checkout
+exception remains unanswered; its two original dirty files are preserved.
+
+
+## 25 November: supervised model correction — second-compaction transfer
+
+Stage: implementation complete for the bounded correction; release verification
+and publication remain unfinished. The owner asked for fast first-release fixes
+and later-version improvements. Preserve the approved foreground supervised scope
+and original RNR-D00/G1–G6 history. No original autonomous gate is newly closed;
+the native exit125 remains. Numeric Main ownership version and next Issue Lead
+counter remain UNKNOWN. Same existing main only; no branches/worktrees/force push.
+
+This chat `01a21405-bc39-7603-a1ad-c56b19fe6056` had an unexpected second confirmed
+compaction (count2; predecessor count1 was recorded). POLICY lines79–100 require
+checkpoint and continuation at the next safe stopping point. The platform
+compacted without an actionable advance notice; the limit was not enforced.
+Main stops source/Git writes after the protected stop receipt below. An already
+started default test process may finish; do not duplicate it or change tested
+source until its outcome is reconciled. The same Ubuntu daemon's supported
+thread/read reports current model `gpt-6.1-sol`, effort `medium`, matching checkout;
+helper preflight succeeded for those settings and Full Access. Creation/dispatch
+is a separate operation with its own receipt; preflight is not dispatch evidence.
+
+Implemented, uncommitted on baseline `2c21124d4cc26cb590d03c32355de7cc6da4ade5`:
+optional paired top-level checks fields `codex_model` and
+`codex_reasoning_effort`; strict ASCII model syntax/length and effort enum;
+capture/recheck of inputs; fixed separate model/config argv with shell=False;
+approval and final report explicitly identify requested settings, null defaults,
+and need to verify effective settings. Omission preserves existing CLI defaults.
+No recovery/state schema or native source change. Documentation and package
+summary corrected for supervised first release; version remains unpublished local
+`0.1.0.dev0`. No provider call, enrollment or actual User Admin trial occurred.
+
+The owner explicitly approved one fresh read-only inherited-settings reviewer
+for this bounded correction. Historical `/root/rnr_sup_model_review`, canonical
+`rnr-sup-model-reviewer`, assignment1, challenged the interface before dependent
+source and reviewed implementation. RNR-SUP-MODEL-R1 (P3) required requested-setting
+wording and is CLOSED by independent source recheck. No remaining material defect
+was found in scope. Reviewer made no edits and ran no tests/builds/runtime ops;
+review stopped. Saved findings, exact reviewed hashes and limitations:
+`/home/faris/.local/state/agent-runner/release-admission-20261119/supervised-model-fix-20261125/review-handoff.json`.
+All predecessor subagents are unavailable to a successor; IDs are historical.
+Use saved evidence and fresh agents only for unfinished work that needs them.
+
+Verification already observed (do not repeat valid completed checks): all67
+focused input/run/CLI tests passed in104.630s. This precedes the final reporting
+note correction; that targeted CLI regression was then watched failing0vs2,
+fixed, and passed1 in3.867s. Earlier model selection tests were watched red before
+production; tests include exact argv/approval, partial/unsafe settings, changed
+inputs preventing launch, and rejected-selection exit17 with no retry/checks.
+The full default suite started AFTER the final source correction, with all
+RUNNER_* opt-ins stripped, command `python3 -m unittest discover -s tests -v`.
+Its output is in protected `supervised-model-fix-20261125/full-suite.log`.
+At handoff preparation it was RUNNING, owner wrapper PID663947, child PID663950,
+unified exec session11747 (may not be usable by successor). Observe process
+identity/start time and log footer before deciding completion; absent footer or
+missing process leaves outcome UNKNOWN, not pass. No need to rerun if it finishes
+successfully on the frozen reviewed code snapshot. Tests use mock native fixtures;
+no actual qualified native runtime opt-ins were enabled.
+
+Offline wheel build already succeeded from protected `source/` copied from all321
+tracked working files. `source-snapshot.json` records exact hashes/base;
+`build.log` records success; wheel is
+`supervised-model-fix-20261125/wheel/agent_runner-0.1.0.dev0-py3-none-any.whl`.
+This source snapshot precedes this handoff append. Artifact inspection, digest,
+isolated wheel install/import/help smoke and release-record update are PENDING.
+Do not claim the new optional settings received a live-provider qualification.
+
+Required reading order: canonical teamwork SKILL.md before task execution;
+AGENTS.md; canonical POLICY.md; canonical agent-runner SKILL.md;
+`docs/handoffs/2026-11-19-extraction.md`; this entire handoff including historical
+second-compaction/persistent-admission references; persistent-admission contract;
+canonical `docs/development-document-workflow.md`; supervised design
+`docs/superpowers/specs/2026-11-25-supervised-first-release-design.md`, release
+`docs/releases/2026-11-25-supervised-first-release.md`, and protected current stop
+receipt `supervised-model-fix-stop-20261125.json`. Evidence paths in this section
+are under `/home/faris/.local/state/agent-runner/release-admission-20261119/`.
+
+Ordered successor actions:
+1. Verify stop receipt against HEAD/index/tracked hashes/modes/diffs and User Admin
+   unchanged dirty state; reconcile existing full-suite process and log. Acquire
+   sole source ownership after verifying predecessor stopped; preserve UNKNOWN
+   numeric versions/counters. Do not query historical agents.
+2. Record full-suite result when actually complete. Inspect wheel contents/source
+   match and native resources (24 expected) against still-valid prior qualified
+   wheel `supervised-recovery-wheel-20261125/agent_runner-0.1.0.dev0-py3-none-any.whl`
+   (SHA2569d3b86a3dd937ecb9a3d4fe6c6e463831e86c6473b0d50dd23226db8f5f6552e).
+   Install offline into an isolated verification venv OUTSIDE Git and verify
+   isolated package import, paired/default parser behavior and both CLI helps.
+   No real project initialization/enrollment, provider call or new native runtime
+   qualification. Reuse byte-identical native evidence; do not rerun costly valid
+   checks. Capture exact commands/digests/results in protected evidence.
+3. Update existing release record and this handoff with bounded results and open
+   original gates. Design's final independent-challenge requirement has now been
+   performed; reconcile stale pending wording rather than treating it as open.
+   Docs in this handoff's previous section describing reviewer approval as pending
+   are historical and superseded by the owner's explicit approval above.
+4. Perform appropriate diff/docs/staged standards checks, then commit the logical
+   fix using explicit files, update deterministic changelog in a separate commit,
+   validate range/changelog and ordinary push to verified GitHub repo. Prior task
+   authorizes commit/push; HTTPS credentials unavailable, use SSH remote URL
+   `git@github.com:maxxab/agent_runner.git`. One-off verified identity previously
+   `fares201040` / `fares201040@hotmail.com`; no global config changes. No push of
+   development-standards or force push. Confirm remote HEAD; don't trust stale
+   origin/main. Current index empty; changes are preserved in existing checkout.
+5. At a meaningful checkpoint review User Admin request73 using existing locked
+   durable sender `runner-trial-preparation` in codex-memory. It was pending with
+   empty inbox at this turn's checkpoint; no new message was sent. Its separate
+   checkout exception remains UNANSWERED. No actual User Admin trial authorized.
+   Key `/home/faris/codex-memory/credentials/codex-memory-runner-trial-preparation.key`
+   and sibling `.lock` must never be printed; use existing documented locked MCP
+   stdio workflow, not a new sender. User Admin native checkout required by its
+   AGENTS; do not alter frozen proposed inputs silently. Proposal folder is
+   `/home/faris/.local/state/agent-runner/proposals/user-admin-docs-20261125/`.
+   Review chat `01a21379-3117-7050-b7ba-22cffafc6bb4`, host
+   `remote-wsl:Ubuntu-24.04`; last cursor
+   `2fcb40fa-ac26-4eb2-b8d1-8823d345e374:9` was idle at completed F1 review.
+6. Report delivered bounded first-release corrections honestly; do not represent
+   original autonomous gates, actual effective model/account availability, or
+   User Admin trial as completed. Continue only authorized unfinished scope.
+
+Copy-ready continuation prompt is saved outside Git as
+`supervised-model-fix-20261125/continuation-prompt.txt`. Stop receipt also records
+current diff/hash snapshot, operation ownership and exact pending steps. The
+successor starts its own compaction count0; preserve this chat's count2 history.
+
+
+## 25 November: supervised model correction — delivery verification
+
+Fresh Main `/root`, chat `01a21466-7236-7812-9368-f2bd6002babb`, continued the
+bounded supervised first-release correction as Lead / Orchestrator. Canonical
+teamwork was read before execution. The exact `supervised-model-fix-stop-20261125.json`
+matched HEAD `2c21124d4cc26cb590d03c32355de7cc6da4ade5`, main, empty index,
+status/diff digest and all321 tracked hashes/modes. User Admin HEAD/status and
+both dirty hashes matched. The predecessor explicitly stopped source/index
+writes; only its recorded test wrapper continued. Main accepted sole source/docs/
+Git ownership in protected `supervised-model-fix-20261125/delivery-ownership.json`.
+No predecessor agent was queried and no fresh agent was needed for completed
+review scope. All task IDs/naming history remain; numeric Main ownership version
+and next Issue Lead counter remain UNKNOWN. This new chat has zero observed
+compactions, tracking supported notices only. Its dispatch receipt confirms
+same-host checkout, gpt-6.1-sol/medium and never/dangerFullAccess permissions.
+
+Main verified the existing full-suite wrapper663947 and child663950 against their
+recorded start time and command, then observed the frozen-source run finish.
+`python3 -m unittest discover -s tests -v` ran1562 tests in580.338s, OK with seven
+skips; both processes exited. No duplicate suite ran. Protected
+`supervised-model-fix-20261125/full-suite.log` SHA256 is
+`c3ae21040633ad602acfcca26f16f1dfaf2a9f02b0f109146389678766ddcaae`;
+`suite-result.json` records reconciliation. All runtime/test bytes still match
+the saved snapshot and independent review hashes. The67 focused tests and final
+note regression remain valid; RNR-SUP-MODEL-R1 remains CLOSED.
+
+Offline wheel inspection passed all102 entries and97 packaged files against
+current source/snapshot. All24 native resources match the prior live-tested wheel;
+no native build/qualification was repeated. The corrected wheel SHA256 is
+`1c2306d43d4d741539a942c00d97022fc1d2d804509d9db022e3b9c289362cb7` at
+`supervised-model-fix-20261125/wheel/agent_runner-0.1.0.dev0-py3-none-any.whl`.
+An isolated verification venv outside Git passed offline install, isolated import,
+default/paired/partial selection parsing and console/module/supervised-run help.
+Protected `artifact-inspection.json`, `installed-smoke.json` and `delivery-trace.json`
+retain commands, hashes, source trace and limits. The release record now separates
+this corrected artifact from the earlier live qualification. The design's stale
+future-review wording is reconciled with the completed independent challenge.
+
+At the meaningful checkpoint, official MCP stdio under the existing locked
+`runner-trial-preparation` durable sender in `codex-memory` returned request73
+pending and an empty inbox. `coordination.json` retains the result. No message
+was sent. The separate-checkout exception remains UNANSWERED. User Admin stays
+at `db10197fe11c1b99e24412e85db26c8305bf4f46`; original dirty `BACKLOG.md` and
+`tests/test_role_revocation_postgres.py` and the frozen private proposal remain
+untouched. No incoming message can grant a policy exception or operational scope.
+
+Main owns the remaining authorized documentation/diff/staged standards checks,
+logical fix commit, separate deterministic changelog commit, explicit-range
+validation and ordinary SSH push to maxxab/agent_runner. Their actual outcomes,
+final HEAD/remote/index/worktree and released ownership are recorded in protected
+`supervised-model-delivery-stop-20261125.json`; verify that receipt rather than
+inferring publication from this paragraph. The separate development-standards
+checkout is excluded. No branches/worktrees/force push or package publication.
+
+The bounded correction has no live-provider evidence: effective settings/account/
+availability remain unverified. No real project enrollment, User Admin trial,
+provider call, native runtime qualification or automatic activation occurred.
+Original autonomous G1–G6 and all five operational gates remain deferred/open;
+the unconditional native abandon/exit125 fence is preserved. Further improvements
+remain later-version work under the owner's fast-first-release instruction.

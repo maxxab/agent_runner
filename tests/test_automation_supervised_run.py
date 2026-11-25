@@ -104,6 +104,46 @@ class SupervisedRunTests(unittest.TestCase):
             self.module()._run(self.captured, approve=approve)
         self.assertFalse(self.codex_marker.exists())
 
+    def test_explicit_model_settings_reach_child_and_approval(self):
+        self.inputs.check_data.update(codex_model="gpt-6.1-sol", codex_reasoning_effort="medium")
+        self.inputs.save_checks()
+        self.refresh()
+        summaries = []
+        result = self.module()._run(self.captured, approve=lambda summary: summaries.append(summary) or True)
+        self.assertEqual(result.status, "completed")
+        argv = json.loads(self.args_marker.read_text())
+        self.assertEqual(argv, ["exec", "--sandbox", "workspace-write", "-C", str(self.captured.project),
+                                "--model", "gpt-6.1-sol", "--config", 'model_reasoning_effort="medium"', "-"])
+        summary = json.loads(summaries[0])
+        self.assertEqual(summary["codex_model"], "gpt-6.1-sol")
+        self.assertEqual(summary["codex_reasoning_effort"], "medium")
+        self.assertEqual(self.count_marker.read_text(), "x")
+
+    def test_changed_model_after_approval_prevents_launch(self):
+        self.inputs.check_data.update(codex_model="gpt-6.1-sol", codex_reasoning_effort="medium")
+        self.inputs.save_checks()
+        self.refresh()
+
+        def approve(summary):
+            self.inputs.check_data["codex_model"] = "other-model"
+            self.inputs.save_checks()
+            return True
+
+        with self.assertRaises(ValueError):
+            self.module()._run(self.captured, approve=approve)
+        self.assertFalse(self.codex_marker.exists())
+
+    def test_rejected_model_selection_does_not_retry_or_start_checks(self):
+        self.write_codex("sys.exit(17)")
+        self.inputs.check_data.update(codex_model="unavailable-model", codex_reasoning_effort="medium")
+        self.inputs.save_checks()
+        self.refresh()
+        result = self.module()._run(self.captured, approve=lambda summary: True)
+        self.assertEqual(result.status, "failed")
+        self.assertEqual(result.codex_exit, 17)
+        self.assertEqual(self.count_marker.read_text(), "x")
+        self.assertFalse(self.check_marker.exists())
+
     def test_changed_input_after_attempt_record_prevents_launch(self):
         module = self.module()
         original = module.recheck

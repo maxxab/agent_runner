@@ -42,6 +42,10 @@ def _summary(captured):
         "task_sha256": captured.task_sha256,
         "checks_sha256": captured.checks_sha256,
         "codex_executable": captured.codex_path,
+        "codex_model": captured.codex_model,
+        "codex_reasoning_effort": captured.codex_reasoning_effort,
+        "codex_settings_note": "Requested settings; null uses CLI defaults. "
+                               "Verify effective settings in CLI output.",
         "codex_timeout_seconds": captured.codex_timeout_seconds,
         "check_timeout_seconds": captured.check_timeout_seconds,
         "checks": [{"name": name, "argv": argv} for name, argv in captured.checks],
@@ -230,7 +234,11 @@ def _run(captured: CapturedRun, approve: Callable[[str], bool], *, observe_exit=
                 state.finish(attempt, {"status": "failed", "reason": "inputs changed before launch"})
                 return RunResult(False, "failed", attempt, logs=tuple(logs),
                                  base_revision=captured.base_revision, error="inputs changed before launch")
-            command = [captured.codex_path, "exec", "--sandbox", "workspace-write", "-C", str(captured.project), "-"]
+            command = [captured.codex_path, "exec", "--sandbox", "workspace-write", "-C", str(captured.project)]
+            if captured.codex_model is not None:
+                command.extend(["--model", captured.codex_model, "--config",
+                                f'model_reasoning_effort="{captured.codex_reasoning_effort}"'])
+            command.append("-")
             codex_exit, unknown, started = _invoke(command, cwd=captured.project,
                                                    environment=dict(captured.environment),
                                                    input_bytes=captured.task_bytes,

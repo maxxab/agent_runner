@@ -100,6 +100,10 @@ def _supervised(args):
     result = _supervised_run(captured)
     report = asdict(result)
     report.update({"mode": "supervised", "review_required": True,
+                   "codex_model": captured.codex_model,
+                   "codex_reasoning_effort": captured.codex_reasoning_effort,
+                   "codex_settings_note": "Requested settings; null uses CLI defaults. "
+                                          "Verify effective settings in CLI output.",
                    "cost": "Unavailable — not reported to the runner",
                    "recovery": "Clearance is attempted after normal foreground exit; "
                                "check supervised-status. Abrupt loss requires reconciliation."})

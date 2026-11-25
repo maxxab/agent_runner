@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "agent-runner"
 version = "0.1.0.dev0"
-description = "Bounded project-owned agent runner; operational release gates remain open"
+description = "Project-owned foreground task runner with explicit operator approval"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

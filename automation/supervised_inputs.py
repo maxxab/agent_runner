@@ -16,6 +16,8 @@ from .contracts import fields, load_json, version
 
 
 _MAX_INPUT = 131072
+_MODEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
+_EFFORTS = ("low", "medium", "high", "xhigh", "max", "ultra")
 _REMOTE = re.compile(r"(?:https://github\.com/|git@github\.com:)([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+?)(?:\.git)?\Z", re.IGNORECASE)
 _ENVIRONMENT = ("PATH", "HOME", "CODEX_HOME", "LANG", "LC_ALL", "TERM", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "TMPDIR")
 
@@ -43,6 +45,8 @@ class CapturedRun:
     codex_identity: tuple[int, ...]
     environment: tuple[tuple[str, str], ...]
     ignored_status: bytes
+    codex_model: str | None = None
+    codex_reasoning_effort: str | None = None
 
 
 def _identity(info):
@@ -68,8 +72,18 @@ def _read_file(path):
 
 def _checks(raw, names):
     value = fields(load_json(raw, max_bytes=_MAX_INPUT),
-                   ("schema_version", "codex_timeout_seconds", "check_timeout_seconds", "checks"))
+                   ("schema_version", "codex_timeout_seconds", "check_timeout_seconds", "checks"),
+                   ("codex_model", "codex_reasoning_effort"))
     version(value["schema_version"])
+    if ("codex_model" in value) != ("codex_reasoning_effort" in value):
+        raise ValueError("Codex model and reasoning effort must be supplied together")
+    model = effort = None
+    if "codex_model" in value:
+        model, effort = value["codex_model"], value["codex_reasoning_effort"]
+        if not isinstance(model, str) or not _MODEL.fullmatch(model):
+            raise ValueError("invalid Codex model identifier")
+        if not isinstance(effort, str) or effort not in _EFFORTS:
+            raise ValueError("invalid Codex reasoning effort")
     limits = (value["codex_timeout_seconds"], value["check_timeout_seconds"])
     if any(type(n) is not int or not 1 <= n <= 86400 for n in limits):
         raise ValueError("timeouts must be integers between 1 and 86400 seconds")
@@ -89,7 +103,7 @@ def _checks(raw, names):
             except UnicodeEncodeError as error:
                 raise ValueError("invalid check argument") from error
         result.append((name, tuple(argv)))
-    return tuple(result), limits
+    return tuple(result), limits, (model, effort)
 
 
 def _remote(project, repository):
@@ -152,14 +166,15 @@ def capture(project: Path, enrollment: Path, task: Path, checks: Path, *, host: 
             task_bytes.decode("utf-8")
         except UnicodeError as error:
             raise ValueError("task must be UTF-8") from error
-        commands, limits = _checks(checks_bytes, context.config.required_checks)
+        commands, limits, selection = _checks(checks_bytes, context.config.required_checks)
         codex_path, codex_identity = _executable()
         environment = tuple((name, os.environ[name]) for name in _ENVIRONMENT if name in os.environ)
         return CapturedRun(project, enrollment, task, checks, host, context, task_bytes, commands,
                            limits[0], limits[1], hashlib.sha256(task_bytes).hexdigest(),
                            hashlib.sha256(checks_bytes).hexdigest(), head, remote,
                            checkout_identity, task_identity, checks_identity,
-                           codex_path, codex_identity, environment, ignored)
+                           codex_path, codex_identity, environment, ignored,
+                           codex_model=selection[0], codex_reasoning_effort=selection[1])
     except (OSError, UnicodeError) as error:
         raise ValueError("supervised inputs are unavailable") from error
 

@@ -68,6 +68,36 @@ class SupervisedInputsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.module().recheck(captured)
 
+    def test_explicit_model_settings_are_captured_and_rechecked(self):
+        self.check_data.update(codex_model="gpt-6.1-sol", codex_reasoning_effort="medium")
+        self.save_checks()
+        captured = self.capture_valid()
+        self.assertEqual(captured.codex_model, "gpt-6.1-sol")
+        self.assertEqual(captured.codex_reasoning_effort, "medium")
+        self.check_data["codex_reasoning_effort"] = "high"
+        self.save_checks()
+        with self.assertRaises(ValueError):
+            self.module().recheck(captured)
+
+    def test_incomplete_or_unsafe_model_settings_are_rejected(self):
+        original = dict(self.check_data)
+        selections = [
+            {"codex_model": "gpt-6.1-sol"},
+            {"codex_reasoning_effort": "medium"},
+            {"codex_model": None, "codex_reasoning_effort": "medium"},
+            {"codex_model": "--oss", "codex_reasoning_effort": "medium"},
+            {"codex_model": "model\nother", "codex_reasoning_effort": "medium"},
+            {"codex_model": "x" * 129, "codex_reasoning_effort": "medium"},
+            {"codex_model": "gpt-6.1-sol", "codex_reasoning_effort": "medium\nother=true"},
+            {"codex_model": "gpt-6.1-sol", "codex_reasoning_effort": True},
+        ]
+        for selection in selections:
+            with self.subTest(selection=selection):
+                self.check_data = dict(original, **selection)
+                self.save_checks()
+                with self.assertRaises(ValueError):
+                    self.capture_valid()
+
     def test_environment_is_captured_without_unrelated_secrets(self):
         with patch.dict(os.environ, {"OPENAI_API_KEY": "do-not-copy", "LANG": "C.UTF-8"}):
             captured = self.capture_valid()

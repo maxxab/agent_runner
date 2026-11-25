@@ -221,3 +221,33 @@ and separately authorized end-to-end qualification are complete for the recorded
 snapshot and host. The release record identifies the exact supported scope.
 The later roadmap retains issue selection, PR delivery, parallelism, stronger
 containment and broader recovery without claiming dates for them.
+
+## First-release correction: explicit requested model settings
+
+The owner reiterated fast first-release delivery on 25 November. Keep the
+supervised scope above; original autonomous G1–G6 work remains later-version
+work. A concrete User Admin preparation gap is that its model/effort instruction
+cannot be expressed through the supervised checks input; relying on ambient
+configuration does not make that selection explicit.
+
+Use two optional checks-file fields, `codex_model` and
+`codex_reasoning_effort`, supplied together or both omitted. Omission preserves
+the qualified command and its existing Codex defaults. When supplied, validate
+an ASCII model identifier of 1–128 characters (alphanumeric first character,
+then alphanumerics, `.`, `_` or `-`) and one named effort (`low`, `medium`, `high`,
+`xhigh`, `max`, `ultra`), capture them with the already digested checks bytes,
+show them in foreground approval and the final CLI report, and pass them as
+separate fixed `--model` and `--config model_reasoning_effort=...` arguments.
+No arbitrary config, command, shell or provider selector is added. The final
+input recheck covers changed selections through the existing capture equality.
+The attempt-state schema and recovery behavior stay compatible.
+
+These are requested settings; the selected CLI/provider still determines
+availability and supported effort. A CLI rejection is an ordinary failed run,
+without runner retry or fallback. Tests use a fake local executable to verify
+argument delivery, approval/report values, invalid/incomplete selection and
+changed-input refusal. No provider run, account inspection, project opt-in or
+User Admin checkout exception follows from this correction. The interface received
+independent challenge before dependent implementation; final source recheck closed
+RNR-SUP-MODEL-R1. The release record identifies the correction's offline evidence
+and distinguishes it from the earlier live qualification.

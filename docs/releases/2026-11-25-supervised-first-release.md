@@ -32,7 +32,7 @@ SHA256 `9d3b86a3dd937ecb9a3d4fe6c6e463831e86c6473b0d50dd23226db8f5f6552e`.
 The release packaging check below distinguishes that live-tested artifact from
 the documentation refresh; it does not imply a second provider run.
 
-The refreshed local release wheel is
+The earlier documentation-refresh wheel is
 `/home/faris/.local/state/agent-runner/release-admission-20261119/supervised-first-release-20261125/agent_runner-0.1.0.dev0-py3-none-any.whl`,
 SHA256 `8b1210b63054005594da8ced62422e2279eda2fe8ea631f64e356e0b1016d871`.
 It was built offline and installed into an isolated verification venv. All 102
@@ -51,6 +51,41 @@ The protected artifact directory retains `build.log` and `installed-smoke.json`.
 No consumer installation was replaced by these packaging checks. The complete
 two-consumer/native-build installation script was not rerun; this refresh's
 verification covers the unchanged resources and the installed checks above.
+
+## Bounded requested-model correction
+
+The current corrected local wheel is
+`/home/faris/.local/state/agent-runner/release-admission-20261119/supervised-model-fix-20261125/wheel/agent_runner-0.1.0.dev0-py3-none-any.whl`,
+SHA256 `1c2306d43d4d741539a942c00d97022fc1d2d804509d9db022e3b9c289362cb7`.
+It was built offline from the protected tracked working snapshot based on
+`2c21124d4cc26cb590d03c32355de7cc6da4ade5`. The source snapshot precedes the final
+handoff/release prose; all packaged source bytes match the reviewed checkout.
+No tag or public package publication was performed; use this exact digest.
+
+Checks JSON can now supply paired optional `codex_model` and
+`codex_reasoning_effort` fields. The runner validates and captures both, includes
+them in approval and final reporting as requested settings, and passes separate
+fixed arguments to Codex. Omission retains CLI defaults. Changed inputs prevent
+launch; a CLI rejection stops without runner retry or fallback. The state and
+recovery format is unchanged. Follow the [owner guide](../project-owner.md).
+
+| Correction criterion | Evidence, 25 November 2026 | Result / limits |
+| --- | --- | --- |
+| Paired validation, captured selection, exact argv and reporting | 67 focused tests passed before the final reporting-note correction; its targeted regression then passed after demonstrated failure; final default suite ran 1,562 tests in 580.338s, OK with seven skips | PASS with fake local commands; no provider call for this correction |
+| Independent interface and final source review | Protected `supervised-model-fix-20261125/review-handoff.json`; all six reviewed file hashes rechecked at delivery | PASS; RNR-SUP-MODEL-R1 CLOSED, no remaining material finding in scope |
+| Wheel and installed boundary | Offline build; all 102 entries inspected; 97 packaged files match current source; all 24 native resources match the live-tested wheel; offline isolated install/import, default/paired/partial parser and console/module help passed | PASS; no consumer installation replaced or native qualification repeated |
+| Effective model, effort, provider and account | No live invocation of the new selection | UNKNOWN; operator must verify selected CLI output before real use |
+
+The protected correction directory retains `source-snapshot.json`, `build.log`,
+`artifact-inspection.json`, `installed-smoke.json`, `review-handoff.json`,
+`delivery-trace.json`, `suite-result.json` and `full-suite.log`. The final full-suite
+log SHA256 is `c3ae21040633ad602acfcca26f16f1dfaf2a9f02b0f109146389678766ddcaae`.
+The successor observed the already-running suite to completion without rerunning it.
+The earlier live qualification below remains evidence only for its recorded
+fixture, artifact and CLI defaults. It does not qualify the new optional selection,
+User Admin or another project. The corrected artifact is ready for the authorized
+local source delivery within these limits; real-project opt-in and run approval
+remain separate.
 
 ## Acceptance evidence
 

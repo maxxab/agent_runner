@@ -43,7 +43,7 @@ product acceptance IDs, current contracts, environment prerequisites and owner f
 The product plan's historical placement/bootstrap instructions are superseded by
 this migration and the owner guide; its acceptance IDs and safety contracts remain.
 
-All five release gates remain OPEN: actual complete runtime profile/original
+All five original autonomous-runtime release gates remain OPEN: actual complete runtime profile/original
 membership; real private entry and bound session/rnr_command; whole independent
 keeper/containment/recovery; immutable startup closure; actual integrated
 success/failure/recovery qualification. RootEntry STORE_READY_ONLY and synthetic
