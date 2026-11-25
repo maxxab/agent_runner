@@ -1655,3 +1655,84 @@ claimed from this source-only work; the current authorization still excludes
 native runtime qualification, provider calls, trials and automatic activation.
 Publication/stopping results belong to the next protected checkpoint receipt,
 not to an assumed commit hash in this document.
+
+## 25 November: exact arena layout review and preclaim source trace
+
+Main `/root`, supported app chat `01a21405-bc39-7603-a1ad-c56b19fe6056`,
+resumed on the same Ubuntu host/main. The requested second-compaction receipt
+was superseded by the two documented commits ending at `f1b0a6f597ee3036d99b728ca07c0bd9817215b5`.
+Main reconciled those three changed documents, then verified the newer protected
+`inventory-lifetime-continuation-stop-20261125.json`: all321 tracked hashes/modes,
+clean status/index/diff, User Admin HEAD/status and both original dirty hashes
+matched. Its owner explicitly released writes; no matching test/build operation
+was observed. Fresh sole writer ownership is protected in
+`autonomous-layout-ownership-b4c905ef-925f-49c7-ae5f-8e04e15b8016.json`.
+RNR-D00 and all naming/task history remain; numeric Main ownership version and
+next Issue Lead counter remain UNKNOWN. This new chat has zero observed confirmed
+compactions; tracking uses supported notices only. The app list subsequently
+exposed the current chat ID; earlier records honestly lacked it.
+
+Current stage is existing G1/G6 source-design continuation under the canonical
+development-document-workflow. Main refined the existing contract with a concrete
+private arena layout, two in-arena offset indexes and bounded sorting/lookup/group
+walks. The fixed regions use155904bytes, leaving4038400; a minimum entry plus
+indexes costs120bytes, hence at most33653 entries before variable facts. Exact
+arithmetic is independently reviewed and separately checked. This supplies a
+reviewable capacity representation, not a standalone codec or source release.
+Exact path-fact role/comparison semantics, publication timing, target/loaded-manager
+correspondence, Wants, serial traversal FDs, linked stack and original-deadline
+feasibility remain open. Do not repeat the completed cache/lifetime research.
+
+The user explicitly allowed **one fresh read-only reviewer to inherit this chat's
+model and reasoning settings for the G1 record/resource design**. That scoped
+exception resolves the canonical teamwork named-settings limitation for this
+reviewer only; it is not a general future settings exception. Fresh canonical
+`rnr-d00-arena-layout-reviewer`, actual `/root/rnr_d00_arena_layout_reviewer`,
+supervisor `/root`, assignmentv1, found P2 ambiguous skipped-versus-shadowed
+classification and P3 unassigned sorting scratch. Main corrected both and the
+same reviewer independently closed them. Cache eligibility/evidence is retained;
+unknown cannot become proved membership from a new filesystem scan. The swap
+slot explicitly reuses eight existing workspace bytes. N=0 avoids log2(0).
+Reviewer finished and explicitly stopped all operations without writes/tests/
+runtime calls or uncertain effects. Effective named settings remain unavailable;
+the supported tool guarantees parent inheritance. No Issue Lead was allocated.
+
+Main also traced the actual held-input/abandon and persistence sequence. A separately
+labelled **unreviewed** contract candidate now fixes the intended call ordering:
+private store acquisition without effects, original-owner final44 and inventory
+comparison/clear, then the same persistence role5 maintenance lookup and one-shot
+active/claim. It requires private declaration-ACK authority and precise fenced/
+paired-owner/error interfaces before code. No API, caller callback, source change,
+extra descriptor or positive authority was implemented. The G1 layout review
+does not review or accept this later G6 candidate.
+
+Read-only stat observations found `/etc/rnr/projects`, `/usr/lib/rnr/bootstraps`
+and `/var/lib/rnr/projects` absent. No input content, enrollment or credential was
+read or created, and no manager query or installation ran. This is missing native
+installation evidence, not runtime qualification or permission to provision it.
+
+At the meaningful User Admin checkpoint, official MCP stdio under the existing
+locked durable `runner-trial-preparation` identity in `codex-memory` again returned
+request73 pending and inbox empty. App read-only tools showed `Review user_admin
+for agent_runner` idle at its completed F1 checkpoint; no later review execution
+is established. No supported chat-send/resume tool is exposed here, and no new
+chat was created. The unanswered separate-checkout exception is unchanged; do not
+repeat the question or infer approval. Both original User Admin edits are intact.
+
+Protected `arena-layout-20261125/` contains the initial review snapshot, exact
+arithmetic and independent finding/correction/recheck disposition; the separate
+`arena-layout-coordination-20261125.json` records request73/inbox results. The
+review disposition identifies its limited scope and Main-captured corrected
+section hash; the later G6 section is not part of that review. Runtime source
+and native resources match the verified baseline. No full/native fixture tests,
+build, provider call, project enrollment, trial, native qualification or activation
+ran; existing applicable evidence is reused for unchanged executable code.
+All G1–G6 and five original gates remain OPEN, and native exit125 remains.
+
+Next authorized source work is to close exact path-fact roles/comparisons and
+the serial traversal/resource interface, then original manager/target facts and
+the coupled preclaim owner transition before implementation. Independently review
+each affected interface before source; do not turn this scoped layout review into
+whole-boundary acceptance. Current publication, final hashes and ownership release
+belong to protected `arena-layout-stop-20261125.json`, which must be verified
+against the checkout before any later owner writes.

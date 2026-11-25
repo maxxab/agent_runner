@@ -2859,3 +2859,202 @@ winner facts are retained under cache ambiguity; once-owner clearing covers
 capture, comparison, expiry and abandon failure paths; and no later helper fork
 can inherit inventory bytes. Stack/FD/call costs and actual original-deadline
 feasibility remain open. These candidates close no G1–G6 or operational gate.
+
+#### Successor refinement: concrete arena layout and bounded indexing
+
+Status: **source-design candidate for independent review, not an executable
+format or implementation release**. This refines the approved four-MiB arena;
+it does not repeat or replace the reviewed cache-union and lifetime rules.
+Main owns this contract and source; a fresh reviewer is read-only. RNR-D00 is
+the established local assignment, with no invented issue URL or Issue Lead.
+
+Use byte offsets into the existing array, not pointers or a packed C ABI. All
+stored integers are fixed-width little-endian; record starts are eight-byte
+aligned. These are private memory representations, never persistent records,
+new IPC messages or caller-selectable kinds. Checked byte loads/stores avoid
+alignment/aliasing assumptions. Offset zero is reserved as NONE. Freeze these
+regions before capture:
+
+| Region | Bytes | Purpose |
+| --- | ---: | --- |
+| Header | 256 | Original-owner inventory state, checked low/high cursors, counts, pass number; reserved bytes zero |
+| Directory rows | 90,112 | 704 fixed 128-byte rows, keyed by UnitPath index and name-map or suffix/scope; unused rows zero |
+| Scratch | 65,536 | Inventory-only dirent, path/link and sorting scratch; never retained original bytes |
+| Variable region | 4,038,400 | Entry/fact rows and their exact byte tails grow up; two offset indexes grow down |
+
+The reserved directory bound is 32 + 3*32*7 = 704, including absent rows.
+Do not include existing `.d` scans in this count or pretend their final coupling
+is solved. Reserve a row for every logical directory, even if two paths resolve
+to one object. The header holds no alternate owner PID/TID or fresh clock;
+existing original-owner state remains authoritative. Directory row offsets are:
+u32 logical ID/UnitPath index/suffix code/scope code at 0/4/8/12; u32 presence,
+entry count, first path-fact offset, path-fact count at 16/20/24/28; original
+dev/inode/mount u64 at 32/40/48; mode/uid/gid u32 at 56/60/64; u32 cache
+eligibility at 68 (0 not applicable to this directory role, 1 proved consulted,
+2 proved skipped, 3 unknown); u32 first cache-evidence fact offset/count at
+72/76; reserved 80..127. The evidence chain is distinct from path facts:
+filesystem facts alone cannot prove cache membership. Until a concrete trusted
+cache-evidence predicate and its exact observation-role semantics are reviewed,
+dependency rows must use unknown, with zero cache-evidence offset/count. A proved
+state requires complete retained original evidence, not an external file pointer
+or an assertion flag. Later passes preserve that evidence and unknown state;
+they cannot upgrade it from fresh filesystem observations.
+Presence is only definite absent or present; uncertainty fences before publication.
+Absence still needs the retained path-resolution facts, not a zero identity as
+proof. Search precedence is derived from the compiled per-map scope schedule and
+UnitPath index, never the row's numerical ID or directory enumeration order.
+
+An entry has a 96-byte header followed by its exact non-NUL name and zero
+eight-byte padding. Header u32 fields at 0..28 are total bytes, directory ID,
+initial raw enumeration ordinal, name bytes, first fact offset, fact count,
+applicable-map bits and possible-winner bits. Map bits 0..11 are the four units
+times three suffixes; all other bits zero. u32 at 32 holds the independent
+name-map/cache roles; 36..95 are reserved zero. A shadow in a map is an applicable
+bit without a possible-winner bit only when the directory is not proved skipped
+and an earlier proved-consulted occurrence necessarily occupies that map.
+An occurrence in a proved-skipped directory is separately classified skipped,
+not shadowed. Derive that distinction from the retained eligibility and exact
+per-map predecessor evidence before interpreting the bits. Skipped status does
+not qualify an entry for the compact shadow-only record. A name-map/cache role
+is never excused by those bits. Names are 1..255 bytes; malformed longer dirents fence before copy.
+All raw entries, including filtered entries, still consume existing scan limits.
+The inclusion rule above determines retained entries; this layout does not
+permit dropping a required filtered, shadow or independent-role observation.
+
+Each path/metadata fact has a 128-byte header followed by exact component bytes,
+then exact link bytes when observed, then zero eight-byte padding. u32 fields
+at 0..28 are total bytes, next fact offset, compiled observation-role code,
+component bytes, link bytes, definite syscall disposition, mode and uid; gid
+and reserved are at 32/36. u64 at 40/48/56/64/72/80/88/96/104/112 are
+dev/inode/mount/nlink/rdev/size/mtime-seconds/mtime-nanoseconds/ctime-seconds/
+ctime-nanoseconds; 120..127 reserved zero. Signed size/time fields use their
+exact signed64 representation. No fact reads device/FIFO contents. Components
+are bounded by NAME_MAX=255; a link read uses its actual syscall byte count,
+bounded by the 4096-byte scratch slot, with a full-capacity result refused as
+possibly truncated. The original full path and chase sequence are reconstructed
+from the directory's fixed derived root and ordered component facts, retaining
+every required source-link and followed-link observation. Missing evidence,
+unsupported paths or unclosed source traversal semantics fence, not an omitted
+fact. Exact observation-role codes, which fields each role compares, source
+call-site/chase equivalence, and prevention of inode-reuse ambiguity remain
+required before source. The layout supplies capacity for these facts; it does
+not claim that a matching metadata tuple proves continuous object identity.
+
+Every entry reserves two eight-byte index cells before publication. One cell is
+u32 entry offset, one comparison mark byte and three zero bytes; the second is
+u32 entry offset and four zero bytes. Reserve both cells and every entry/fact
+tail with checked low/high arithmetic before writing or publishing. Facts are
+owned by a directory or entry chain, never indexed as independent entries.
+Partial capture fences the whole attempt; original-owner cleanup later clears
+the whole array. No second allocation, interning/deduplication table, recursion,
+heap, filesystem spill or digest-only substitution is introduced.
+
+Sort the first index by (logical directory, unsigned name bytes) for duplicate
+rejection and later binary lookup. Sort the second by (name-map versus dependency
+suffix, unsigned name bytes, logical directory). Preserve the initial ordinal
+in the row, without using it as later equality. A fixed nonrecursive in-place
+heapsort uses the first eight bytes of the metadata/syscall scratch workspace
+as its swap slot, only while no syscall workspace values are live. For each basename group, derive each
+applicable map's real precedence from its compiled schedule; inspect the group
+in at most twenty-four bounded walks (two per map: find the first proved
+consulted rank, then classify) to set possible-winner/shadow bits under the
+reviewed cache-union rule. Do not let either index's lexical order substitute
+for precedence. Independent name-map/cache semantics remain mandatory.
+
+The smallest entry uses align8(96+1)+16 = 120 aggregate bytes before any fact.
+Thus at most floor(4,038,400/120) = 33,653 entries fit; facts and longer names
+reduce this. It is a consequence of the approved byte cap, not another entry
+allowance. Each binary lookup requires at most 16 comparisons; a comparison
+examines at most 255 name bytes plus fixed keys. Two later passes therefore
+have at most 1,076,896 successful-member lookup comparisons if every original
+member is present (33,653*16*2), excluding the single extra member which can
+immediately refuse, directory/path facts and raw filtered entries. Two index
+sorts use a conservative bound of 8*N*(floor(log2(N))+1) key comparisons total
+for N>0; N=0 performs no sort, group walk or lookup and never evaluates log2(0);
+per-map group walks add at most 24*N member visits. Each comparison/visit and
+bounded copy/clear chunk must sample the original setup budget at fixed finite
+intervals; no unbounded libc qsort or renewal. These are algorithmic bounds,
+not feasible timing evidence. Variable facts also require bounded processing
+and original-clock checks; record framing alone does not bound syscall latency.
+
+Scratch subdivision is fixed: dirents 4096; two path buffers 4096 each; link
+buffer 4096; metadata/syscall workspace 4096; remaining 45,056 reserved zero.
+No inventory-sized local arrays are permitted. The fixed C call frames and
+actual linked call-chain peak still require compile-only measurement after the
+complete traversal/caller design exists. FD accounting reserves no new retained
+descriptor: traversal must explicitly serialize its path/link/directory handles
+within G5 or revise/review that accounting before code. The current G5 list's
+single named temporary is not already a proof that such a traversal fits.
+
+This candidate makes storage/index arithmetic reviewable. It deliberately does
+not release a standalone codec milestone. Before affected source, settle exact
+path fact inclusion/comparisons and scratch/FD ownership against actual helper
+semantics, singleton/target/loaded-manager identity and expected Wants, the
+coupled G6 state transition and exclusion, then independently review the whole
+affected interface. Keep original observations through both later comparisons,
+clear before claim mutation/fork as specified above, and preserve exit125.
+
+#### Successor refinement: fixed preclaim call sequence for further challenge
+
+Status: **unimplemented, not independently reviewed**. Source inspection of
+`prepare_held_inputs`, `live_input`, `abandon_preparation_inputs` and Revision B's
+`prepare_persistent_claim` confirms that simply allowing reads in the held phase
+would not supply original-owner reservation, a valid declaration ACK or coupling
+to persistence's actual project descriptor. Keep the present wrapper unchanged.
+
+The narrow candidate is one fixed call sequence, without an exported store-FD
+getter, caller-selected callback, supplied directory or reusable approval token:
+
+1. The eventual authenticating admission caller owns the original held inputs,
+   complete original binding and the same keeper's consumed declaration ACK.
+   The keeper/launch owner must establish that ACK in private state; a boolean
+   supplied by a caller is insufficient. Its exact transport/state gate remains
+   part of G2, not implemented by this sequence.
+2. Persistence reserves its one original PID/TID acquisition exactly once,
+   validates the authenticated binding and acquires original ancestry, consumed
+   and instance roles as today, with no creation. Keep that same acquisition
+   active across the following fixed preparer call. No second public prepare or
+   claim operation, alternate descriptor or reopen is introduced.
+3. That fixed preparer call verifies the original owner/ACK, atomically reserves
+   `ADMISSION_INPUTS_HELD -> ADMISSION_PRECLAIM_CHECKING`, and enables existing
+   reader helpers only in that newly active admission phase. Add its explicit
+   fenced counterpart to admission routing and atomic fencing. A losing,
+   foreign or reentrant call may fence atomics but cannot read/erase unpublished
+   inventory or drain another call. The active original call alone unwinds.
+4. Run the fixed final44 on the original connection, comparing original IDs and
+   InvocationIDs without overwriting them, plus required original kernel/path/
+   project/executable/unit and complete inventory rechecks. No serial, receive,
+   poll, cache-evidence, inventory or clock reset. Original Names/Requires/Upholds
+   remain initial-only under their exclusion premise. Exact Wants and full G1
+   comparisons must exist before this step can return success.
+5. Retire the arena through the reviewed original-owner clear, then publish the
+   one-way `ADMISSION_PRECLAIM_CHECKED` state only by successful CAS from its
+   unfenced active state. This is not media/GO authority or a reusable token.
+   Quiescent abandon recognizes the checked state; active abandon attempts only
+   fence. Failure at any point clears private memory through the original owner
+   and closes that owner's handles once, preserving first and cleanup errors.
+6. Back in the still-active original persistence acquisition, recheck its held/
+   named ancestry and instance, verify the fixed preparer/launch authorization
+   remains unfenced, then inspect `maintenance.lock` through its exact role5.
+   Definite ENOENT alone passes. Immediately before the sole `active` open,
+   consume `ADMISSION_PRECLAIM_CHECKED -> ADMISSION_CLAIMING` and check the
+   original budget; persistence keeps its own owner/budget checks. Once entered,
+   any known fence prevents the next effect; an already-entered uncertain syscall
+   retains its actual disposition, never an invented UNATTEMPTED result.
+7. Preserve today's one-shot create/write/file-sync/parent-sync ordering for
+   active and claim. Only full timely success can publish the paired held state
+   needed by a later authenticated CLAIM exchange. A paired publication failure,
+   concurrent fence, lost ACK or any syscall/close uncertainty fences both owners
+   and retains consumption; no rollback, retry or claim removal. No new native
+   preparation, media helper or GO is allowed from these proposed states.
+
+This retains one original Main actor across two private owners; the keeper is
+still independent and never waits for disk. Cross-owner error mapping, exclusive
+once-drain responsibility and paired terminal publication need exact reviewed
+source/error interfaces before code; do not infer a multi-atomic transaction or
+immunity to a fence concurrent with an entered syscall. Actual maintenance and
+autonomous-manager exclusion must span the whole sequence, including erasure,
+lookup and creation; a successful absence lookup never creates that exclusion.
+The sequence adds no retained FD, but actual nested temporary/call-frame peaks,
+binding-buffer ownership and maximum I/O/computation counts remain to be proved.
+It refines the integration question only; Revision B and all G gates stay open.
