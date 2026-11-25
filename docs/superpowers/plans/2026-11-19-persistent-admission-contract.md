@@ -2166,3 +2166,189 @@ bytes zero. Verify selected-kernel exact loop string storage/readback before use
 no truncation or digest-only task authority. The complete binding/original producer
 and source/loop held identities remain independent. This relies on the same vetted
 computation-only SHA256 dependency, not an ad-hoc checksum or new runtime library.
+
+### G1 dependency inventory refinement — 25 November source-design candidate
+
+Status: **candidate for independent review; no source implementation or operational
+acceptance**. This resumes the existing G1 inventory requirement. It changes no
+G1–G6 guarantee, manager request budget, installation authority or exit125 fence.
+The independent next-step review is
+`docs/reviews/2026-11-25-original-gate-next-step.md`. Retained source below lives
+outside Git in `/home/faris/.local/state/agent-runner/release-admission-20261119/`;
+the existing provenance and Ubuntu source-package correspondence remain the
+evidence, not proof of the running PID1 or installed directory contents.
+
+#### Source conclusions and supported scope
+
+`systemd-v255-load-dropin-01a20fb2.c:14` calls the shared directory search for
+`.wants`, `.requires` and `.upholds`, passing file_suffix=NULL. After basename
+selection, it checks mask, symlink, valid unit basename and readlink. A target-name
+mismatch which returns compatibility **zero only warns**; it still attempts dependency addition using the entry basename. The downstream
+load/add result is not established by this call alone. A negative compatibility error does skip it.
+Do not classify every mismatched target as inactive or require an `After` change.
+
+`systemd-v255-dropin-01a20fb2.c:136,223` constructs the directory list in this order:
+canonical name across ordered UnitPath, then each alias across ordered UnitPath,
+then type scopes across ordered UnitPath. Each name expands to its own scope,
+instance/template scope when applicable, then successively shorter dash prefixes.
+This is **not** one global UnitPath-first merge across every scope. Canonical
+specific entries can precede generic entries from a higher-priority UnitPath.
+Alias Set iteration is not a lexical precedence contract.
+
+`systemd-v255-conf-files-01a20fb2.c:25,149` keeps the first eligible basename in
+that directory order, then sorts the selected output by basename. Here flags=0:
+mask/type filtering is not done by `files_add`. A higher-priority regular/empty
+file or mask can therefore occupy a basename before `process_deps` ignores it;
+there is no fallback to a lower-priority symlink of that basename. Source errors
+which systemd logs/ignores are not evidence of absence for this admission reader.
+
+`systemd-v255-unit-file-01a20fb2.c:159,380,718` distinguishes aliases inside the
+original plus resolved UnitPath from linked files outside it. The first map-eligible unit-name entry wins: regular files are inserted before
+content/loadability checks, classified linked masks can occupy a name, and
+symlink-resolution errors skip insertion. Later reverse-map construction omits
+null/empty targets; it does not restore a lower-priority fragment. Alias resolution
+uses at most eight map lookup iterations, including the terminal absolute-fragment
+lookup (seven ordinary alias edges can succeed; eight cannot). The reverse
+map supplies all names resolving to a selected fragment. A linked path or mask is
+not equivalent to an alias merely because its basename resembles another unit.
+The three selected slice names do not gain alias support: `unit_type_may_alias`
+excludes slices. The launch service can have aliases in systemd generally, but
+the accepted manager `.Names` expectation is already an exact canonical singleton.
+
+Use that existing singleton policy to keep the operational inventory narrow:
+derive the filesystem winning-name/reverse map, prove that the selected service
+has only its canonical name, and fence any effective additional alias. Unrelated
+host symlinks are not blanket-rejected. A chain which cannot be classified is
+uncertain, never proof of absence. This avoids inventing alias iteration ordering
+or expanding the accepted runtime to alias/template units. A later requirement
+to admit aliases would need a separately closed algorithm and manager matrix.
+
+#### Proposed deterministic observations
+
+1. Use only the retained genuine root, authenticated ordered UnitPath, original
+   four fragment identities and clock. Capture each resolved search directory and
+   its absence/metadata/mount identity with existing named/held rechecks. Expand
+   original and resolved search paths for alias-versus-linked classification.
+   Scan names without importing systemd code or using a live shell/busctl helper.
+2. Build the ordered winning-name map once from bounded directory observations.
+   Resolve relevant service alias chains using the selected source semantics and
+   eight-lookup ceiling including the terminal fragment, preserving link bytes and the reverse names of the selected
+   fragment. Require the canonical four winners to match the already authenticated
+   installed fragments, and the selected name sets to remain exact singletons.
+   Unknown file types, uncertain relevant links, cycles or incomplete reads fence.
+   Do not silently reinterpret them as missing or make a fresh authority snapshot.
+3. For each `(selected unit, suffix)` separately, generate its canonical scopes
+   and ordered directories above and maintain a distinct basename winner map. For these four non-template names the seven existing
+   canonical/type/dash-prefix scopes suffice only **after** the singleton proof.
+   Retain the first eligible winner for each basename, including regular-file and
+   mask winners. Preserve lower-priority observations for drift evidence without
+   promoting them to effective dependencies. Follow directory links under the
+   genuine root with retained identity checks; a symlink directory is not absence.
+4. Classify each winner as masked, non-symlink, invalid basename, effective
+   dependency or uncertain. Reproduce the source's relevant validation decisions;
+   negative read/metadata/compatibility uncertainty fences rather than mirroring
+   systemd's warning-and-continue behavior. Record an attempted dependency addition by its basename even when the target
+   spelling only produces a compatibility warning. Do not equate an attempted
+   addition with a successfully loaded canonical edge; target resolution/addition
+   must be proved before calling this an effective dependency set. Compare proved sets with the exact accepted expected sets, including the
+   separately unresolved four `Wants` sets. Set equality rejects duplicates and
+   unexpected members without changing the manager's 324-request budget.
+5. Retain a deterministic, length-delimited record of original order, winners,
+   names, link bytes, classifications and named/held identities. At the existing
+   post-bind point compare against those original observations; the later final
+   pre-claim sweep must compare again, never replace them. Register temporary FDs
+   before post-call clock checks, close serially, preserve the initiating error
+   and sample the original clock on failures. No refresh/retry/new origin.
+
+#### Finite resource proposal and remaining closure checks
+
+Reuse the current at-most32 UnitPath bound and per-directory 4096-byte reads,
+512 raw-entry limit, at-most16 nonempty reads plus one EOF read, and original
+setup clock. Proposed per-pass raw-entry ceilings are 16,384 for UnitPath maps
+(32×512) and 114,688 for one dependency suffix (32×7×512). This requires scanning
+each logical `(UnitPath index, scope, suffix)` once per pass and sharing immutable
+scan records across the distinct per-unit winner maps; no global suffix winner
+map is allowed. Charge duplicate resolved directories separately by logical key
+(no physical-directory deduplication optimization). Initial, post-bind and final
+passes each have that ceiling; three suffixes across all three passes have a
+1,032,192 raw-entry ceiling, plus 49,152 UnitPath-map entries. Direct per-unit
+rescanning would instead visit nine scopes per UnitPath, 147,456 entries per
+suffix/pass, and is outside this proposal. These ceilings count shadowed,
+invalid and dot entries too, not merely accepted dependencies. They are refusal
+ceilings, not a claim that the selected host can finish within its deadline.
+Preserve byte/name/path limits without truncation. Exhaustion fences.
+
+Before treating this as implementation-ready, close the exact fixed storage and
+stack/FD peak against the accepted native budget, unit-name/ignored-dirent grammar, mask handling for dangling links
+and unsafe special files, and equivalence of winner selection to the selected
+Ubuntu source. In particular, never open an arbitrary FIFO/device to determine
+whether it is a mask. A relevance optimization may not omit a possible alias or
+shadowing winner. No numeric memory allocation or new native dependency is
+authorized by the raw-entry arithmetic above. Keep actual installed name map,
+contents, `Wants`, running PID1 and timing compatibility as separate evidence.
+
+Independent source examples for the proposed predicate (not executed tests):
+
+| Input under a selected unit | Selected effect | Required conclusion |
+| --- | --- | --- |
+| Valid symlink `extra.service` in winning `.wants`, loadable target, successful add, no ordering directive | Adds `Wants=extra.service`; `After` may stay unchanged | Unexpected dependency rejects; failed/unknown target load is not proved absence |
+| Earlier canonical basename and later generic basename point at different units | Earlier canonical entry wins even across UnitPath priorities | Classify the winning basename once; retain shadowed observation |
+| Earlier `extra.service -> /dev/null`, later effective-looking same basename | Mask winner occupies basename; later entry is shadowed | No dependency from either entry; preserve proved mask, never fallback |
+| High-priority anchor dash-prefix entry versus low-priority exact anchor entry, same basename | High-path prefix wins because recursion occurs inside each UnitPath call | Do not globally sort exact scopes ahead of every prefix |
+| Low-priority exact anchor entry versus high-priority `slice.<suffix>` entry | Exact anchor wins; type scopes come after every canonical call | Do not globally sort UnitPath ahead of type specificity |
+| High-priority empty/masked unit file versus lower valid fragment | Earlier map insertion wins; reverse map may omit the empty winner | No fallback to lower valid fragment |
+| Seven versus eight ordinary alias edges before a terminal fragment | Seven plus terminal uses eight lookups; eight plus terminal exceeds FOLLOW_MAX | Enforce lookup iterations, never eight edges plus terminal |
+| Additional effective launch-service alias has its own dependency directory | Filesystem reverse name set exceeds canonical singleton | Reject under existing `.Names` policy before relying on seven scopes |
+
+Review outcome and next action belong in the current handoff. Do not call this
+candidate a completed inventory implementation, a closed G1 gate, or a substitute
+for the actual coupled pre-claim boundary and qualification.
+
+#### Imported helper trace and Ubuntu patch boundary
+
+Fresh retained-source research is protected at
+`g1-inventory-helper-source-20261125/manifest.json` under the evidence root above.
+Both original Ubuntu source and Debian-patch archive SHA256 values were rechecked
+against `ubuntu-systemd-source-package-01a20fb2.json`. Nine helper files were read
+from the original source archive, with original license headers retained outside
+Git; all 85 active patch paths were scanned for those files. This is source
+research, not compilation, runtime evidence, or new dependency adoption.
+
+`dirent-util.h` distinguishes `FOREACH_DIRENT_ALL` (name-map scan) from
+`FOREACH_DIRENT` (dependency-directory scan). The latter excludes dot-prefixed
+names, `lost+found`, `aquota.user`, `aquota.group`, trailing `~`, and the exact
+backup suffix list in `path-util.c:hidden_or_backup_file`: rpmnew, rpmsave,
+rpmorig, dpkg-old/new/tmp/dist/bak/backup/remove, ucf-new/old/dist, swp, bak,
+old and new. `readdir_ensure_type` resolves DT_UNKNOWN with nofollow/no-automount
+metadata; only a vanished entry is skipped. A native observer must preserve its
+own stricter uncertainty/identity refusal rather than assume DT_UNKNOWN means
+irrelevant. Raw-entry ceilings count filtered names too.
+
+`unit-name.c:unit_name_is_valid` and `unit-name.h` bound names to 1..255 bytes,
+require a nonempty prefix and a recognized final unit-type suffix, and restrict
+prefix characters to ASCII digits/letters plus `:-_.`, backslash and `@`.
+The first `@` cannot begin the name; flags distinguish plain/instance/template.
+Do not add an unverified “exactly one @” predicate merely from a source comment;
+follow the actual grammar and applicable validation path. The four admitted
+canonical names remain plain fixed names. Complete type/name normalization and
+downstream dependency loading still need the selected helper path traced.
+
+`stat-util.c:null_or_empty` considers empty regular files **or any character
+device** masks; it is not limited to `/dev/null`'s device number.
+`null_or_empty_path_with_root` follows/stat-checks a path (with its direct
+`dev/null` special case). A negative dangling/error result is not a mask in
+`process_deps`; subsequent link/add processing can still be attempted. Design
+mask observations around bounded path/link metadata, never reading/opening device
+or FIFO contents. Unknown/unsupported resolution fences; it must not become a
+proved inert entry. Actual effective target resolution remains separate.
+
+Patch scan found two active patches touching `path-util.c`:
+`CVE-2026-29111-1.patch` and `CVE-2026-29111-2.patch`. Their hunks alter
+`path_startswith_full` and dot-dot handling, not `hidden_or_backup_file`.
+Consequently the source-derived ignored-name list above is unchanged, but alias
+versus linked-path classification must be traced through the **patched** path
+helpers/callers. Do not promote the earlier top-level unit-file/dropin source
+correspondence to equivalence of their entire helper closure. The extracted
+helper files are explicitly original-archive bytes, not a patched build tree.
+Retain this as an implementation-readiness gap alongside static memory/FD and
+cache/target semantics; do not implement a known-unclosed approximation.

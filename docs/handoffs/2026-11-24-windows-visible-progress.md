@@ -1242,3 +1242,138 @@ Consult that receipt and current Git state rather than inferring publication fro
 this document. Earlier receipts and archives remain unchanged. The separate
 shared-standards checkout and its uncommitted canonical skill change are preserved
 and excluded from this publication authorization.
+
+## 25 November: User Admin review, proposal-only trial and original-gate refinement
+
+Fresh Main `/root` resumed RNR-D00 as Lead / Orchestrator. UTC start/ownership
+record: protected `user-admin-review-ownership-20261125.json` under the existing
+release-admission evidence root. The supplied final receipt, its manifest digest
+and all 320 tracked hashes/modes matched HEAD `649216ce`; the checkout/index were
+clean. Prior full/focused log and release-wheel digests also match the preserved
+release record. Runtime source/native resources are unchanged, so those existing
+tests/reviews remain applicable; no native fixture, full suite, package build,
+manager query, provider call or live qualification was repeated in this work.
+
+This genuinely new chat starts with zero confirmed compactions, tracked only
+through supported notices; chat identifier/effective Main model settings are not
+exposed by this runtime. Historical counts are retained. Main numeric ownership
+and next Issue Lead counter remain UNKNOWN; no Issue Lead was allocated.
+Predecessors are historical/unavailable. Two fresh direct independent reviewers
+were created by Main, requested through supported overrides as GPT-6.1 Sol /
+Medium; effective settings were not independently exposed. Their tool names,
+supervisor and fresh assignment v1 are recorded externally:
+
+- `/root/user_admin_trial_reviewer`, canonical `user-admin-trial-reviewer`, owns
+  only `/home/faris/user_admin/docs/reviews/2026-11-25-agent-runner-readiness.md`.
+- `/root/rnr_d00_gate_reviewer`, canonical `rnr-d00-gate-reviewer`, owns only
+  `docs/reviews/2026-11-25-original-gate-next-step.md` here.
+
+Both reports are durable; successors must use those artifacts, not predecessor
+availability. The protected final receipt records their final stopping state and
+actual Git/publication result rather than inferring it from this handoff.
+
+### User Admin source review and owner's trial decision
+
+Observed target `/home/faris/user_admin`, main
+`8e7a7abd8b47e2d578c96a0e347665d86dd7f0e4`, account `faris`, native Ubuntu/WSL2
+host `DESKTOP-3CK36LV`, Python 3.12.3. Existing dirty `BACKLOG.md` and
+`tests/test_role_revocation_postgres.py` are preserved. Main adds only its backlog
+section plus the review and
+`/home/faris/user_admin/docs/planning/2026-11-25-agent-runner-trial.md`.
+
+The independent trace sampled bearer verification, committed service identity,
+tenant/installation/current membership authority, authorization/fencing and
+actor-owned operation polling. No sampled authorization bypass was established.
+The concrete source finding is an incomplete Docker-test selection manifest:
+`scripts/check.py` includes the newer role-race module in product/all instead of
+excluding/reporting it as Docker-only. Its skip marker and broad inherited
+`USER_ADMIN_*` refusal prevent default execution; no accidental container launch
+is claimed. Leave that correction unimplemented as the proposed trial task.
+
+Main ran repository-prescribed locked synchronization (52 resolved/50 checked,
+no dependency-source change), then guarded source-only checks selected from the
+trace: 153 tests in 22.12s, one Starlette/httpx deprecation warning; an additional
+38 tests plus eight subtests in 1.47s. First run stripped inherited pytest options/
+plugins; second also disabled plugin autoload. Reports name all seven modules.
+SQLite/generated-key/mock checks do not qualify PostgreSQL RLS/races, Keycloak,
+ERP or deployment. No container, service, credential, grant or integration action.
+
+**Explicit owner decision in this chat:** leave existing User Admin edits with
+their current owner and **prepare proposal only**. No trial preparation commit,
+installation, enrollment, opt-in, provider call, activation or new checkout is
+authorized. Do not ask again for those actions under this same proposal-only
+decision. The proposal lists exact source/artifact/executable identities, reviewed
+draft task/checks/config, environment, expected effects and recovery. It explicitly
+lacks a clean disposable checkout and a new approved configuration revision;
+no executable enrollment base is fabricated. Drafts are mode0600 in
+`/home/faris/.local/state/agent-runner/proposals/user-admin-20261125/`, not runtime
+registration/state. No enrollment file was created or another project's adopted.
+
+Independent review caught a draft's hardcoded authoritative checkout path. Main
+changed it to the runner-selected clean cwd, explicitly protecting the original
+checkout when different, and kept Docker race flag refusal even with Docker
+profile opt-in. Independent recheck closed both draft findings. The task SHA256
+is `216561d1382c67e10056c99d26582927dab1e50451420a17827ccb8385e431c0`;
+the proposal contains all three current draft digests. This is source-level
+proposal acceptance, not permission or proof of execution.
+
+### Shared skill and memory
+
+Owner explicitly authorized **only a skill-only local shared-standards commit,
+no push**. Reviewed diff, skill validation, staging/diff and explicit new-range
+commit checks passed. `/home/faris/development-standards` is clean at `0e493c8`
+(`docs(agent-runner): document supervised owner workflow`), two commits ahead
+of its tracking remote. Unrelated `dd0356e` remains unpublished. Do not publish
+either under agent_runner's separate normal commit/push authority.
+
+Memory's supported private `projects.json` lacked the runner root. Main preserved
+the original configuration in its private backups and added only the exact
+`/home/faris/agent_runner` root under `agent-runner`; all existing mappings remain
+identical. Fresh local stdio MCP registration/save succeeds and cross-project
+registration rejects. Existing bound sessions do not switch namespaces. No global
+MCP/service restart or worker activation occurred. Verified checkpoints saved as
+memory220 under User Admin's instructed `codex-memory` namespace and memory221
+under `agent-runner`, through supported MCP calls. Memory remains an index, not
+proof of readiness or new authority.
+
+### Original gates: source-design progress and precise next action
+
+All G1–G6 and five original operational gates remain OPEN. Normal completed/failed
+foreground attempts may clear only after report delivery and actual normal exit;
+abrupt loss remains UNKNOWN and needs explicit reconciliation. No containment,
+enforced spending cap, automatic retry or human receipt proof is claimed. Native
+unconditional abandon/exit125 remains unchanged.
+
+Independent review traced the actual held-reader/manager/cgroup/persistence seams.
+The eight approved Wants reads still require installed exact sets; the final44
+and maintenance-lock check still lack their coupled authenticating pre-claim
+caller. No empty set, reject-all-symlink scanner or unrelated-path lock was added.
+The selected next bounded task is the G1 dependency inventory. A clearly marked
+source-design candidate is appended to the existing persistent admission contract;
+it is **not implementation-ready**. Source predicates, per-unit winner maps,
+singleton existing Names policy, canonical/dash/type ordering, first-winner mask
+semantics, exact alias lookup counting, raw scan ceilings and truth cases are
+documented. Review findings and correction/recheck disposition are in the report.
+
+New helper research reverified the original Ubuntu source/patch archive digests,
+retained nine licensed helper files outside Git and scanned all 85 active patch
+paths. Manifest: protected `g1-inventory-helper-source-20261125/manifest.json`.
+It closes several imported grammar/mask distinctions, including filtered backup
+names, DT_UNKNOWN metadata and character-device masks. Two active patches touch
+`path-util.c` path-prefix/dot-dot semantics; hidden-name filtering is unaffected.
+Do not mistake extracted original helper bytes or unchanged top-level lookup
+files for the patched full helper closure or running-manager qualification.
+
+Next authorized source step: read the corrected candidate and review report,
+trace patched path-helper/caller and cache/target semantics from the retained
+archives, close the fixed storage/stack/FD strategy under the native budget,
+and independently re-review those exact predicates before implementation. Actual
+installed maps/contents/Wants/PID1/timing evidence remains a separate later
+operational scope; it does not prohibit independent source/design work. Reuse
+valid evidence and do not restart completed stages. No additional source test was
+needed for these source-review/design-only edits.
+
+Final checkpoint source/index/remote hashes, protected artifacts and ownership
+release are recorded in `user-admin-review-stop-20261125.json` at the established
+external evidence root. Read it before further overlapping writes. No rollover
+or automatic new-chat dispatch was triggered; this is an ordinary work checkpoint.
