@@ -1,6 +1,12 @@
 # Project-owner installation and recovery
 
-This guide covers the current **advisory package**, not an operational release.
+The local **0.1.0.dev0 supervised single-task release** is available for explicitly
+approved runs on the qualified Linux/WSL2 host. `doctor` and `preview` remain
+advisory; the original hardened runtime and service are unavailable. The
+[release record](releases/2026-11-25-supervised-first-release.md) identifies the
+artifact, review, passing tests and authorized live qualification. A different
+project needs its own explicit opt-in, reviewed inputs and per-run approval;
+the original runtime gates remain open.
 Owner chat first reads /home/faris/development-standards/skills/agent-runner/SKILL.md
 and canonical POLICY.md. Explicitly select one project and obtain its opt-in;
 reading the skill does not authorize installation into any other project.
@@ -72,12 +78,123 @@ There is no implicit fallback to .development-standards/automation.json.
 A valid report says configuration_valid=true and execution_enabled=false, with
 runtime unavailable. Exit0 means valid advisory configuration only. Invalid config
 returns2. Preview requires an explicit normalized offline snapshot; see automation.md.
-There is no supported start/run/status/stop service command yet. A startup request
+There is no supported start/run/status/stop service command yet. A service startup request
 must be declined with those release gates; do not invoke private qualification
 binaries as a substitute. Advisory commands exit after their report, so there is
 no installed service to stop. Capture each command's stdout/stderr in distinct
 private project-owned log files if needed; do not put credentials/raw private
 runtime evidence in Git. No global runtime log or Store is created by this package.
+
+## Supervised single-task path
+
+This path is separate from the original hardened runner. Only one synthetic
+project has undergone the live qualification described above; a different
+project requires its own explicit opt-in and authorization. It is designed for
+one foreground operator and trusted project code. Codex and project commands
+may access the operator's account, credentials, network and host files. The
+runner cannot guarantee that Codex or those commands will not retry, publish or
+cause other side effects; it does not enforce a provider spending cap. A timeout
+or process-group signal does not prove that every descendant or external effect
+stopped.
+
+The current implementation uses Linux anonymous memory-backed task input and
+requires the foreground runner's SIGINT and SIGTERM to be unblocked with their
+normal dispositions, and SIGCHLD to have its default disposition. Other signal
+settings are refused before child launch. A separate child reaper is unsupported.
+The foreground process must be single-threaded. An independent Linux ptrace
+observer must be allowed to attach to that exact process; an existing tracer,
+security policy, unavailable `/proc`, or an unsupported filesystem can prevent
+startup. The observer is invasive: it observes and reinjects signals and holds
+the project's lock until it sees the foreground process exit. This requires
+qualification on the actual host and a local filesystem with working file and
+directory `fsync` and atomic hard links; network filesystems are not qualified.
+The CLI must not change the initially observed SIGCHLD, window-change or
+job-control dispositions during a run; the delivery step checks they remain
+unchanged. Other delivered signals conservatively prevent automatic clearance.
+Use the dedicated CLI process. Calling the runner as an embedded library or
+running `cli.main()` inside a long-lived process is unsupported.
+
+After the operator has explicitly opted in the project and separately
+authorized the intended run, select that project, its existing private
+enrollment and an existing **clean, disposable** checkout at the enrolled base.
+The checkout's single `origin` must be the selected GitHub repository over
+`https://github.com/OWNER/REPO[.git]` or `git@github.com:OWNER/REPO[.git]`;
+this local label is not proof of remote identity. The operator supplies a
+nonempty UTF-8 task file and an owner-controlled checks JSON file. The latter
+must match the enrolled `required_checks` names exactly and contains argv arrays,
+not shell command strings. The runner does not wrap argv in a shell; an explicitly
+configured executable can itself be a shell and is trusted. For an enrollment
+requiring only `unit`:
+
+```json
+{"schema_version":1,"codex_timeout_seconds":900,"check_timeout_seconds":300,
+ "checks":{"unit":["python3","-m","unittest","discover","-s","tests"]}}
+```
+
+Each timeout must be an integer from 1 to 86400 seconds. The task and checks
+files are each limited to 131072 bytes; the checks file must be operator-owned
+and not group/other writable. Neither file may be a final-component symlink.
+The runner uses the selected `codex` executable and an explicit environment
+allowlist: `PATH`, `HOME`, `CODEX_HOME`, `LANG`, `LC_ALL`, `TERM`,
+`XDG_CONFIG_HOME`, `XDG_CACHE_HOME` and `TMPDIR` when present. It does not copy
+other variables such as `OPENAI_API_KEY`, parse account credentials, or guarantee
+that the selected CLI's sign-in works with this environment. Verify the chosen
+CLI version, configuration and sandbox behavior during qualification.
+
+The following commands require a foreground terminal. `supervised-init`,
+`supervised-run` and `supervised-reconcile` require the exact response
+`APPROVE` after the displayed summary; read-only `supervised-status` asks for no
+confirmation. Before `supervised-init` or
+`supervised-run` inspects a checkout, a separate confirmation warns that Git
+inspection can execute repository-configured filters with the operator's access.
+Approve this only for a trusted checkout. The detailed opt-in or run approval
+still follows inspection. They do not create a branch or worktree:
+
+```sh
+agent-runner supervised-init --project "$PROJECT" --enrollment "$ENROLLMENT"
+agent-runner supervised-run --project "$PROJECT" --enrollment "$ENROLLMENT" --task "$TASK" --checks "$CHECKS"
+agent-runner supervised-status --project "$PROJECT" --enrollment "$ENROLLMENT"
+agent-runner supervised-reconcile --project "$PROJECT" --enrollment "$ENROLLMENT" --attempt "$ATTEMPT" --note "$RECONCILIATION_NOTE"
+```
+
+`supervised-init` is the explicit project opt-in: it creates a fixed per-account,
+per-repository state location under `.local/state/agent-runner/supervised-v1`
+outside the checkout. It does not create or adopt the original runtime Store.
+Do not run it again to bypass a missing, damaged or moved registration or a
+previous uncertain attempt. A separate manual recovery procedure is required
+when the registration or state is missing or cannot be validated.
+
+`supervised-run` displays the captured task, check argv, limits, checkout, base,
+remote, selected executable and environment before approval. It runs the captured
+task once and checks in order, stores child output and tracked diff in private
+project state, and reports HEAD, index, worktree status and log paths. Inspect
+the complete workspace, including untracked and ignored files, and review the
+actual changes yourself; a successful command is not acceptance. The runner does
+not itself create a PR, push, merge or deploy. It reports cost as unavailable
+when it has no provider-reported amount.
+
+On timeout, interruption or another uncertain outcome, stop and inspect the
+original checkout, processes and possible external effects. The unresolved
+attempt blocks another run. Use `supervised-status` to find its identifier,
+including an interrupted preparation. Only after inspecting the facts should the
+operator use `supervised-reconcile` and confirm the displayed note. The command
+records that decision; it does not stop processes, perform cleanup or prove
+absence. An incomplete preparation is preserved in private history before its
+block is cleared. Malformed or missing required state requires manual recovery;
+never reinitialize to bypass uncertainty.
+
+The terminal report precedes the foreground process's exit. After a normal exit,
+the observer attempts to clear the matching guard asynchronously; an immediate status or
+run can briefly report that the project lock is held. Retry status after the
+observer has finished. A persistent lock, `unresolved` status, missing report,
+or abrupt foreground command loss requires inspection and reconciliation, not
+an automatic retry. A successful terminal write and flush means the operating
+system accepted the output; it cannot prove that a person read it. `ready` means
+only that this state gate permits a new attempt, not that project changes are
+accepted or external effects are absent. A `ready` response can still include
+the previous attempt in `pending`: its valid clearance makes that guard ready;
+an `unresolved` status instead requires the inspection above. Logs may contain
+sensitive command or model output; keep them private and outside Git.
 
 ## Update, uninstall and recovery
 

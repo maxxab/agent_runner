@@ -1,1 +1,1 @@
-"""Optional, standard-library-only automation preview components."""
+"""Standard-library automation diagnostics and supervised-run components."""

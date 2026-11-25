@@ -88,5 +88,36 @@ retains historical SDK/profile pins and is not a current activation runbook.
 Each project needs its own reviewed `.agent-runner/automation.json`, full approved
 revision/config digest/host binding, private enrollment and separate runtime state.
 Do not share enrollment, consumption, Store identity or account material between
-projects. Current supported user commands are `doctor` and `preview`; see the
-owner guide for exact behavior and recovery.
+projects. Supported commands are advisory `doctor`/`preview` and the explicit
+`supervised-init`, `supervised-run`, `supervised-status` and
+`supervised-reconcile` foreground workflow; see the owner guide for behavior and
+recovery.
+
+## Approved narrower supervised first release
+
+On 25 November 2026 the owner approved the
+[supervised single-task design](superpowers/specs/2026-11-25-supervised-first-release-design.md).
+This narrower release is implemented; its acceptance evidence and supported
+scope are recorded in the [release record](releases/2026-11-25-supervised-first-release.md).
+It does not close RNR-D00 or any of the five original gates. The existing native
+wrapper remains unconditional abandon/exit 125 until its original whole boundary
+is valid. Original acceptance IDs and the broader autonomous roadmap remain intact.
+
+The supervised release has these independently verifiable outcomes:
+
+| ID | Required outcome |
+| --- | --- |
+| RNR-SUP-01 | One explicitly opted-in project, operator-identified clean disposable checkout and selected task are captured, reviewed and explicitly approved in the foreground for that run. Wrong or changed context fences before launch. |
+| RNR-SUP-02 | Stable protected per-project state, one live lock and a durable unresolved-attempt gate prevent automatic replay or a second run without reconciliation; other projects' state is never adopted. |
+| RNR-SUP-03 | The runner invokes the selected supported Codex CLI once and then the approved fixed argv checks once each in order, recording only observed results and stopping on failure or uncertainty. |
+| RNR-SUP-04 | The operator receives base, final HEAD, index, working-tree and check observations, and can inspect tracked and untracked changes; success does not imply independent review or acceptance. |
+| RNR-SUP-05 | Documentation and actual selected-host verification explain the trusted-code, account/credential, network, process-stop, cost and manual-reconciliation limits without promising containment or retry behavior the wrapper cannot enforce. |
+| RNR-SUP-06 | Focused failure tests, independent review and a separately authorized real end-to-end run on a disposable trusted project precede claiming this supervised release ready. |
+
+For this release the runner does not initiate automatic issue selection, PR
+creation, push, merge, deployment, concurrent execution, automatic retries or
+resume. Codex and project commands may have side effects or retries of their own.
+Future work retains those broader capabilities and the original stronger
+guarantees. Design approval alone does not authorize a live provider operation,
+Store, enrollment, activation, commit or push; preserve the separately scoped
+authorizations and outcomes in the release record.

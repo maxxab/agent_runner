@@ -1,6 +1,13 @@
 # Advisory automation preview
 
-The optional `agent-runner` commands implement the source-only portion of RNR-D01 in the [runner plan](superpowers/plans/2026-11-09-shared-ai-development-workflow.html). They use Python's standard library and local Git. They do not start an agent, run checks, access GitHub, install anything, create enrollment, publish work or change credentials/settings.
+The existing `doctor` and `preview` behavior below remains advisory. The separate
+foreground supervised first release is covered by its
+[release record](releases/2026-11-25-supervised-first-release.md). Its project
+opt-in, explicit approval, risks and manual reconciliation are described in
+[project-owner.md](project-owner.md). It does not close the original runtime
+gates or enable the native wrapper.
+
+The `doctor` and `preview` commands implement the source-only portion of RNR-D01 in the [runner plan](superpowers/plans/2026-11-09-shared-ai-development-workflow.html). They use Python's standard library and local Git. They do not start an agent, run checks, access GitHub, install anything, create enrollment, publish work or change credentials/settings.
 
 ```sh
 agent-runner doctor --project /path/to/project --enrollment /private/operator/enrollment.json

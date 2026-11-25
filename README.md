@@ -1,8 +1,14 @@
 # agent_runner
 
-Dedicated runner project, extracted from development-standards. Proposed package
-version **0.1.0.dev0**, unpublished and **NOT RELEASE READY**. No live runner,
-service startup, agent workload or production acceptance is enabled.
+Dedicated runner project, extracted from development-standards. Local package
+version **0.1.0.dev0** provides the supervised single-task first release for a
+trusted operator on the qualified Linux/WSL2 host. It passed independent source
+review, failure tests and one authorized live provider run on a synthetic
+fixture. See the [release record](docs/releases/2026-11-25-supervised-first-release.md)
+for the exact artifact, evidence and limits, and the
+[owner guide](docs/project-owner.md) for project opt-in and per-run approval.
+The package is unpublished; automatic service startup and the original hardened
+runtime remain unavailable with their release gates open.
 
 The installed `agent-runner doctor` and `preview` commands provide read-only
 advisory reports. Python >=3.12 and Git are required; ordinary Python runtime
@@ -38,6 +44,8 @@ membership; real private entry and bound session/rnr_command; whole independent
 keeper/containment/recovery; immutable startup closure; actual integrated
 success/failure/recovery qualification. RootEntry STORE_READY_ONLY and synthetic
 or disabled paths are not a release. Production validation NEVER RUN.
+The owner-approved narrower [supervised first-release design](docs/superpowers/specs/2026-11-25-supervised-first-release-design.md)
+has separate acceptance criteria; it does not close these original gates.
 
 No automatic installation, global service changes, enrollment, credential lookup,
 public package publishing or cross-project activation occurs on package import.
