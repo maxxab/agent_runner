@@ -53,6 +53,7 @@
 - **release:** freeze supervised v0.1 implementation scope ([65725aa06b4c](https://github.com/maxxab/agent_runner/commit/65725aa06b4cebcd115c5c60c632cbd878e4a321))
 - **release:** accept first supervised User Admin task ([bebd8d95af77](https://github.com/maxxab/agent_runner/commit/bebd8d95af77a2f18c7e0511e0e5e3fb8af2d5f9))
 - **runner:** explain supervised use and task verification ([3372e1099b5f](https://github.com/maxxab/agent_runner/commit/3372e1099b5f435b4da430c9b047db1e34cc01a1))
+- **release:** clarify current supervised acceptance evidence ([2fb3290dca66](https://github.com/maxxab/agent_runner/commit/2fb3290dca6607ea3e4a908e094ff7659d99ca8f))
 
 ### Testing
 
