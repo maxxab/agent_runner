@@ -83,7 +83,8 @@ remote transport, but that does not make hostile project code safe.
 ## A to Z: owner journey
 
 Use this route only after explicit authorization for the named project. The
-release qualifies one synthetic fixture on Linux/WSL2, not every project.
+release has live evidence from a synthetic fixture and one approved User Admin
+task on Linux/WSL2. Other projects need their own opt-in and authorization.
 Python >=3.12, Git, uv, the reviewed wheel, a foreground terminal, working local
 filesystem primitives, Linux `/proc` and permitted ptrace are prerequisites.
 Single-threaded execution and supported signal dispositions are required.

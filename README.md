@@ -3,8 +3,8 @@
 Dedicated runner project, extracted from development-standards. Local package
 version **0.1.0.dev0** provides the supervised single-task first release for a
 trusted operator on the qualified Linux/WSL2 host. It passed independent source
-review, failure tests and one authorized live provider run on a synthetic
-fixture. See the [release record](docs/releases/2026-11-25-supervised-first-release.md)
+review, failure tests, an authorized live run on a synthetic fixture and one
+approved User Admin documentation task. See the [release record](docs/releases/2026-11-25-supervised-first-release.md)
 for the exact artifact, evidence and limits, and the
 [owner guide](docs/project-owner.md) for project opt-in and per-run approval.
 The package is unpublished; automatic service startup and the original hardened

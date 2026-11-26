@@ -136,7 +136,7 @@ recovery format is unchanged. Follow the [owner guide](../project-owner.md).
 | Paired validation, captured selection, exact argv and reporting | 67 focused tests passed before the final reporting-note correction; its targeted regression then passed after demonstrated failure; final default suite ran 1,562 tests in 580.338s, OK with seven skips | PASS with fake local commands; no provider call for this correction |
 | Independent interface and final source review | Protected `supervised-model-fix-20261125/review-handoff.json`; all six reviewed file hashes rechecked at delivery | PASS; RNR-SUP-MODEL-R1 CLOSED, no remaining material finding in scope |
 | Wheel and installed boundary | Offline build; all 102 entries inspected; 97 packaged files match current source; all 24 native resources match the live-tested wheel; offline isolated install/import, default/paired/partial parser and console/module help passed | PASS; no consumer installation replaced or native qualification repeated |
-| Effective model, effort, provider and account | No live invocation of the new selection | UNKNOWN; operator must verify selected CLI output before real use |
+| Effective model, effort, provider and account | No live invocation of the new selection at correction delivery on 25 November | UNKNOWN at that point; see the later User Admin acceptance above for CLI-reported settings and remaining account limits |
 
 The protected correction directory retains `source-snapshot.json`, `build.log`,
 `artifact-inspection.json`, `installed-smoke.json`, `review-handoff.json`,
@@ -144,8 +144,9 @@ The protected correction directory retains `source-snapshot.json`, `build.log`,
 log SHA256 is `c3ae21040633ad602acfcca26f16f1dfaf2a9f02b0f109146389678766ddcaae`.
 The successor observed the already-running suite to completion without rerunning it.
 The earlier live qualification below remains evidence only for its recorded
-fixture, artifact and CLI defaults. It does not qualify the new optional selection,
-User Admin or another project. The corrected artifact is ready for the authorized
+fixture, artifact and CLI defaults. That earlier qualification did not qualify the
+new optional selection or User Admin; the later, separately approved User Admin
+acceptance is recorded above. The corrected artifact is ready for the authorized
 local source delivery within these limits; real-project opt-in and run approval
 remain separate.
 
